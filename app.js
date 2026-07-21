@@ -115,8 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const albumCoverImg = albumCover ? albumCover.querySelector('img') : null;
 
   const playlist = [
-    { title: "Chỉ iu mình ems", artist: "Unknown", src: "music/chiiuminhems.mp3", cover: "music/logo_chiiuminhems.png" },
-    { title: "Sao anh tồi thế", artist: "Unknown", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" }
+    { title: "Chỉ iu mình ems", artist: "Huyki", src: "music/chiiuminhems.mp3", cover: "music/logo_chiiuminhems.png" },
+    { title: "Sao anh tồi thế", artist: "Huyki", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" }
   ];
   let currentTrackIndex = 0;
   let isPlaying = false;
