@@ -1336,34 +1336,410 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   11. RESPONSIVE DESIGN (MOBILE & TABLET)
+   11. COMPREHENSIVE MOBILE & TABLET RESPONSIVE DESIGN
    -------------------------------------------------------------------------- */
-@media (max-width: 900px) {
+
+/* Tablet & Mobile Layout Adaptations (<= 768px) */
+@media (max-width: 768px) {
+
+  /* Global Header on Mobile */
   .global-header {
+    height: 60px;
     padding: 0 15px;
+    justify-content: space-between;
+  }
+
+  .logo-text {
+    font-size: 1.8rem;
   }
 
   .global-nav {
-    display: none; /* Mobile menu simplifies */
+    display: none; /* Hide main text desktop nav links on small screens */
   }
 
+  .header-right {
+    gap: 10px;
+  }
+
+  .live-clock {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+  }
+
+  .volume-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Main Content Padding for Mobile */
+  .main-content {
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+  }
+
+  .view-section {
+    padding: 20px 15px 120px 15px;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* VIEW 1: HOME PAGE MOBILE */
   .desk-scene {
     flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    min-height: auto;
   }
 
-  .decor-left, .decor-right {
-    display: none;
+  .decor-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .bottle-wrapper {
+    width: 100px;
+    height: 180px;
+  }
+
+  .bottle-label {
+    padding: 6px 3px;
+  }
+
+  .bottle-brand {
+    font-size: 1rem;
+  }
+
+  .bottle-title {
+    font-size: 0.5rem;
+  }
+
+  .calendar-desk-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .calendar-card {
+    padding: 35px 20px 25px 20px;
+    border-radius: 16px;
+  }
+
+  .calendar-stamp {
+    width: 50px;
+    height: 50px;
+    top: 15px;
+    left: 15px;
+    font-size: 0.7rem;
+  }
+
+  .main-title {
+    font-size: 3.2rem;
+  }
+
+  .title-heart {
+    font-size: 2.2rem;
+  }
+
+  .main-subtitle {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+
+  .btn-start {
+    font-size: 1.05rem;
+    padding: 14px 36px;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .calendar-footer {
+    margin-top: 25px;
+  }
+
+  .decor-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .camera-body {
+    width: 140px;
+    height: 90px;
+  }
+
+  .camera-lens {
+    width: 45px;
+    height: 45px;
+  }
+
+  .main-sticky {
+    max-width: 180px;
+    font-size: 1.1rem;
+    padding: 15px;
+  }
+
+  .story-strip-container {
+    margin-top: 25px;
+  }
+
+  .scroll-prompt {
+    font-size: 1rem;
+  }
+
+  .story-cards-wrapper {
+    gap: 8px;
+  }
+
+  .story-card {
+    font-size: 1.05rem;
+    padding: 8px 14px;
+  }
+
+  /* VIEW 2: 12 CÁNH CỬA (QUIZ) MOBILE */
+  .quiz-container {
+    width: 100%;
+  }
+
+  .quiz-counter-sticky {
+    top: -10px;
+    left: 10px;
+    padding: 6px 12px;
+  }
+
+  .sticky-label {
+    font-size: 0.75rem;
+  }
+
+  .sticky-number {
+    font-size: 1.4rem;
+  }
+
+  .quiz-card-wrapper {
+    padding: 25px 15px;
+    border-radius: 18px;
+    margin-top: 25px;
+  }
+
+  .question-tag {
+    font-size: 1.5rem;
+  }
+
+  .question-title {
+    font-size: 1.25rem;
+    margin: 18px 0 25px 0;
   }
 
   .options-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 12px;
   }
 
+  .option-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  .option-badge {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .option-text {
+    font-size: 0.95rem;
+  }
+
+  .option-icon {
+    font-size: 1.2rem;
+  }
+
+  .sub-sticky {
+    position: static;
+    max-width: 100%;
+    margin-top: 15px;
+    transform: none;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .quiz-controls {
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .quiz-nav-btn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .quiz-heart-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+  }
+
+  /* VIEW 3: BÌNH ƯỚC NGUYỆN MOBILE */
   .wish-jar-container {
     grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .wish-title {
+    font-size: 2.6rem;
+  }
+
+  .wish-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .wish-badges {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .badge-item {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .badge-icon {
+    margin-bottom: 0;
+    font-size: 1.2rem;
+  }
+
+  .wish-card-form {
+    padding: 20px 15px;
+  }
+
+  .form-label {
+    font-size: 1.5rem;
+  }
+
+  #wish-input {
+    height: 120px;
+    font-size: 0.95rem;
+  }
+
+  .btn-submit-wish {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .mason-jar-container {
+    width: 180px;
+    height: 260px;
+  }
+
+  .jar-lid {
+    width: 140px;
+    height: 20px;
+  }
+
+  .jar-body {
+    width: 180px;
+    height: 235px;
+  }
+
+  .jar-label {
+    font-size: 1.3rem;
+    padding: 8px 14px;
+  }
+
+  /* VIEW 4: KẾT QUẢ MOBILE */
+  .result-top-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .matched-persona-badge {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .persona-tag-sticky {
+    transform: none;
+  }
+
+  .result-title {
+    font-size: 2.5rem;
+  }
+
+  .result-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .result-sticky {
+    transform: none;
+    max-width: 100%;
   }
 
   .action-cards-grid {
     grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .action-card {
+    padding: 20px 15px;
+  }
+
+  .action-card-title {
+    font-size: 1.5rem;
+  }
+
+  .result-controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .result-pagination-dots {
+    order: -1;
+  }
+
+  .result-nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* FLOATING AUDIO WIDGET MOBILE POSITION */
+  .floating-audio-widget {
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 30px);
+    max-width: 400px;
+    padding: 8px 14px;
+    justify-content: space-between;
+  }
+
+  .song-title {
+    font-size: 0.8rem;
+  }
+
+  .song-artist {
+    font-size: 0.7rem;
   }
 }
+
+/* Extra Small Screens (<= 400px) */
+@media (max-width: 400px) {
+  .main-title {
+    font-size: 2.6rem;
+  }
+
+  .wish-title, .result-title {
+    font-size: 2.2rem;
+  }
+
+  .quiz-card-wrapper, .wish-card-form, .calendar-card {
+    padding: 15px 12px;
+  }
+}
+
