@@ -1557,12 +1557,7 @@ html, body {
   }
 
   .sub-sticky {
-    position: static;
-    max-width: 100%;
-    margin-top: 15px;
-    transform: none;
-    font-size: 1.1rem;
-    text-align: center;
+    display: none; /* Hide floating overlay sticky on mobile to avoid overlapping options */
   }
 
   .quiz-controls {
