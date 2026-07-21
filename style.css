@@ -1339,13 +1339,60 @@ html, body {
    11. COMPREHENSIVE MOBILE & TABLET RESPONSIVE DESIGN
    -------------------------------------------------------------------------- */
 
+/* Mobile Bottom Navigation Bar Styles (Default Desktop: Hidden) */
+.mobile-bottom-nav {
+  display: none;
+}
+
 /* Tablet & Mobile Layout Adaptations (<= 768px) */
 @media (max-width: 768px) {
+
+  /* Mobile Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(255, 245, 247, 0.88);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--glass-border);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(100, 40, 60, 0.12);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+    gap: 2px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: var(--transition-fast);
+  }
+
+  .mobile-nav-item.active {
+    color: var(--primary-coral);
+    background: rgba(216, 122, 122, 0.15);
+    font-weight: 700;
+  }
+
+  .m-icon {
+    font-size: 1.15rem;
+  }
 
   /* Global Header on Mobile */
   .global-header {
     height: 60px;
-    padding: 0 15px;
+    padding: 0 16px;
     justify-content: space-between;
   }
 
@@ -1354,21 +1401,21 @@ html, body {
   }
 
   .global-nav {
-    display: none; /* Hide main text desktop nav links on small screens */
+    display: none; /* Hide desktop top menu bar on mobile */
   }
 
   .header-right {
-    gap: 10px;
+    gap: 8px;
   }
 
   .live-clock {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     padding: 4px 10px;
   }
 
   .volume-btn {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
 
   /* Main Content Padding for Mobile */
@@ -1378,7 +1425,7 @@ html, body {
   }
 
   .view-section {
-    padding: 20px 15px 120px 15px;
+    padding: 20px 16px 150px 16px; /* 150px bottom padding so content scrolls above audio player + bottom nav */
     min-height: calc(100vh - 60px);
   }
 
@@ -1386,8 +1433,9 @@ html, body {
   .desk-scene {
     flex-direction: column;
     align-items: center;
-    gap: 25px;
+    gap: 20px;
     min-height: auto;
+    width: 100%;
   }
 
   .decor-left {
@@ -1395,25 +1443,25 @@ html, body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     width: 100%;
   }
 
   .bottle-wrapper {
-    width: 100px;
-    height: 180px;
+    width: 90px;
+    height: 160px;
   }
 
   .bottle-label {
-    padding: 6px 3px;
+    padding: 4px 2px;
   }
 
   .bottle-brand {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .bottle-title {
-    font-size: 0.5rem;
+    font-size: 0.45rem;
   }
 
   .calendar-desk-wrapper {
@@ -1422,46 +1470,53 @@ html, body {
   }
 
   .calendar-card {
-    padding: 35px 20px 25px 20px;
+    padding: 30px 16px 20px 16px;
     border-radius: 16px;
+    width: 100%;
   }
 
   .calendar-stamp {
-    width: 50px;
-    height: 50px;
-    top: 15px;
-    left: 15px;
-    font-size: 0.7rem;
+    width: 45px;
+    height: 45px;
+    top: 10px;
+    left: 10px;
+    font-size: 0.65rem;
   }
 
   .main-title {
-    font-size: 3.2rem;
+    font-size: 2.6rem;
+    line-height: 1.15;
+    word-break: normal;
+    overflow-wrap: break-word;
+    white-space: normal;
+    width: 100%;
   }
 
   .title-heart {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 
   .main-subtitle {
-    font-size: 1rem;
-    margin-bottom: 24px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
   }
 
   .btn-start {
-    font-size: 1.05rem;
-    padding: 14px 36px;
+    font-size: 1rem;
+    padding: 14px 28px;
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
   }
 
   .calendar-footer {
-    margin-top: 25px;
+    margin-top: 20px;
   }
 
   .decor-right {
     width: 100%;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 15px;
   }
 
@@ -1470,32 +1525,33 @@ html, body {
     height: 90px;
   }
 
-  .camera-lens {
-    width: 45px;
-    height: 45px;
-  }
-
   .main-sticky {
-    max-width: 180px;
+    width: 100%;
+    max-width: 280px;
     font-size: 1.1rem;
-    padding: 15px;
+    padding: 14px;
+    transform: none;
+    text-align: center;
   }
 
   .story-strip-container {
     margin-top: 25px;
+    width: 100%;
   }
 
   .scroll-prompt {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .story-cards-wrapper {
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .story-card {
-    font-size: 1.05rem;
-    padding: 8px 14px;
+    font-size: 0.95rem;
+    padding: 6px 12px;
   }
 
   /* VIEW 2: 12 CÁNH CỬA (QUIZ) MOBILE */
@@ -1509,42 +1565,41 @@ html, body {
     padding: 6px 12px;
   }
 
-  .sticky-label {
-    font-size: 0.75rem;
-  }
-
-  .sticky-number {
-    font-size: 1.4rem;
-  }
-
   .quiz-card-wrapper {
-    padding: 25px 15px;
+    padding: 24px 16px;
     border-radius: 18px;
-    margin-top: 25px;
+    margin-top: 20px;
+    width: 100%;
   }
 
   .question-tag {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .question-title {
-    font-size: 1.25rem;
-    margin: 18px 0 25px 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin: 15px 0 20px 0;
+    text-align: center;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .options-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr; /* 1 column on mobile */
     gap: 12px;
+    width: 100%;
   }
 
   .option-card {
+    width: 100%;
     padding: 14px 16px;
     border-radius: 12px;
   }
 
   .option-badge {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     font-size: 0.9rem;
   }
 
@@ -1552,83 +1607,98 @@ html, body {
     font-size: 0.95rem;
   }
 
-  .option-icon {
-    font-size: 1.2rem;
-  }
-
   .sub-sticky {
-    display: none; /* Hide floating overlay sticky on mobile to avoid overlapping options */
+    display: none; /* Hide floating overlay sticky on mobile */
   }
 
   .quiz-controls {
-    gap: 15px;
+    gap: 12px;
     margin-top: 25px;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .quiz-nav-btn {
-    padding: 10px 18px;
+    flex: 1;
+    padding: 12px;
+    justify-content: center;
     font-size: 0.9rem;
   }
 
   .quiz-heart-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 1.6rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
   }
 
   /* VIEW 3: BÌNH ƯỚC NGUYỆN MOBILE */
   .wish-jar-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     gap: 25px;
   }
 
   .wish-title {
-    font-size: 2.6rem;
+    font-size: 2.2rem;
+    text-align: center;
+    line-height: 1.2;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .wish-subtitle {
     font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .wish-badges {
     flex-direction: column;
     gap: 8px;
+    width: 100%;
   }
 
   .badge-item {
-    padding: 8px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     text-align: left;
+    width: 100%;
   }
 
   .badge-icon {
     margin-bottom: 0;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .wish-card-form {
-    padding: 20px 15px;
+    padding: 20px 16px;
+    width: 100%;
   }
 
   .form-label {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   #wish-input {
     height: 120px;
     font-size: 0.95rem;
+    width: 100%;
   }
 
   .btn-submit-wish {
     padding: 14px;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    width: 100%;
   }
 
   .mason-jar-container {
     width: 180px;
     height: 260px;
+    margin: 0 auto;
   }
 
   .jar-lid {
@@ -1642,76 +1712,144 @@ html, body {
   }
 
   .jar-label {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     padding: 8px 14px;
   }
 
-  /* VIEW 4: KẾT QUẢ MOBILE */
+  .jar-sticky {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 280px;
+    margin: 15px auto;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  /* VIEW 4: KẾT QUẢ MOBILE (FIXES VERTICAL WRAPPING ISSUE) */
   .result-top-info {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    width: 100%;
+    gap: 16px;
+    margin-bottom: 25px;
     text-align: center;
   }
 
   .matched-persona-badge {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .persona-avatar-frame {
+    width: 70px;
+    height: 70px;
   }
 
   .persona-tag-sticky {
     transform: none;
+    padding: 8px 14px;
+  }
+
+  .persona-tag-sticky strong {
+    font-size: 1.5rem;
+  }
+
+  .result-heading {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 10px 0;
   }
 
   .result-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    line-height: 1.25;
+    text-align: center;
+    color: var(--primary-coral);
+    font-family: var(--font-handwriting);
+    word-break: normal;
+    overflow-wrap: break-word;
+    white-space: normal;
+    display: block;
+    width: 100%;
   }
 
   .result-subtitle {
     font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin-top: 6px;
   }
 
   .result-sticky {
+    position: static;
     transform: none;
-    max-width: 100%;
+    width: 100%;
+    max-width: 280px;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 1rem;
+    padding: 12px;
   }
 
   .action-cards-grid {
     grid-template-columns: 1fr;
     gap: 18px;
+    width: 100%;
   }
 
   .action-card {
-    padding: 20px 15px;
+    padding: 20px 16px;
+    width: 100%;
   }
 
   .action-card-title {
     font-size: 1.5rem;
   }
 
+  .result-quote-bar {
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    border-radius: 20px;
+    text-align: center;
+  }
+
   .result-controls {
+    display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
+    width: 100%;
   }
 
   .result-pagination-dots {
     order: -1;
+    justify-content: center;
   }
 
   .result-nav-btn {
     width: 100%;
     justify-content: center;
+    padding: 12px;
   }
 
   /* FLOATING AUDIO WIDGET MOBILE POSITION */
   .floating-audio-widget {
-    bottom: 15px;
+    bottom: 68px; /* Position right above the 60px bottom nav bar */
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 30px);
-    max-width: 400px;
+    width: calc(100% - 24px);
+    max-width: 420px;
     padding: 8px 14px;
     justify-content: space-between;
+    z-index: 900;
   }
 
   .song-title {
@@ -1726,15 +1864,15 @@ html, body {
 /* Extra Small Screens (<= 400px) */
 @media (max-width: 400px) {
   .main-title {
-    font-size: 2.6rem;
-  }
-
-  .wish-title, .result-title {
     font-size: 2.2rem;
   }
 
+  .wish-title, .result-title {
+    font-size: 1.9rem;
+  }
+
   .quiz-card-wrapper, .wish-card-form, .calendar-card {
-    padding: 15px 12px;
+    padding: 16px 12px;
   }
 }
 
