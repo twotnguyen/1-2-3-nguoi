@@ -367,6 +367,16 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
           btn.classList.add('selected');
           userAnswers[index] = opt.key;
+          
+          // Tự động chuyển câu sau 350ms
+          setTimeout(() => {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+              currentQuestionIndex++;
+              renderQuestion(currentQuestionIndex);
+            } else {
+              switchTab('result');
+            }
+          }, 350);
         });
 
         optionsContainer.appendChild(btn);

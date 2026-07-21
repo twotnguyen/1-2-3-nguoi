@@ -295,6 +295,17 @@ html, body {
   transform: translateY(0);
 }
 
+/* Global Sticky Note Component */
+.sticky-note {
+  background: var(--sticky-bg);
+  padding: 20px;
+  border-radius: 4px 4px 16px 4px;
+  box-shadow: var(--sticky-shadow);
+  font-family: var(--font-handwriting);
+  font-size: 1.35rem;
+  color: var(--text-dark);
+}
+
 /* --------------------------------------------------------------------------
    6. VIEW 1: TRANG CHỦ (HOME LANDING) - PREMIUM STUDIO DESK
    -------------------------------------------------------------------------- */
@@ -815,28 +826,35 @@ html, body {
    -------------------------------------------------------------------------- */
 .quiz-container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 50px auto 0 auto;
   position: relative;
 }
 
 .quiz-counter-sticky {
   position: absolute;
-  top: -15px;
-  left: 20px;
+  top: -40px;
+  left: -20px;
   z-index: 20;
   transform: rotate(-6deg);
-  padding: 10px 18px;
+  padding: 15px 25px;
   text-align: center;
+  background: var(--sticky-bg);
+  border-radius: 4px 4px 16px 4px;
+  box-shadow: var(--sticky-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .sticky-label {
   display: block;
-  font-size: 0.9rem;
+  font-family: var(--font-handwriting);
+  font-size: 1.2rem;
+  color: var(--text-dark);
 }
 
 .sticky-number {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 800;
   color: var(--primary-coral);
 }
 
@@ -847,7 +865,6 @@ html, body {
   border-radius: 24px;
   padding: 40px;
   box-shadow: var(--glass-shadow);
-  margin-top: 30px;
 }
 
 .spiral-top-sm {
@@ -936,10 +953,17 @@ html, body {
 
 .sub-sticky {
   position: absolute;
-  bottom: 80px;
-  right: -30px;
-  max-width: 180px;
+  bottom: 0px;
+  right: -80px;
+  max-width: 200px;
   transform: rotate(5deg);
+  background: var(--sticky-bg);
+  padding: 15px;
+  border-radius: 4px 4px 16px 4px;
+  box-shadow: var(--sticky-shadow);
+  font-family: var(--font-handwriting);
+  font-size: 1.15rem;
+  color: var(--text-dark);
 }
 
 .quiz-controls {
