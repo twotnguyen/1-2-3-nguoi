@@ -148,6 +148,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true });
 
+  // Audio Player Minimize Toggle
+  const playerToggleMinimize = document.getElementById('player-toggle-minimize');
+  const audioWidgetContainer = document.getElementById('audio-widget-container');
+
+  if (playerToggleMinimize && audioWidgetContainer) {
+    playerToggleMinimize.addEventListener('click', (e) => {
+      e.stopPropagation();
+      audioWidgetContainer.classList.toggle('minimized');
+      playerToggleMinimize.textContent = audioWidgetContainer.classList.contains('minimized') ? '➕' : '➖';
+    });
+  }
+
+  // Camera Interactive Trigger
+  const cameraTrigger = document.getElementById('camera-trigger');
+  if (cameraTrigger) {
+    cameraTrigger.addEventListener('click', () => {
+      // Flash effect
+      const flash = document.createElement('div');
+      flash.style.position = 'fixed';
+      flash.style.top = '0';
+      flash.style.left = '0';
+      flash.style.width = '100vw';
+      flash.style.height = '100vh';
+      flash.style.background = '#FFF';
+      flash.style.opacity = '0.9';
+      flash.style.zIndex = '9999';
+      flash.style.transition = 'opacity 0.5s ease-out';
+      document.body.appendChild(flash);
+
+      setTimeout(() => {
+        flash.style.opacity = '0';
+      }, 50);
+      setTimeout(() => flash.remove(), 550);
+
+      showModal('Olympus AF-1 📸', 'Đã chụp khoảnh khắc dịu dàng này! Kỷ niệm sẽ luôn ở lại cùng bạn. ♡');
+    });
+  }
+
   // ------------------------------------------------------------------------
   // 5. INTERACTIVE 12-QUESTION QUIZ ENGINE
   // ------------------------------------------------------------------------
@@ -278,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const userAnswers = [];
 
   const quizProgressText = document.getElementById('quiz-progress-text');
+  const quizProgressFill = document.getElementById('quiz-progress-fill');
   const questionTag = document.getElementById('question-tag');
   const questionText = document.getElementById('question-text');
   const optionsContainer = document.getElementById('quiz-options-container');
@@ -300,6 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (quizProgressText) {
       quizProgressText.innerHTML = `${String(q.id).padStart(2, '0')} <small>/12</small>`;
     }
+
+    if (quizProgressFill) {
+      const percentage = ((index + 1) / quizQuestions.length) * 100;
+      quizProgressFill.style.width = `${percentage}%`;
+    }
+
     if (questionTag) questionTag.textContent = `Question ${String(q.id).padStart(2, '0')}`;
     if (questionText) questionText.textContent = q.question;
 
@@ -328,7 +373,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Toggle button state
     if (btnQuizPrev) btnQuizPrev.style.opacity = index === 0 ? '0.5' : '1';
   }
 
@@ -347,7 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuestionIndex++;
         renderQuestion(currentQuestionIndex);
       } else {
-        // Quiz completed -> Switch to Result View
         switchTab('result');
       }
     });
@@ -355,7 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnQuizHeart) {
     btnQuizHeart.addEventListener('click', () => {
-      // Create heart floating particle
       const heart = document.createElement('div');
       heart.textContent = '💖';
       heart.style.position = 'fixed';
@@ -386,18 +428,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------------
   const wishInput = document.getElementById('wish-input');
   const charCounter = document.getElementById('char-counter');
-  const anonCheckbox = document.getElementById('anon-checkbox');
   const btnSubmitWish = document.getElementById('btn-submit-wish');
   const recentWishesList = document.getElementById('recent-wishes-list');
+  const btnViewAllWishes = document.getElementById('btn-view-all-wishes');
 
-  // Load existing wishes from LocalStorage
+  const allWishesModal = document.getElementById('all-wishes-modal');
+  const allWishesContainer = document.getElementById('all-wishes-container');
+  const wishesModalClose = document.getElementById('wishes-modal-close');
+  const wishesModalOk = document.getElementById('wishes-modal-ok');
+
   let storedWishes = JSON.parse(localStorage.getItem('wish_jar_messages') || '[]');
 
   if (storedWishes.length === 0) {
     storedWishes = [
       'Làm sao để quên một người mình từng rất yêu?',
       'Có ai từng cảm thấy cô đơn giữa một đám đông?',
-      'Giá như ngày đó mình dũng cảm hơn...'
+      'Giá như ngày đó mình dũng cảm hơn...',
+      'Cảm ơn vì đã cho mình biết thế nào là được thương chiều.',
+      'Hy vọng ở một nơi nào đó, bạn luôn bình an và mỉm cười.'
     ];
     localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
   }
@@ -412,6 +460,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Interactive Folded Notes inside Mason Jar
+  document.querySelectorAll('.folded-note').forEach(note => {
+    note.addEventListener('click', () => {
+      const randomMsg = storedWishes[Math.floor(Math.random() * storedWishes.length)];
+      showModal('Một lá thư trong hũ... 💌', `"${randomMsg}"`);
+    });
+  });
+
+  // View All Wishes Modal
+  function openAllWishesModal() {
+    if (!allWishesModal || !allWishesContainer) return;
+    allWishesContainer.innerHTML = '';
+    storedWishes.forEach((w, idx) => {
+      const div = document.createElement('div');
+      div.className = 'wish-item-card';
+      div.innerHTML = `<strong>#${idx + 1}</strong> ♡ "${w}"`;
+      allWishesContainer.appendChild(div);
+    });
+    allWishesModal.classList.remove('hidden');
+  }
+
+  function closeAllWishesModal() {
+    if (allWishesModal) allWishesModal.classList.add('hidden');
+  }
+
+  if (btnViewAllWishes) {
+    btnViewAllWishes.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAllWishesModal();
+    });
+  }
+
+  if (wishesModalClose) wishesModalClose.addEventListener('click', closeAllWishesModal);
+  if (wishesModalOk) wishesModalOk.addEventListener('click', closeAllWishesModal);
+
   if (wishInput && charCounter) {
     wishInput.addEventListener('input', () => {
       charCounter.textContent = wishInput.value.length;
@@ -422,20 +505,17 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSubmitWish.addEventListener('click', () => {
       const text = wishInput.value.trim();
       if (!text) {
-        alert('Vui lòng viết điều bạn muốn chia sẻ trước khi gửi nhé! ♡');
+        showModal('Nhắc nhở ♡', 'Vui lòng viết điều bạn muốn chia sẻ trước khi gửi nhé!');
         return;
       }
 
-      // Add to array and save to LocalStorage
       storedWishes.unshift(text);
       localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
       renderRecentWishes();
 
-      // Clear input
       wishInput.value = '';
       if (charCounter) charCounter.textContent = '0';
 
-      // Show success modal or alert
       showModal('Bình Ước Nguyện ♡', 'Lời nhắn của bạn đã được gấp gọn và thả vào Bình Ước Nguyện. Cảm ơn bạn đã tin tưởng và chia sẻ! 💖');
     });
   }
@@ -500,3 +580,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initLiveClock();
 
 });
+
