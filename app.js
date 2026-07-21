@@ -107,9 +107,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const volumeIconOff = document.getElementById('volume-icon-off');
   
   const playerPlayBtn = document.getElementById('player-play-btn');
+  const playerPrevBtn = document.getElementById('player-prev-btn');
+  const playerNextBtn = document.getElementById('player-next-btn');
   const albumCover = document.getElementById('album-cover');
+  const songTitleEl = document.querySelector('.song-title');
+  const songArtistEl = document.querySelector('.song-artist');
+  const albumCoverImg = albumCover ? albumCover.querySelector('img') : null;
 
+  const playlist = [
+    { title: "Chỉ iu mình ems", artist: "Unknown", src: "music/chiiuminhems.mp3", cover: "music/logo_chiiuminhems.png" },
+    { title: "Sao anh tồi thế", artist: "Unknown", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" }
+  ];
+  let currentTrackIndex = 0;
   let isPlaying = false;
+
+  function loadTrack(index) {
+    if (!bgAudio) return;
+    const track = playlist[index];
+    bgAudio.src = track.src;
+    if (songTitleEl) songTitleEl.textContent = track.title;
+    if (songArtistEl) songArtistEl.textContent = track.artist;
+    if (albumCoverImg) albumCoverImg.src = track.cover;
+    if (isPlaying) {
+      bgAudio.play().catch(() => {});
+    }
+  }
+
+  function playNextTrack() {
+    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    loadTrack(currentTrackIndex);
+    if(isPlaying) {
+      playerPlayBtn.textContent = '⏸';
+      albumCover.classList.add('playing');
+    }
+  }
+
+  function playPrevTrack() {
+    currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrackIndex);
+    if(isPlaying) {
+      playerPlayBtn.textContent = '⏸';
+      albumCover.classList.add('playing');
+    }
+  }
+
+  if (bgAudio) {
+    bgAudio.addEventListener('ended', playNextTrack);
+    // Initialize first track without playing
+    loadTrack(currentTrackIndex);
+  }
 
   function toggleAudio() {
     if (!bgAudio) return;
@@ -119,15 +165,15 @@ document.addEventListener('DOMContentLoaded', () => {
       isPlaying = false;
       playerPlayBtn.textContent = '▶';
       albumCover.classList.remove('playing');
-      volumeIconOn.classList.add('hidden');
-      volumeIconOff.classList.remove('hidden');
+      if (volumeIconOn) volumeIconOn.classList.add('hidden');
+      if (volumeIconOff) volumeIconOff.classList.remove('hidden');
     } else {
       bgAudio.play().then(() => {
         isPlaying = true;
         playerPlayBtn.textContent = '⏸';
         albumCover.classList.add('playing');
-        volumeIconOn.classList.remove('hidden');
-        volumeIconOff.classList.add('hidden');
+        if (volumeIconOn) volumeIconOn.classList.remove('hidden');
+        if (volumeIconOff) volumeIconOff.classList.add('hidden');
       }).catch(err => {
         console.log('Audio autoplay prevented by browser policy:', err);
       });
@@ -136,14 +182,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (volumeToggleBtn) volumeToggleBtn.addEventListener('click', toggleAudio);
   if (playerPlayBtn) playerPlayBtn.addEventListener('click', toggleAudio);
+  if (playerNextBtn) playerNextBtn.addEventListener('click', playNextTrack);
+  if (playerPrevBtn) playerPrevBtn.addEventListener('click', playPrevTrack);
 
   // Auto-play attempt on user first interaction anywhere
   document.body.addEventListener('click', () => {
     if (!isPlaying && bgAudio) {
       bgAudio.play().then(() => {
         isPlaying = true;
-        playerPlayBtn.textContent = '⏸';
-        albumCover.classList.add('playing');
+        if (playerPlayBtn) playerPlayBtn.textContent = '⏸';
+        if (albumCover) albumCover.classList.add('playing');
+        if (volumeIconOn) volumeIconOn.classList.remove('hidden');
+        if (volumeIconOff) volumeIconOff.classList.add('hidden');
       }).catch(() => {});
     }
   }, { once: true });
