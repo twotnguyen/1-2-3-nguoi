@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. SPA ROUTER ENGINE
   // ------------------------------------------------------------------------
   const views = document.querySelectorAll('.view-section');
-  const navLinks = document.querySelectorAll('.nav-link, .nav-item-link');
+  const navLinks = document.querySelectorAll('.nav-link, .nav-item-link, .mobile-nav-item');
 
   function switchTab(tabId) {
     // Hide all views
