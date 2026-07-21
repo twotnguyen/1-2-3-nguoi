@@ -296,100 +296,221 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   6. VIEW 1: TRANG CHỦ (HOME LANDING)
+   6. VIEW 1: TRANG CHỦ (HOME LANDING) - PREMIUM STUDIO DESK
    -------------------------------------------------------------------------- */
-.desk-scene {
-  max-width: 1200px;
+.desk-workspace-stage {
+  max-width: 1240px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
-  min-height: 520px;
+  gap: 35px;
+  min-height: 540px;
+  position: relative;
 }
 
-/* Left Decor */
+/* Studio Lighting Halo */
+.studio-lighting-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(255, 215, 225, 0.45) 0%, rgba(249, 228, 231, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: candleFlicker 6s infinite ease-in-out;
+}
+
+/* Left Decor Cluster */
 .decor-left {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
+  z-index: 2;
+}
+
+.decor-stack-left {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
 }
 
 .bottle-wrapper {
-  width: 140px;
-  height: 260px;
-  background: linear-gradient(180deg, rgba(255, 180, 200, 0.5) 0%, rgba(216, 122, 122, 0.7) 100%);
-  border-radius: 40px 40px 16px 16px;
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 35px rgba(120, 40, 60, 0.2);
+  width: 130px;
+  height: 240px;
+  background: linear-gradient(180deg, rgba(255, 195, 210, 0.6) 0%, rgba(216, 122, 122, 0.8) 100%);
+  border-radius: 36px 36px 16px 16px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 15px 35px rgba(120, 40, 60, 0.18);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
+.bottle-cap {
+  position: absolute;
+  top: -12px;
+  width: 30px;
+  height: 14px;
+  background: linear-gradient(90deg, #D4AF37, #FFF5C0, #B8860B);
+  border-radius: 4px;
+}
+
+.bottle-neck {
+  position: absolute;
+  top: 0;
+  width: 36px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
 .bottle-label {
-  width: 80%;
-  background: #FFFBF5;
+  width: 82%;
+  background: #FFFDF9;
   border: 1px solid #D9A066;
-  padding: 12px 6px;
+  padding: 10px 4px;
   text-align: center;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .bottle-brand {
   display: block;
   font-family: var(--font-handwriting);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-maroon);
 }
 
 .bottle-title {
-  font-size: 0.65rem;
+  font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--text-muted);
 }
 
-.strawberry-bowl {
-  font-size: 2rem;
+.cocktail-glass {
+  width: 65px;
+  height: 90px;
+  border-left: 2px solid rgba(255, 255, 255, 0.9);
+  border-right: 2px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 0 0 20px 20px;
+  background: rgba(255, 180, 195, 0.4);
+  position: relative;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
+
+.strawberry-straw {
+  font-size: 1.5rem;
+  position: absolute;
+  top: -15px;
+  right: -5px;
+}
+
+/* Polaroid Photo Frames */
+.polaroid-photo {
+  background: #FFF;
+  padding: 10px 10px 18px 10px;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(80, 40, 50, 0.15);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.polaroid-photo:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  box-shadow: 0 15px 35px rgba(120, 50, 70, 0.25);
+  z-index: 20;
+}
+
+.polaroid-left {
+  transform: rotate(-6deg);
+  max-width: 170px;
+}
+
+.polaroid-right {
+  transform: rotate(7deg);
+  max-width: 170px;
+}
+
+.polaroid-img-box {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.polaroid-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.polaroid-caption {
+  display: block;
+  text-align: center;
+  font-family: var(--font-handwriting);
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  margin-top: 8px;
+}
+
+/* Tape Strip Effect */
+.tape-strip {
+  position: absolute;
+  width: 50px;
+  height: 18px;
+  background: rgba(245, 230, 210, 0.65);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 15;
+}
+
+.tape-strip.top-left { top: -10px; left: -10px; transform: rotate(-25deg); }
+.tape-strip.top-right { top: -10px; right: -10px; transform: rotate(25deg); }
+.tape-strip.top-center { top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); }
 
 /* Center Desk Calendar Card */
 .calendar-desk-wrapper {
   flex: 2;
-  max-width: 540px;
+  max-width: 560px;
   position: relative;
+  z-index: 5;
 }
 
 .spiral-top {
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
-  margin-bottom: -10px;
+  padding: 0 24px;
+  margin-bottom: -12px;
   z-index: 10;
   position: relative;
 }
 
 .ring {
   width: 12px;
-  height: 24px;
-  background: linear-gradient(90deg, #D4AF37, #FFF5C0, #B8860B);
+  height: 26px;
+  background: linear-gradient(90deg, #D4AF37 0%, #FFF5C0 50%, #B8860B 100%);
   border-radius: 6px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .calendar-card {
   background: var(--glass-bg-card);
   backdrop-filter: var(--glass-blur);
   border: 2px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 50px 40px;
+  border-radius: 24px;
+  padding: 55px 45px;
   text-align: center;
   box-shadow: var(--glass-shadow);
   position: relative;
@@ -401,89 +522,106 @@ html, body {
   left: 30px;
   border: 1.5px dashed var(--primary-coral);
   border-radius: 50%;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   transform: rotate(-15deg);
   font-family: var(--font-handwriting);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--primary-coral);
   font-weight: 700;
 }
 
 .main-title {
   font-family: var(--font-handwriting);
-  font-size: 4.5rem;
+  font-size: 4.8rem;
   font-weight: 700;
   color: var(--primary-coral);
   margin-bottom: 12px;
   line-height: 1;
+  text-shadow: 0 2px 10px rgba(216, 122, 122, 0.25);
 }
 
 .title-heart {
-  font-size: 3rem;
+  font-size: 3.2rem;
 }
 
 .main-subtitle {
   font-family: var(--font-sans);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: var(--text-dark);
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   line-height: 1.6;
 }
 
+.btn-start-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .btn-start {
-  background: var(--primary-coral);
+  background: linear-gradient(135deg, var(--primary-coral) 0%, #C05C6E 100%);
   color: #FFF;
   font-family: var(--font-sans);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 2px;
-  padding: 16px 48px;
+  padding: 16px 52px;
   border: none;
-  border-radius: 30px;
+  border-radius: 35px;
   cursor: pointer;
   transition: var(--transition-fast);
-  box-shadow: 0 8px 24px rgba(216, 122, 122, 0.4);
+  box-shadow: 0 10px 28px rgba(216, 122, 122, 0.45);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-start:hover {
-  background: #C05C6E;
-  transform: translateY(-3px);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 14px 35px rgba(216, 122, 122, 0.6);
 }
 
 .calendar-footer {
-  margin-top: 35px;
+  margin-top: 38px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
 }
 
 .date-badge {
   font-family: monospace;
-  background: rgba(255, 255, 255, 0.6);
-  padding: 4px 12px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 5px 14px;
+  border-radius: 14px;
   border: 1px solid var(--glass-border-subtle);
+  font-weight: 600;
 }
 
-/* Right Decor */
+/* Right Decor Cluster */
 .decor-right {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 25px;
+  z-index: 2;
+}
+
+.decor-stack-right {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
 }
 
 .camera-body {
-  width: 180px;
-  height: 110px;
-  background: linear-gradient(145deg, #F5E6D8, #D8C2B0);
+  width: 170px;
+  height: 105px;
+  background: linear-gradient(145deg, #F8ECE0, #D4C0B0);
   border-radius: 16px;
   border: 2px solid #FFF;
   box-shadow: 0 10px 25px rgba(80, 50, 40, 0.15);
@@ -491,33 +629,125 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.camera-body:hover {
+  transform: scale(1.05);
 }
 
 .camera-lens {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: radial-gradient(circle, #2A2A2A 0%, #555 60%, #999 100%);
   border: 4px solid #FFF;
+  position: relative;
+}
+
+.lens-reflection {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
 }
 
 .camera-brand {
   position: absolute;
-  bottom: 8px;
+  bottom: 6px;
   right: 12px;
   font-size: 0.6rem;
   font-weight: 700;
   color: var(--text-muted);
 }
 
-.sticky-note {
-  background: var(--sticky-bg);
-  padding: 20px;
-  border-radius: 4px 4px 16px 4px;
-  box-shadow: var(--sticky-shadow);
+/* Mini Cassette Deck */
+.mini-cassette-deck {
+  width: 100px;
+  height: 60px;
+  background: rgba(245, 200, 210, 0.6);
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  padding: 6px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.cassette-tape {
+  width: 100%;
+  height: 100%;
+  background: #3A2A2F;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  padding: 4px;
+}
+
+.wheel {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px dashed #FFF;
+}
+
+.tape-label {
+  position: absolute;
+  bottom: 3px;
+  font-size: 0.5rem;
+  color: #FFF;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.main-sticky {
+  max-width: 230px;
+  position: relative;
+}
+
+/* Mouse Scroll Indicator */
+.mouse-scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.mouse-shell {
+  width: 24px;
+  height: 38px;
+  border: 2px solid var(--primary-coral);
+  border-radius: 14px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.mouse-wheel {
+  width: 4px;
+  height: 8px;
+  background: var(--primary-coral);
+  border-radius: 2px;
+  margin-top: 6px;
+  animation: scrollWheelBounce 1.8s infinite ease-in-out;
+}
+
+@keyframes scrollWheelBounce {
+  0% { transform: translateY(0); opacity: 1; }
+  80% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+.home-bottom-quote {
+  margin-top: 15px;
   font-family: var(--font-handwriting);
-  font-size: 1.35rem;
-  color: var(--text-dark);
+  font-size: 1.4rem;
+  color: var(--text-muted);
+}
   line-height: 1.4;
   transform: rotate(2deg);
 }
@@ -1502,26 +1732,64 @@ button:active, .option-card:active, .mobile-nav-item:active {
   }
 
   /* VIEW 1: HOME PAGE MOBILE */
-  .desk-scene {
+  .desk-workspace-stage {
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     min-height: auto;
     width: 100%;
   }
 
-  .decor-left {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
+  .decor-left, .decor-right {
     width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .decor-stack-left, .decor-stack-right {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
   }
 
   .bottle-wrapper {
-    width: 90px;
-    height: 160px;
+    width: 85px;
+    height: 155px;
+  }
+
+  .cocktail-glass {
+    width: 50px;
+    height: 75px;
+  }
+
+  .polaroid-photo {
+    max-width: 140px !important;
+    padding: 8px 8px 14px 8px;
+  }
+
+  .polaroid-img-box {
+    height: 95px;
+  }
+
+  .polaroid-caption {
+    font-size: 1rem;
+  }
+
+  .camera-body {
+    width: 135px;
+    height: 85px;
+  }
+
+  .camera-lens {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mini-cassette-deck {
+    width: 85px;
+    height: 52px;
   }
 
   .calendar-desk-wrapper {
@@ -1530,21 +1798,21 @@ button:active, .option-card:active, .mobile-nav-item:active {
   }
 
   .calendar-card {
-    padding: 35px 20px 25px 20px;
+    padding: 30px 18px 22px 18px;
     border-radius: 20px;
     width: 100%;
   }
 
   .calendar-stamp {
-    width: 48px;
-    height: 48px;
-    top: 12px;
-    left: 12px;
+    width: 46px;
+    height: 46px;
+    top: 10px;
+    left: 10px;
     font-size: 0.65rem;
   }
 
   .main-title {
-    font-size: clamp(2.4rem, 8vw, 3.2rem);
+    font-size: clamp(2.3rem, 7.5vw, 3rem);
     line-height: 1.15;
     word-break: normal;
     overflow-wrap: break-word;
@@ -1553,61 +1821,54 @@ button:active, .option-card:active, .mobile-nav-item:active {
   }
 
   .title-heart {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
   }
 
   .main-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .btn-start {
-    font-size: 1.1rem;
-    padding: 16px 32px;
+    font-size: 1rem;
+    padding: 14px 28px;
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
     border-radius: 30px;
   }
 
   .calendar-footer {
-    margin-top: 24px;
-  }
-
-  .decor-right {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    margin-top: 20px;
   }
 
   .main-sticky {
     width: 100%;
-    max-width: 300px;
-    font-size: 1.15rem;
-    padding: 16px;
+    max-width: 280px;
+    font-size: 1.05rem;
+    padding: 14px;
     transform: none;
     text-align: center;
   }
 
   .story-strip-container {
-    margin-top: 30px;
+    margin-top: 25px;
     width: 100%;
   }
 
   .scroll-prompt {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .story-cards-wrapper {
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   .story-card {
-    font-size: 1rem;
-    padding: 8px 14px;
+    font-size: 0.95rem;
+    padding: 6px 12px;
   }
 
   /* VIEW 2: 12 CÁNH CỬA (QUIZ) MOBILE */

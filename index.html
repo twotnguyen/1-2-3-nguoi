@@ -75,23 +75,41 @@
     
     <!-- VIEW 1: TRANG CHỦ -->
     <section id="home-view" class="view-section active">
-      <div class="desk-scene">
+      <div class="desk-workspace-stage">
         
-        <!-- Left Side Decor: Bottle & Drinks -->
+        <!-- Ambient Warm Lighting Halo -->
+        <div class="studio-lighting-halo"></div>
+
+        <!-- Left Side Decor Cluster: Bottle, Cocktail & Polaroid -->
         <div class="decor-left">
-          <div class="bottle-wrapper floating-element">
-            <div class="bottle-label">
-              <span class="bottle-brand">LYRE'S</span>
-              <span class="bottle-title">PINK LONDON SPIRIT</span>
+          <div class="decor-stack-left">
+            <div class="bottle-wrapper floating-element" title="Lyre's Pink London Spirit">
+              <div class="bottle-cap"></div>
+              <div class="bottle-neck"></div>
+              <div class="bottle-label">
+                <span class="bottle-brand">LYRE'S</span>
+                <span class="bottle-title">PINK LONDON SPIRIT</span>
+              </div>
+            </div>
+            
+            <div class="cocktail-glass floating-element-delay" title="Pink Cocktail with Strawberry 🍓">
+              <div class="glass-rim"></div>
+              <div class="glass-liquid"></div>
+              <span class="strawberry-straw">🍓</span>
             </div>
           </div>
-          <div class="strawberry-bowl">
-            <span class="berry b1">🍓</span>
-            <span class="berry b2">🍓</span>
+
+          <!-- Polaroid Photo Left -->
+          <div class="polaroid-photo polaroid-left floating-element">
+            <div class="tape-strip top-left"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=250&q=80" alt="Sunset Photo">
+            </div>
+            <span class="polaroid-caption">Hoàng hôn năm ấy... ♡</span>
           </div>
         </div>
 
-        <!-- Center Desk Calendar Notebook -->
+        <!-- Center Desk Calendar Notebook (Hero Element) -->
         <div class="calendar-desk-wrapper">
           <div class="spiral-top">
             <!-- Spiral Rings -->
@@ -100,18 +118,26 @@
             <span class="ring"></span><span class="ring"></span><span class="ring"></span>
             <span class="ring"></span><span class="ring"></span><span class="ring"></span>
           </div>
+          
           <div class="calendar-card">
             <div class="calendar-stamp">
-              <span>LOVE DIARY</span>
+              <span class="stamp-inner">LOVE DIARY</span>
             </div>
+            
             <h1 class="main-title">123 NGƯỜI <span class="title-heart">♡</span></h1>
+            
             <p class="main-subtitle">
               Bạn đang nhớ ai...<br>
               Hay chỉ đang nhớ cảm giác được yêu?
             </p>
-            <button id="btn-start-quiz" class="btn-start pulse-btn">
-              BẮT ĐẦU
-            </button>
+            
+            <div class="btn-start-wrapper">
+              <button id="btn-start-quiz" class="btn-start pulse-btn">
+                <span>BẮT ĐẦU</span>
+                <span class="btn-sparkle">✨</span>
+              </button>
+            </div>
+
             <div class="calendar-footer">
               <span class="heart-icon-sm">♡</span>
               <span class="date-badge">12 MAY 1998</span>
@@ -119,35 +145,70 @@
           </div>
         </div>
 
-        <!-- Right Side Decor: Camera & Note -->
+        <!-- Right Side Decor Cluster: Camera, Cassette & Sticky Notes -->
         <div class="decor-right">
-          <div id="camera-trigger" class="camera-wrapper floating-element-delay" title="Bấm vào để chụp khoảnh khắc ♡" style="cursor: pointer;">
-            <div class="camera-body">
-              <div class="camera-lens"></div>
-              <span class="camera-brand">OLYMPUS AF-1</span>
+          <div class="decor-stack-right">
+            <!-- Retro Camera -->
+            <div id="camera-trigger" class="camera-wrapper floating-element-delay" title="Bấm vào để chụp khoảnh khắc ♡" style="cursor: pointer;">
+              <div class="camera-body">
+                <div class="camera-lens">
+                  <div class="lens-reflection"></div>
+                </div>
+                <span class="camera-brand">OLYMPUS AF-1</span>
+              </div>
+            </div>
+
+            <!-- Mini Pink Cassette Deck -->
+            <div class="mini-cassette-deck floating-element">
+              <div class="cassette-tape">
+                <div class="wheel left slow-spin"></div>
+                <div class="wheel right slow-spin"></div>
+                <span class="tape-label">LOVE SONGS</span>
+              </div>
             </div>
           </div>
           
+          <!-- Sticky Note -->
           <div class="sticky-note main-sticky">
+            <div class="tape-strip top-center"></div>
             <p class="sticky-text">
               Có lẽ...<br>
               Người anh luôn tìm kiếm...<br>
               Chỉ là người đã từng ở cạnh anh. ♡
             </p>
           </div>
+
+          <!-- Polaroid Photo Right -->
+          <div class="polaroid-photo polaroid-right floating-element-delay">
+            <div class="tape-strip top-right"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=250&q=80" alt="Miss you">
+            </div>
+            <span class="polaroid-caption">miss you ♡</span>
+          </div>
         </div>
 
       </div>
 
-      <!-- Bottom Interactive Story Strip -->
+      <!-- Bottom Interactive Story Strip & Mouse Scroll Indicator -->
       <div class="story-strip-container">
-        <span class="scroll-prompt">✧ ♡ SCROLL ĐỂ MỞ LỜI... ♡ ✧</span>
+        <div class="mouse-scroll-indicator">
+          <div class="mouse-shell">
+            <div class="mouse-wheel"></div>
+          </div>
+          <span class="scroll-prompt">✧ ♡ SCROLL ĐỂ MỞ LỜI... ♡ ✧</span>
+        </div>
+
         <div class="story-cards-wrapper">
           <div class="story-card text-card">Xin lỗi vì anh còn nhớ...</div>
           <div class="story-card num-card">... 1 ...</div>
           <div class="story-card num-card highlight-card">... 2 ...</div>
           <div class="story-card num-card">... 3 ...</div>
           <div class="story-card text-card">... người</div>
+        </div>
+
+        <div class="home-bottom-quote">
+          <p>Cảm ơn vì đã từng ở đây. ♡</p>
         </div>
       </div>
     </section>
