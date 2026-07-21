@@ -756,11 +756,12 @@ html, body {
   max-width: 220px;
 }
 
-/* Story Cards Strip */
+/* Story Cards Strip - Single Horizontal Line (Never Wrap) */
 .story-strip-container {
   max-width: 1000px;
-  margin: 40px auto 0 auto;
+  margin: 30px auto 0 auto;
   text-align: center;
+  width: 100%;
 }
 
 .scroll-prompt {
@@ -769,27 +770,34 @@ html, body {
   color: var(--text-maroon);
   letter-spacing: 2px;
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .story-cards-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: nowrap !important; /* Single horizontal row on all screens */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 4px;
 }
 
 .story-card {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  padding: 12px 24px;
+  padding: 10px 18px;
   border-radius: 12px;
   font-family: var(--font-handwriting);
-  font-size: 1.3rem;
+  font-size: clamp(0.8rem, 2.5vw, 1.25rem);
   color: var(--text-dark);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
 }
 
 .num-card {
@@ -1861,14 +1869,19 @@ button:active, .option-card:active, .mobile-nav-item:active {
   }
 
   .story-cards-wrapper {
-    gap: 6px;
-    flex-wrap: wrap;
+    gap: 4px;
+    flex-wrap: nowrap !important; /* Single horizontal line on mobile */
     justify-content: center;
+    overflow-x: auto;
+    width: 100%;
+    padding: 4px 0;
   }
 
   .story-card {
-    font-size: 0.95rem;
-    padding: 6px 12px;
+    font-size: clamp(0.72rem, 2.7vw, 0.9rem) !important;
+    padding: 5px 8px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
   }
 
   /* VIEW 2: 12 CÁNH CỬA (QUIZ) MOBILE */
