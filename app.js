@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('ambient-container');
     if (!container) return;
 
-    const moteCount = 25;
+    // Detect mobile device to optimize rendering frame rates
+    const isMobile = window.innerWidth <= 768;
+    const moteCount = isMobile ? 10 : 25;
+
     for (let i = 0; i < moteCount; i++) {
       const mote = document.createElement('div');
       mote.className = 'mote';
@@ -371,8 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const questionText = document.getElementById('question-text');
   const optionsContainer = document.getElementById('quiz-options-container');
 
-  const btnQuizPrev = document.getElementById('btn-quiz-prev');
-  const btnQuizNext = document.getElementById('btn-quiz-next');
   const btnQuizHeart = document.getElementById('btn-quiz-heart');
   const btnStartQuiz = document.getElementById('btn-start-quiz');
 
@@ -424,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
               currentQuestionIndex++;
               renderQuestion(currentQuestionIndex);
             } else {
-              switchTab('result');
+              displayGirlMatch();
             }
           }, 350);
         });
@@ -432,28 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
         optionsContainer.appendChild(btn);
       });
     }
-
-    if (btnQuizPrev) btnQuizPrev.style.opacity = index === 0 ? '0.5' : '1';
-  }
-
-  if (btnQuizPrev) {
-    btnQuizPrev.addEventListener('click', () => {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        renderQuestion(currentQuestionIndex);
-      }
-    });
-  }
-
-  if (btnQuizNext) {
-    btnQuizNext.addEventListener('click', () => {
-      if (currentQuestionIndex < quizQuestions.length - 1) {
-        currentQuestionIndex++;
-        renderQuestion(currentQuestionIndex);
-      } else {
-        switchTab('result');
-      }
-    });
   }
 
   if (btnQuizHeart) {
@@ -583,16 +562,318 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRecentWishes();
 
   // ------------------------------------------------------------------------
-  // 7. RESULT VIEW & MODAL ENGINE
+  // 7. MODAL DIALOG ENGINE & 12 MATCHED GIRLS LOGIC
   // ------------------------------------------------------------------------
+  const matchedGirls = [
+    {
+      name: "Hân",
+      age: 21,
+      color: "Vàng pastel",
+      colorHex: "#F6E0B5",
+      personality: "Luôn cười, tích cực",
+      likes: "Cà phê sáng, chụp ảnh film",
+      dislikes: "Người đến muộn",
+      quote: "Một nụ cười đôi khi cứu được cả một ngày.",
+      loveLanguage: "Words of Affirmation",
+      avatar: "images/han.jpg"
+    },
+    {
+      name: "Ân",
+      age: 22,
+      color: "Kem",
+      colorHex: "#FFF3DD",
+      personality: "Quan tâm từng điều nhỏ",
+      likes: "Nấu ăn, chăm sóc người khác",
+      dislikes: "Bị phớt lờ",
+      quote: "Không cần hoàn hảo, chỉ cần có mặt.",
+      loveLanguage: "Acts of Service",
+      avatar: "images/an.png"
+    },
+    {
+      name: "Vy",
+      age: 20,
+      color: "Cam pastel",
+      colorHex: "#FFD8BE",
+      personality: "Hài hước",
+      likes: "Meme, Uno, Boardgame",
+      dislikes: "Không khí im lặng",
+      quote: "Nếu em làm anh cười thì hôm nay đã đáng rồi.",
+      loveLanguage: "Quality Time",
+      avatar: "images/vy.png"
+    },
+    {
+      name: "My",
+      age: 21,
+      color: "Tím pastel",
+      colorHex: "#E4D5F7",
+      personality: "Nhẹ nhàng",
+      likes: "Nhật ký, hoa, hoàng hôn",
+      dislikes: "Người vô tâm",
+      quote: "Em tin tình yêu sẽ đến dù có muộn thì vẫn đến.",
+      loveLanguage: "Quality Time",
+      avatar: "images/my.png"
+    },
+    {
+      name: "Trân",
+      age: 22,
+      color: "Tím nhạt",
+      colorHex: "#E4D5F7",
+      personality: "Nghệ thuật",
+      likes: "Vẽ, triển lãm, indie music",
+      dislikes: "Ồn ào",
+      quote: "Có những cảm xúc không thể nói bằng lời.",
+      loveLanguage: "Quality Time",
+      avatar: "images/tran.jpg"
+    },
+    {
+      name: "Thảo",
+      age: 22,
+      color: "Xanh navy",
+      colorHex: "#C5D3E8",
+      personality: "Trầm",
+      likes: "Nhà sách, cà phê yên tĩnh",
+      dislikes: "Bị cắt lời",
+      quote: "Có người đọc sách để hiểu thế giới, có người để hiểu chính mình.",
+      loveLanguage: "Words of Affirmation",
+      avatar: "images/thao.png"
+    },
+    {
+      name: "Nhi",
+      age: 20,
+      color: "Xanh lá",
+      colorHex: "#C8E6C9",
+      personality: "Thích trải nghiệm",
+      likes: "Đi bộ, du lịch, trekking",
+      dislikes: "Lập kế hoạch quá nhiều",
+      quote: "Đi thôi, biết đâu hôm nay đẹp.",
+      loveLanguage: "Quality Time",
+      avatar: "images/nhi.png"
+    },
+    {
+      name: "Đào",
+      age: 23,
+      color: "Xám xanh",
+      colorHex: "#CFD8DC",
+      personality: "Tự lập",
+      likes: "Làm việc một mình",
+      dislikes: "Phụ thuộc",
+      quote: "Em ổn, nhưng có anh thì vui hơn.",
+      loveLanguage: "Respect & Trust",
+      avatar: "images/dao.png"
+    },
+    {
+      name: "Phương",
+      age: 21,
+      color: "Hồng nhạt",
+      colorHex: "#F8BBD0",
+      personality: "Dịu dàng",
+      likes: "Hoa, trà, mùi thơm",
+      dislikes: "To tiếng",
+      quote: "Không phải ai nhẹ nhàng cũng yếu đuối.",
+      loveLanguage: "Physical Touch",
+      avatar: "images/phuong.png"
+    },
+    {
+      name: "Hương",
+      age: 22,
+      color: "Đỏ pastel",
+      colorHex: "#FFCDD2",
+      personality: "Lãng mạn",
+      likes: "Viết thư tay",
+      dislikes: "Quên ngày kỷ niệm",
+      quote: "Yêu là nhớ cả những điều rất nhỏ.",
+      loveLanguage: "Gift Giving",
+      avatar: "images/huong.png"
+    },
+    {
+      name: "Thương",
+      age: 23,
+      color: "Trắng",
+      colorHex: "#FFFFFF",
+      personality: "Chung thủy",
+      likes: "Gia đình",
+      dislikes: "Nói dối",
+      quote: "Ở lại đôi khi cần nhiều dũng cảm hơn rời đi.",
+      loveLanguage: "Acts of Service",
+      avatar: "images/thuong.png"
+    },
+    {
+      name: "Ngân",
+      age: 22,
+      color: "Xanh pastel",
+      colorHex: "#B3E5FC",
+      personality: "Bình yên",
+      likes: "Hoàng hôn, biển, âm nhạc",
+      dislikes: "So sánh",
+      quote: "Có lẽ bình yên là khi không cần cố gắng trở thành ai khác.",
+      loveLanguage: "Quality Time",
+      avatar: "images/ngan.jpg"
+    },
+    {
+      name: "Hiền",
+      age: 20,
+      color: "Hồng pastel",
+      colorHex: "#FFD1DC",
+      personality: "Mộng mơ",
+      likes: "Gấu bông, concert, biển",
+      dislikes: "Người thực dụng",
+      quote: "Em tin mọi cuộc gặp đều có lý do.",
+      loveLanguage: "Gift Giving",
+      avatar: "images/hien.jpg"
+    }
+  ];
+
+  const matchGirlModal = document.getElementById('match-girl-modal');
+  const matchGirlAvatar = document.getElementById('match-girl-avatar');
+  const matchGirlAvatarFrame = document.getElementById('match-girl-avatar-frame');
+  const matchGirlName = document.getElementById('match-girl-name');
+  const matchGirlMeta = document.getElementById('match-girl-meta');
+  const matchGirlPersonality = document.getElementById('match-girl-personality');
+  const matchGirlLove = document.getElementById('match-girl-love');
+  const matchGirlLikes = document.getElementById('match-girl-likes');
+  const matchGirlDislikes = document.getElementById('match-girl-dislikes');
+  const matchGirlQuote = document.getElementById('match-girl-quote');
+  const matchModalClose = document.getElementById('match-modal-close');
+  const matchModalOk = document.getElementById('match-modal-ok');
+  const btnRematch = document.getElementById('btn-rematch');
+
+  let currentGirl = null;
+
+  function getRandomGirl() {
+    return matchedGirls[Math.floor(Math.random() * matchedGirls.length)];
+  }
+
+  function displayGirlMatch(girl) {
+    if (!girl) girl = getRandomGirl();
+    currentGirl = girl;
+
+    if (matchGirlAvatar) matchGirlAvatar.src = girl.avatar;
+    if (matchGirlName) matchGirlName.textContent = girl.name;
+    if (matchGirlMeta) matchGirlMeta.textContent = `${girl.age} tuổi • Màu đại diện: ${girl.color}`;
+    if (matchGirlPersonality) matchGirlPersonality.textContent = girl.personality;
+    if (matchGirlLove) matchGirlLove.textContent = girl.loveLanguage;
+    if (matchGirlLikes) matchGirlLikes.textContent = girl.likes;
+    if (matchGirlDislikes) matchGirlDislikes.textContent = girl.dislikes;
+    if (matchGirlQuote) matchGirlQuote.textContent = `"${girl.quote}"`;
+
+    if (matchGirlAvatarFrame && girl.colorHex) {
+      matchGirlAvatarFrame.style.background = `linear-gradient(135deg, ${girl.colorHex}, var(--primary-rose))`;
+    }
+
+    if (matchGirlModal) {
+      matchGirlModal.classList.remove('hidden');
+    }
+  }
+
+  function closeGirlMatchModal() {
+    if (matchGirlModal) matchGirlModal.classList.add('hidden');
+  }
+
+  if (matchModalClose) matchModalClose.addEventListener('click', closeGirlMatchModal);
+  
+  const socialShareModal = document.getElementById('social-share-modal');
+  const shareModalClose = document.getElementById('share-modal-close');
+  const shareModalOk = document.getElementById('share-modal-ok');
+  const shareUrlInput = document.getElementById('share-url-input');
+  const btnCopyShareUrl = document.getElementById('btn-copy-share-url');
+  const shareFb = document.getElementById('share-fb');
+  const shareTiktok = document.getElementById('share-tiktok');
+  const shareInsta = document.getElementById('share-insta');
+  const shareZalo = document.getElementById('share-zalo');
+
+  function openSocialShareModal(girl) {
+    const currentUrl = window.location.href;
+    const shareText = `✨ Kết quả 123 Người: Người phù hợp của mình là ${girl ? girl.name : 'Người ấy'} (${girl ? girl.age : 20} tuổi - ${girl ? girl.personality : 'Bình yên'}) ♡ "${girl ? girl.quote : ''}"`;
+    
+    if (shareUrlInput) shareUrlInput.value = currentUrl;
+
+    if (shareFb) {
+      shareFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(shareText)}`;
+    }
+    if (shareZalo) {
+      shareZalo.href = `https://sp.zalo.me/share_inline?link=${encodeURIComponent(currentUrl)}&content=${encodeURIComponent(shareText)}`;
+    }
+    if (shareTiktok) {
+      shareTiktok.onclick = (e) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(`${shareText}\n${currentUrl}`).then(() => {
+          showModal('TikTok Share 🎵', 'Đã sao chép nội dung kết quả! Bạn có thể dán vào bài đăng TikTok nhé! 💖');
+          window.open('https://www.tiktok.com/', '_blank');
+        }).catch(() => {
+          window.open('https://www.tiktok.com/', '_blank');
+        });
+      };
+    }
+    if (shareInsta) {
+      shareInsta.onclick = (e) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(`${shareText}\n${currentUrl}`).then(() => {
+          showModal('Instagram Share 📸', 'Đã sao chép nội dung kết quả! Bạn có thể dán vào Story hoặc bài đăng Instagram nhé! 💖');
+          window.open('https://www.instagram.com/', '_blank');
+        }).catch(() => {
+          window.open('https://www.instagram.com/', '_blank');
+        });
+      };
+    }
+
+    // Try Web Share API first if supported on mobile
+    if (navigator.share) {
+      navigator.share({
+        title: '123 Người ♡',
+        text: shareText,
+        url: currentUrl
+      }).catch(() => {
+        if (socialShareModal) socialShareModal.classList.remove('hidden');
+      });
+    } else {
+      if (socialShareModal) socialShareModal.classList.remove('hidden');
+    }
+  }
+
+  function closeSocialShareModal() {
+    if (socialShareModal) socialShareModal.classList.add('hidden');
+  }
+
+  if (shareModalClose) shareModalClose.addEventListener('click', closeSocialShareModal);
+  if (shareModalOk) shareModalOk.addEventListener('click', closeSocialShareModal);
+
+  if (btnCopyShareUrl) {
+    btnCopyShareUrl.addEventListener('click', () => {
+      const currentUrl = shareUrlInput ? shareUrlInput.value : window.location.href;
+      const girl = currentGirl;
+      const shareText = `✨ Kết quả 123 Người: Người phù hợp của mình là ${girl ? girl.name : 'Người ấy'} (${girl ? girl.age : 20} tuổi - ${girl ? girl.personality : 'Bình yên'}) ♡ "${girl ? girl.quote : ''}"\n${currentUrl}`;
+
+      navigator.clipboard.writeText(shareText).then(() => {
+        btnCopyShareUrl.textContent = 'Đã chép! ✓';
+        setTimeout(() => btnCopyShareUrl.textContent = 'Sao chép 📋', 2000);
+      }).catch(() => {
+        showModal('Nhắc nhở', 'Vui lòng sao chép đường dẫn thủ công: ' + currentUrl);
+      });
+    });
+  }
+
+  if (matchModalOk) {
+    matchModalOk.addEventListener('click', () => {
+      closeGirlMatchModal();
+      openSocialShareModal(currentGirl);
+    });
+  }
+
+  if (btnRematch) {
+    btnRematch.addEventListener('click', () => {
+      closeGirlMatchModal();
+      currentQuestionIndex = 0;
+      userAnswers.length = 0;
+      renderQuestion(0);
+      switchTab('quiz');
+    });
+  }
+
   const modal = document.getElementById('action-modal');
   const modalTitle = document.getElementById('modal-title');
   const modalBody = document.getElementById('modal-body');
   const modalCloseBtn = document.getElementById('modal-close-btn');
   const modalOkBtn = document.getElementById('modal-ok-btn');
-
-  const btnResultPrev = document.getElementById('btn-result-prev');
-  const btnResultFinish = document.getElementById('btn-result-finish');
 
   function showModal(title, message) {
     if (!modal) return;
@@ -607,33 +888,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
-
-  document.querySelectorAll('.btn-choose-action').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const action = btn.getAttribute('data-action');
-      let msg = '';
-      if (action === 'Thư tay bí mật') {
-        msg = 'Bắt đầu viết một bức thư chân thành. Hãy để cảm xúc dẫn lối và chia sẻ kỷ niệm đáng nhớ nhất của hai bạn!';
-      } else if (action === 'Playlist dành riêng') {
-        msg = 'Hãy chọn ra 5 bài hát thể hiện đúng nhất cảm xúc của bạn lúc này để gửi tới người ấy nhé!';
-      } else if (action === 'Rủ đi ngắm hoàng hôn') {
-        msg = 'Một lời mời nhẹ nhàng vào một chiều thứ Bảy hoàng hôn đẹp trời sẽ là món quà tuyệt vời nhất!';
-      }
-      showModal(action, msg);
-    });
-  });
-
-  if (btnResultPrev) {
-    btnResultPrev.addEventListener('click', () => {
-      switchTab('quiz');
-    });
-  }
-
-  if (btnResultFinish) {
-    btnResultFinish.addEventListener('click', () => {
-      showModal('Kết Quả Matching #07 ♡', 'Chúc mừng bạn đã hoàn thành hành trình 123 Người. Hãy luôn tin vào tình yêu và sự chân thành nhé!');
-    });
-  }
 
   // Initialize background animations and live clock
   initAmbientParticles();
