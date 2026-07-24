@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const playlist = [
     { title: "Chỉ iu mình ems", artist: "Huyki", src: "music/chiiuminhems.mp3", cover: "music/logo_chiiuminhems.png" },
-    { title: "Sao anh tồi thế", artist: "Huyki", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" }
+    { title: "Sao anh tồi thế", artist: "Huyki", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" },
+    { title: "1 2 3 Người", artist: "Huyki", src: "music/1_2_3_nguoi_mixing (1).wav", cover: "music/logo_1_2_3_nguoi_mixing (1).png" }
   ];
   let currentTrackIndex = 0;
   let isPlaying = false;
