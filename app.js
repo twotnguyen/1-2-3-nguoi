@@ -251,6 +251,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 3D Microwave Interactive Trigger
+  const microwaveTrigger = document.getElementById('microwave-trigger');
+  if (microwaveTrigger) {
+    microwaveTrigger.addEventListener('click', () => {
+      // Warm pink glow flash feedback
+      const warmFlash = document.createElement('div');
+      warmFlash.style.position = 'fixed';
+      warmFlash.style.inset = '0';
+      warmFlash.style.background = 'radial-gradient(circle at center, rgba(255, 180, 200, 0.6), transparent 70%)';
+      warmFlash.style.zIndex = '9999';
+      warmFlash.style.pointerEvents = 'none';
+      warmFlash.style.transition = 'opacity 0.4s ease-out';
+      document.body.appendChild(warmFlash);
+
+      setTimeout(() => warmFlash.style.opacity = '0', 50);
+      setTimeout(() => warmFlash.remove(), 450);
+    });
+  }
+
   // ------------------------------------------------------------------------
   // 5. INTERACTIVE 12-QUESTION QUIZ ENGINE
   // ------------------------------------------------------------------------
@@ -900,6 +919,151 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
+
+  // ------------------------------------------------------------------------
+  // 8. INTERACTIVE PHOTO GALLERY ENGINE (CURATED PRESETS)
+  // ------------------------------------------------------------------------
+  const presetFrames = [
+    { id: 1, title: "Kỷ niệm #1 ♡", desc: "Khoảnh khắc dịu dàng lưu giữ cùng thời gian.", src: "images/gallery/0 (1).png", style: "polaroid" },
+    { id: 2, title: "Kỷ niệm #2 👑", desc: "Góc nhỏ thân thương của những ngày đã qua.", src: "images/gallery/1 (1).png", style: "vintage-gold" },
+    { id: 3, title: "Kỷ niệm #3 💖", desc: "Nụ cười trong vắt sưởi ấm tâm hồn.", src: "images/gallery/2.1.png", style: "sparkle-heart" },
+    { id: 4, title: "Kỷ niệm #4 🎬", desc: "Thước phim ký ức trôi qua nhè nhẹ.", src: "images/gallery/3 (1).png", style: "film-strip" },
+    { id: 5, title: "Kỷ niệm #5 ✉️", desc: "Gửi vào quá khứ lời cảm ơn chân thành.", src: "images/gallery/4 (1).png", style: "postcard" },
+    { id: 6, title: "Kỷ niệm #6 🌅", desc: "Vệt nắng chiều nhuộm hồng kỷ niệm.", src: "images/gallery/5 (1).png", style: "polaroid" },
+    { id: 7, title: "Kỷ niệm #7 🌙", desc: "Thành phố về đêm thì thầm ngàn lời yêu.", src: "images/gallery/6 (1).png", style: "vintage-gold" },
+    { id: 8, title: "Kỷ niệm #8 ✨", desc: "Ánh mắt biết nói trao trọn niềm tin.", src: "images/gallery/7 (1).png", style: "sparkle-heart" },
+    { id: 9, title: "Kỷ niệm #9 ☕", desc: "Góc nhỏ cà phê và buổi chiều thanh bình.", src: "images/gallery/8 (1).png", style: "film-strip" },
+    { id: 10, title: "Kỷ niệm #10 🌸", desc: "Sắc hoa rực rỡ bên ô cửa sổ.", src: "images/gallery/9 (1).png", style: "postcard" },
+    { id: 11, title: "Kỷ niệm #11 ♡", desc: "Bình yên là khi có ai đó luôn chờ đợi.", src: "images/gallery/10 (1).png", style: "polaroid" },
+    { id: 12, title: "Kỷ niệm #12 🌅", desc: "Hoàng hôn lãng mạn phủ kín chân trời.", src: "images/gallery/1759588731958.JPG", style: "vintage-gold" },
+    { id: 13, title: "Kỷ niệm #13 💖", desc: "Tình yêu bắt đầu từ những điều giản dị.", src: "images/gallery/1761373756774.png", style: "sparkle-heart" },
+    { id: 14, title: "Kỷ niệm #14 🌙", desc: "Đêm muộn đong đầy nỗi nhớ khôn nguôi.", src: "images/gallery/1761373757339.jpg", style: "film-strip" },
+    { id: 15, title: "Kỷ niệm #15 ✉️", desc: "Một bức thư chưa dám gửi cho người ấy.", src: "images/gallery/1761373757851.jpg", style: "postcard" },
+    { id: 16, title: "Kỷ niệm #16 🍃", desc: "Cơn gió nhẹ thổi qua ngày nắng hạ.", src: "images/gallery/1761373757884.jpg", style: "polaroid" },
+    { id: 17, title: "Kỷ niệm #17 ☕", desc: "Ấm áp tách trà nóng giữa ngày đông.", src: "images/gallery/1761373757918.jpg", style: "vintage-gold" },
+    { id: 18, title: "Kỷ niệm #18 🌧️", desc: "Tiếng mưa rơi nhè nhẹ ngoài hiên.", src: "images/gallery/1761374022371.jpg", style: "sparkle-heart" },
+    { id: 19, title: "Kỷ niệm #19 🎬", desc: "Từng khung hình quay chậm đáng giá.", src: "images/gallery/1761374022434.jpg", style: "film-strip" },
+    { id: 20, title: "Kỷ niệm #20 ✉️", desc: "Lời hứa thanh xuân ngàn năm giữ trọn.", src: "images/gallery/1761374022751.jpeg", style: "postcard" },
+    { id: 21, title: "Kỷ niệm #21 ♡", desc: "Nụ cười rạng rỡ thắp sáng ngàn ánh sao.", src: "images/gallery/IMG_1748518542492_1748518583671.jpg", style: "polaroid" },
+    { id: 22, title: "Kỷ niệm #22 🌆", desc: "Chiều dịu dàng nghiêng mình bóng xế.", src: "images/gallery/IMG_1910-Enhanced-NR.jpg", style: "vintage-gold" },
+    { id: 23, title: "Kỷ niệm #23 ✨", desc: "Khoảnh khắc tuyệt vời nhất từng trải qua.", src: "images/gallery/IMG_2131.JPG", style: "sparkle-heart" },
+    { id: 24, title: "Kỷ niệm #24 🎬", desc: "Trân trọng từng ngày tháng bên nhau.", src: "images/gallery/z6304858052609_e7af4a941c7265a1ccc06a9e6ad8fb6a.jpg", style: "film-strip" }
+  ];
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+  const lightboxOkBtn = document.getElementById('lightbox-ok-btn');
+  const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
+
+  function createFrameElement(item) {
+    const frameDiv = document.createElement('div');
+    frameDiv.className = `gallery-frame frame-style-${item.style}`;
+    frameDiv.setAttribute('data-style', item.style);
+
+    let innerHTML = '';
+    if (item.style === 'polaroid') {
+      innerHTML = `
+        <div class="frame-tape-strip"></div>
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-stamp">123 NGƯỜI</div>
+      `;
+    } else if (item.style === 'vintage-gold') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+      `;
+    } else if (item.style === 'sparkle-heart') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+          <div class="sparkle-overlay"></div>
+        </div>
+      `;
+    } else if (item.style === 'film-strip') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+      `;
+    } else if (item.style === 'postcard') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-stamp">📮</div>
+      `;
+    }
+
+    frameDiv.innerHTML = innerHTML;
+
+    frameDiv.addEventListener('click', () => {
+      openLightboxModal(item);
+    });
+
+    return frameDiv;
+  }
+
+  function renderGallery(filter = 'all') {
+    if (!galleryGrid) return;
+    galleryGrid.innerHTML = '';
+
+    const filteredItems = filter === 'all' 
+      ? presetFrames 
+      : presetFrames.filter(item => item.style === filter);
+
+    filteredItems.forEach(item => {
+      galleryGrid.appendChild(createFrameElement(item));
+    });
+  }
+
+  // Filter Buttons
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      renderGallery(filter);
+    });
+  });
+
+  // Lightbox Modal Handling
+  function openLightboxModal(item) {
+    if (!lightboxModal || !lightboxFrameContainer) return;
+
+    lightboxFrameContainer.innerHTML = '';
+    lightboxFrameContainer.appendChild(createFrameElement(item));
+
+    if (lightboxTitle) lightboxTitle.textContent = item.title;
+    if (lightboxDesc) lightboxDesc.textContent = item.desc;
+
+    lightboxModal.classList.remove('hidden');
+  }
+
+  function closeLightboxModal() {
+    if (lightboxModal) lightboxModal.classList.add('hidden');
+  }
+
+  if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightboxModal);
+  if (lightboxOkBtn) lightboxOkBtn.addEventListener('click', closeLightboxModal);
+
+  if (lightboxDownloadBtn) {
+    lightboxDownloadBtn.addEventListener('click', () => {
+      showModal('Lưu Khoảnh Khắc 💾', 'Đã lưu khoảnh khắc dịu dàng này! ♡');
+      closeLightboxModal();
+    });
+  }
+
+  // Render initial gallery grid
+  renderGallery();
 
   // Initialize background animations and live clock
   initAmbientParticles();

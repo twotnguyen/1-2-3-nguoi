@@ -41,6 +41,8 @@
       <span class="nav-dot">♥</span>
       <a href="#quiz" class="nav-link" data-tab="quiz">12 cánh cửa</a>
       <span class="nav-dot">♥</span>
+      <a href="#gallery" class="nav-link" data-tab="gallery">Khung ảnh</a>
+      <span class="nav-dot">♥</span>
       <a href="#wish-jar" class="nav-link" data-tab="wish-jar">Bình ước nguyện</a>
     </nav>
 
@@ -94,13 +96,41 @@
             </div>
           </div>
 
-          <!-- Polaroid Photo Left -->
-          <div class="polaroid-photo polaroid-left floating-element">
-            <div class="tape-strip top-left"></div>
-            <div class="polaroid-img-box">
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=250&q=80" alt="Sunset Photo">
+          <!-- 3D Aesthetic Pink Microwave Oven (Replaces Polaroid Left) -->
+          <div id="microwave-trigger" class="microwave-3d-wrapper floating-element" data-tab="gallery" title="Lò vi sóng hâm nóng kỷ niệm - Bấm để xem góc khung ảnh ♡" style="cursor: pointer;">
+            <div class="microwave-top-banner">CHỈ YÊU MÌNH EMS ♡</div>
+            <div class="microwave-body">
+              <div class="microwave-door">
+                <div class="door-window">
+                  <div class="heating-glow"></div>
+                  <div class="heart-clay-character">
+                    <span class="clay-heart">💖</span>
+                    <div class="clay-plate"></div>
+                  </div>
+                </div>
+                <div class="door-handle"></div>
+              </div>
+              <div class="microwave-panel">
+                <div class="panel-screen">
+                  <span class="screen-timer">12:30</span>
+                </div>
+                <div class="panel-buttons">
+                  <span class="m-btn"></span><span class="m-btn"></span>
+                  <span class="m-btn"></span><span class="m-btn"></span>
+                </div>
+                <div class="panel-knob"></div>
+              </div>
             </div>
-            <span class="polaroid-caption">Hoàng hôn năm ấy... ♡</span>
+            <div class="microwave-feet">
+              <span class="foot left"></span>
+              <span class="foot right"></span>
+            </div>
+            <span class="microwave-caption">Hâm nóng kỷ niệm ♡</span>
+            <div class="floating-hearts-burst">
+              <span class="burst-heart h1">💕</span>
+              <span class="burst-heart h2">💖</span>
+              <span class="burst-heart h3">✨</span>
+            </div>
           </div>
         </div>
 
@@ -174,7 +204,7 @@
           </div>
 
           <!-- Polaroid Photo Right -->
-          <div class="polaroid-photo polaroid-right floating-element-delay">
+          <div class="polaroid-photo polaroid-right floating-element-delay" data-tab="gallery" title="Bấm để xem bộ sưu tập khung ảnh ♡">
             <div class="tape-strip top-right"></div>
             <div class="polaroid-img-box">
               <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=250&q=80" alt="Miss you">
@@ -378,7 +408,41 @@
       </div>
     </section>
 
+    <!-- VIEW 4: KHUNG ẢNH KỶ NIỆM (GALLERY) -->
+    <section id="gallery-view" class="view-section">
+      <div class="gallery-container">
+        
+        <!-- Gallery Header -->
+        <div class="gallery-header">
+          <div class="sparkle-badge">✨ BỘ SƯU TẬP KHUNG ẢNH KỶ NIỆM ✨</div>
+          <h2 class="gallery-title">Góc Khung Ảnh ♡</h2>
+          <p class="gallery-subtitle">
+            Những khung hình lưu giữ ký êm đềm, hoàng hôn năm ấy và những lời chưa nói.<br>
+            Bấm vào bất kỳ khung ảnh nào để thưởng thức trọn vẹn thông điệp dịu dàng...
+          </p>
+        </div>
 
+        <!-- Curated Preset Photo Gallery Grid -->
+        <div class="gallery-presets-section">
+          <div class="section-title-wrapper">
+            <h3 class="section-title">Bộ Sưu Tập Khung Ảnh Kỷ Niệm ♡</h3>
+            <div class="filter-tabs">
+              <button class="filter-btn active" data-filter="all">Tất cả</button>
+              <button class="filter-btn" data-filter="polaroid">Polaroid</button>
+              <button class="filter-btn" data-filter="vintage-gold">Gỗ Cổ Điển</button>
+              <button class="filter-btn" data-filter="sparkle-heart">Trái Tim</button>
+              <button class="filter-btn" data-filter="film-strip">Film Strip</button>
+              <button class="filter-btn" data-filter="postcard">Bưu Thiếp</button>
+            </div>
+          </div>
+
+          <div id="gallery-grid" class="gallery-grid">
+            <!-- Dynamic / Preset items will be rendered here -->
+          </div>
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
@@ -498,6 +562,22 @@
     </div>
   </div>
 
+  <!-- Lightbox Frame Modal -->
+  <div id="lightbox-modal" class="modal-overlay hidden">
+    <div class="modal-card lightbox-card">
+      <button id="lightbox-close-btn" class="modal-close">&times;</button>
+      <div id="lightbox-frame-container" class="lightbox-frame-container"></div>
+      <div class="lightbox-info">
+        <h3 id="lightbox-title" class="lightbox-title">Kỷ niệm dịu dàng ♡</h3>
+        <p id="lightbox-desc" class="lightbox-desc">Hoàng hôn năm ấy, khi chúng ta còn ở cạnh nhau...</p>
+        <div class="lightbox-actions">
+          <button id="lightbox-download-btn" class="btn-start">LƯU KHUNG ẢNH 💾</button>
+          <button id="lightbox-ok-btn" class="btn-secondary-aesthetic">ĐÓNG ♡</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Mobile Bottom Navigation Bar -->
   <nav class="mobile-bottom-nav">
     <a href="#home" class="mobile-nav-item active" data-tab="home">
@@ -508,11 +588,14 @@
       <span class="m-icon">🚪</span>
       <span class="m-label">12 Cánh cửa</span>
     </a>
+    <a href="#gallery" class="mobile-nav-item" data-tab="gallery">
+      <span class="m-icon">🖼️</span>
+      <span class="m-label">Khung ảnh</span>
+    </a>
     <a href="#wish-jar" class="mobile-nav-item" data-tab="wish-jar">
       <span class="m-icon">🫙</span>
       <span class="m-label">Ước nguyện</span>
     </a>
-
   </nav>
 
   <!-- JavaScript -->
