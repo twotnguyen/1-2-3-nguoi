@@ -1010,7 +1010,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="frame-img-box">
           <img src="${item.src}" alt="${item.title}">
         </div>
-        <div class="frame-caption">${item.caption}</div>
         <div class="frame-stamp">123 NGƯỜI</div>
       `;
     } else if (item.style === 'vintage-gold') {
@@ -1018,7 +1017,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="frame-img-box">
           <img src="${item.src}" alt="${item.title}">
         </div>
-        <div class="frame-caption">${item.caption}</div>
       `;
     } else if (item.style === 'sparkle-heart') {
       innerHTML = `
@@ -1026,21 +1024,18 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="${item.src}" alt="${item.title}">
           <div class="sparkle-overlay"></div>
         </div>
-        <div class="frame-caption">${item.caption}</div>
       `;
     } else if (item.style === 'film-strip') {
       innerHTML = `
         <div class="frame-img-box">
           <img src="${item.src}" alt="${item.title}">
         </div>
-        <div class="frame-caption">${item.caption}</div>
       `;
     } else if (item.style === 'postcard') {
       innerHTML = `
         <div class="frame-img-box">
           <img src="${item.src}" alt="${item.title}">
         </div>
-        <div class="frame-caption">${item.caption}</div>
         <div class="frame-stamp">📮</div>
       `;
     }
