@@ -901,6 +901,284 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
 
+  // ------------------------------------------------------------------------
+  // 8. INTERACTIVE PHOTO GALLERY ENGINE & FRAME CREATOR
+  // ------------------------------------------------------------------------
+  const presetFrames = [
+    {
+      id: 1,
+      title: "Hoàng hôn năm ấy... ♡",
+      desc: "Những ngày hoàng hôn nhuộm hồng góc biển, nơi chúng ta từng cùng ngắm nhìn bầu trời.",
+      src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+      style: "polaroid",
+      caption: "Hoàng hôn năm ấy... ♡"
+    },
+    {
+      id: 2,
+      title: "Đèn phố đêm 🌙",
+      desc: "Ánh đèn lung linh của thành phố lúc về đêm, nơi lưu giữ những câu chuyện thì thầm.",
+      src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      style: "vintage-gold",
+      caption: "Cùng em qua phố đêm 🌙"
+    },
+    {
+      id: 3,
+      title: "Mặt hồ tĩnh lặng 🏔️",
+      desc: "Bình yên là khi tâm mình dịu lại giữa thiên nhiên rộng lớn.",
+      src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
+      style: "sparkle-heart",
+      caption: "Cảm giác bình yên 💖"
+    },
+    {
+      id: 4,
+      title: "Góc phố vintage 🎬",
+      desc: "Từng bước chân trôi chậm như cuốn phim cũ chưa bao giờ phai màu.",
+      src: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=600&q=80",
+      style: "film-strip",
+      caption: "Ký ức mờ ảo 🎬"
+    },
+    {
+      id: 5,
+      title: "Tách cà phê chiều ☕",
+      desc: "Hương cà phê ấm nồng giữa những buổi chiều se lạnh.",
+      src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
+      style: "postcard",
+      caption: "Chiều nhẹ nhàng ☕"
+    },
+    {
+      id: 6,
+      title: "Hoa anh đào bay 🌸",
+      desc: "Một mùa hoa đẹp nhất là khi có ai đó cạnh bên.",
+      src: "https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=600&q=80",
+      style: "polaroid",
+      caption: "Mùa hoa kỷ niệm 🌸"
+    },
+    {
+      id: 7,
+      title: "Bầu trời sao đêm ✨",
+      desc: "Mỗi ngôi sao là một nguyện ước dành tặng riêng bạn.",
+      src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
+      style: "sparkle-heart",
+      caption: "Ước nguyện sao trời ✨"
+    },
+    {
+      id: 8,
+      title: "Mưa đêm lãng mạn 🌧️",
+      desc: "Tiếng mưa rơi bên ngoài cửa sổ mang theo nỗi nhớ dịu êm.",
+      src: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80",
+      style: "film-strip",
+      caption: "Mưa đêm bên cửa 🌧️"
+    }
+  ];
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const samplePhotoBtns = document.querySelectorAll('.sample-photo-btn');
+  const styleBtns = document.querySelectorAll('.style-btn');
+  const customFramePreview = document.getElementById('custom-frame-preview');
+  const previewImg = document.getElementById('preview-img');
+  const previewCaptionText = document.getElementById('preview-caption-text');
+  const customCaptionInput = document.getElementById('custom-caption-input');
+  const uploadPhotoInput = document.getElementById('upload-photo-input');
+  const btnSaveFrame = document.getElementById('btn-save-frame');
+  const btnShareFrame = document.getElementById('btn-share-frame');
+
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+  const lightboxOkBtn = document.getElementById('lightbox-ok-btn');
+  const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
+
+  let currentSelectedStyle = 'polaroid';
+  let currentActiveFilter = 'all';
+
+  function createFrameElement(item) {
+    const frameDiv = document.createElement('div');
+    frameDiv.className = `gallery-frame frame-style-${item.style}`;
+    frameDiv.setAttribute('data-style', item.style);
+
+    let innerHTML = '';
+    if (item.style === 'polaroid') {
+      innerHTML = `
+        <div class="frame-tape-strip"></div>
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-caption">${item.caption}</div>
+        <div class="frame-stamp">123 NGƯỜI</div>
+      `;
+    } else if (item.style === 'vintage-gold') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-caption">${item.caption}</div>
+      `;
+    } else if (item.style === 'sparkle-heart') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+          <div class="sparkle-overlay"></div>
+        </div>
+        <div class="frame-caption">${item.caption}</div>
+      `;
+    } else if (item.style === 'film-strip') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-caption">${item.caption}</div>
+      `;
+    } else if (item.style === 'postcard') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-caption">${item.caption}</div>
+        <div class="frame-stamp">📮</div>
+      `;
+    }
+
+    frameDiv.innerHTML = innerHTML;
+
+    frameDiv.addEventListener('click', () => {
+      openLightboxModal(item);
+    });
+
+    return frameDiv;
+  }
+
+  function renderGallery(filter = 'all') {
+    if (!galleryGrid) return;
+    galleryGrid.innerHTML = '';
+
+    const filteredItems = filter === 'all' 
+      ? presetFrames 
+      : presetFrames.filter(item => item.style === filter);
+
+    filteredItems.forEach(item => {
+      galleryGrid.appendChild(createFrameElement(item));
+    });
+  }
+
+  // Filter Buttons
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentActiveFilter = btn.getAttribute('data-filter');
+      renderGallery(currentActiveFilter);
+    });
+  });
+
+  // Creator Work Space - Sample Photo Selection
+  samplePhotoBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      samplePhotoBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const src = btn.getAttribute('data-src');
+      if (previewImg) previewImg.src = src;
+    });
+  });
+
+  // Creator Work Space - Upload Custom Photo
+  if (uploadPhotoInput) {
+    uploadPhotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          if (previewImg) previewImg.src = evt.target.result;
+          samplePhotoBtns.forEach(b => b.classList.remove('active'));
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // Creator Work Space - Style Selector
+  styleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      styleBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSelectedStyle = btn.getAttribute('data-style');
+      if (customFramePreview) {
+        customFramePreview.className = `gallery-frame frame-style-${currentSelectedStyle}`;
+      }
+    });
+  });
+
+  // Creator Work Space - Live Caption Update
+  if (customCaptionInput && previewCaptionText) {
+    customCaptionInput.addEventListener('input', () => {
+      previewCaptionText.textContent = customCaptionInput.value.trim() || 'Hoàng hôn năm ấy... ♡';
+    });
+  }
+
+  // Save Custom Frame to Gallery
+  if (btnSaveFrame) {
+    btnSaveFrame.addEventListener('click', () => {
+      const newFrame = {
+        id: Date.now(),
+        title: customCaptionInput ? customCaptionInput.value : "Khung ảnh mới",
+        desc: "Khung ảnh cá nhân được bạn tạo với tình cảm dịu dàng. ♡",
+        src: previewImg ? previewImg.src : "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+        style: currentSelectedStyle,
+        caption: customCaptionInput ? customCaptionInput.value : "Hoàng hôn năm ấy... ♡"
+      };
+
+      presetFrames.unshift(newFrame);
+      renderGallery(currentActiveFilter);
+      showModal('Khung Ảnh Đã Lưu ♡', 'Khung ảnh của bạn đã được thêm vào Bộ Sưu Tập Kỷ Niệm bên dưới! 💖');
+    });
+  }
+
+  if (btnShareFrame) {
+    btnShareFrame.addEventListener('click', () => {
+      openSocialShareModal({
+        name: customCaptionInput ? customCaptionInput.value : "Hoàng hôn năm ấy",
+        age: 20,
+        personality: "Kỷ niệm dịu dàng",
+        quote: previewCaptionText ? previewCaptionText.textContent : "Hoàng hôn năm ấy... ♡"
+      });
+    });
+  }
+
+  // Lightbox Modal Handling
+  let activeLightboxItem = null;
+
+  function openLightboxModal(item) {
+    if (!lightboxModal || !lightboxFrameContainer) return;
+    activeLightboxItem = item;
+
+    lightboxFrameContainer.innerHTML = '';
+    lightboxFrameContainer.appendChild(createFrameElement(item));
+
+    if (lightboxTitle) lightboxTitle.textContent = item.title;
+    if (lightboxDesc) lightboxDesc.textContent = item.desc;
+
+    lightboxModal.classList.remove('hidden');
+  }
+
+  function closeLightboxModal() {
+    if (lightboxModal) lightboxModal.classList.add('hidden');
+  }
+
+  if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightboxModal);
+  if (lightboxOkBtn) lightboxOkBtn.addEventListener('click', closeLightboxModal);
+
+  if (lightboxDownloadBtn) {
+    lightboxDownloadBtn.addEventListener('click', () => {
+      showModal('Tải Khung Ảnh 💾', 'Đã lưu khoảnh khắc dịu dàng này! Bạn có thể lưu ảnh hoặc chia sẻ cùng người thương. ♡');
+      closeLightboxModal();
+    });
+  }
+
+  // Render initial gallery grid
+  renderGallery();
+
   // Initialize background animations and live clock
   initAmbientParticles();
   initLiveClock();
