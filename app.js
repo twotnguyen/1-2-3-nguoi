@@ -251,6 +251,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 3D Microwave Interactive Trigger
+  const microwaveTrigger = document.getElementById('microwave-trigger');
+  if (microwaveTrigger) {
+    microwaveTrigger.addEventListener('click', () => {
+      // Warm pink glow flash feedback
+      const warmFlash = document.createElement('div');
+      warmFlash.style.position = 'fixed';
+      warmFlash.style.inset = '0';
+      warmFlash.style.background = 'radial-gradient(circle at center, rgba(255, 180, 200, 0.6), transparent 70%)';
+      warmFlash.style.zIndex = '9999';
+      warmFlash.style.pointerEvents = 'none';
+      warmFlash.style.transition = 'opacity 0.4s ease-out';
+      document.body.appendChild(warmFlash);
+
+      setTimeout(() => warmFlash.style.opacity = '0', 50);
+      setTimeout(() => warmFlash.remove(), 450);
+    });
+  }
+
   // ------------------------------------------------------------------------
   // 5. INTERACTIVE 12-QUESTION QUIZ ENGINE
   // ------------------------------------------------------------------------

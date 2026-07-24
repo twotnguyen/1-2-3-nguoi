@@ -440,6 +440,263 @@ button, a, .option-card, .folded-note, .mobile-nav-item {
   right: -5px;
 }
 
+/* --------------------------------------------------------------------------
+   3D AESTHETIC PINK MICROWAVE OVEN ("LÒ VI SÓNG HÂM NÓNG KỶ NIỆM ♡")
+   -------------------------------------------------------------------------- */
+.microwave-3d-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  transform: rotate(-3deg);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  user-select: none;
+}
+
+.microwave-3d-wrapper:hover {
+  transform: scale(1.08) rotate(0deg) !important;
+  z-index: 25;
+  filter: drop-shadow(0 15px 25px rgba(232, 120, 150, 0.4));
+}
+
+/* Banner Arched Text on Top: "CHỈ YÊU MÌNH EMS ♡" */
+.microwave-top-banner {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: #FF3B7B;
+  background: linear-gradient(135deg, #FFF, #FFE5EC);
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 2px solid #FF94B9;
+  box-shadow: 0 4px 10px rgba(255, 100, 140, 0.25);
+  margin-bottom: -10px;
+  z-index: 10;
+  transform: translateY(2px);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 3D Clay Body */
+.microwave-body {
+  width: 195px;
+  height: 135px;
+  background: linear-gradient(145deg, #FFB8C6 0%, #F58CA2 50%, #E06C85 100%);
+  border-radius: 22px;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  position: relative;
+  border: 3.5px solid #FFA6B9;
+  box-shadow: 
+    inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+    inset -4px -4px 8px rgba(160, 50, 75, 0.4),
+    0 12px 30px rgba(130, 40, 65, 0.28);
+}
+
+/* Microwave Door */
+.microwave-door {
+  flex: 2.2;
+  background: linear-gradient(145deg, #FFCAD6, #F89EB4);
+  border-radius: 14px;
+  border: 3.5px solid #FF94B9;
+  padding: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.8), 2px 2px 6px rgba(150, 50, 70, 0.15);
+}
+
+/* Glass Door Window */
+.door-window {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #3A1C28 0%, #1F0D15 100%);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 180, 200, 0.3);
+}
+
+/* Heating Amber Glow */
+.heating-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 130, 160, 0.6) 0%, rgba(255, 80, 120, 0.2) 60%, transparent 100%);
+  animation: microwaveWarmGlow 2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes microwaveWarmGlow {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50% { opacity: 0.95; transform: scale(1.08); }
+}
+
+/* 3D Clay Heart Character inside Microwave */
+.heart-clay-character {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.clay-heart {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 4px 8px rgba(255, 50, 100, 0.6));
+  animation: heartBounceWarm 1.8s infinite ease-in-out;
+}
+
+@keyframes heartBounceWarm {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.1); }
+}
+
+.clay-plate {
+  width: 44px;
+  height: 8px;
+  background: linear-gradient(90deg, #E6D0DE, #FFF, #E6D0DE);
+  border-radius: 50%;
+  margin-top: -6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+/* Door Handle */
+.door-handle {
+  width: 7px;
+  height: 52px;
+  background: linear-gradient(180deg, #FFF, #FFDEE5);
+  border-radius: 4px;
+  position: absolute;
+  right: 5px;
+  box-shadow: 2px 2px 5px rgba(120, 40, 60, 0.35), inset 1px 1px 2px #FFF;
+  border: 1px solid #FFB8C6;
+}
+
+/* Microwave Control Panel Right */
+.microwave-panel {
+  flex: 1;
+  background: linear-gradient(145deg, #F99EB4, #E87A93);
+  border-radius: 12px;
+  border: 2px solid #FF94B9;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.6);
+}
+
+.panel-screen {
+  width: 100%;
+  background: #25121B;
+  border-radius: 6px;
+  padding: 3px 0;
+  text-align: center;
+  border: 1px solid #FF809F;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
+}
+
+.screen-timer {
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #FF5A8D;
+  text-shadow: 0 0 5px #FF2E6B;
+}
+
+.panel-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.m-btn {
+  width: 9px;
+  height: 9px;
+  background: linear-gradient(145deg, #FFF, #FFE0E7);
+  border-radius: 50%;
+  box-shadow: 1px 1px 3px rgba(120, 30, 50, 0.3);
+}
+
+.panel-knob {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(145deg, #FFF, #FFCAD6);
+  border-radius: 50%;
+  border: 2px solid #FFA6B9;
+  box-shadow: inset 1px 1px 2px #FFF, 2px 2px 6px rgba(120, 40, 60, 0.3);
+  position: relative;
+}
+
+.panel-knob::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 7px;
+  background: #E86B84;
+  border-radius: 1px;
+}
+
+/* Feet */
+.microwave-feet {
+  width: 160px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: -3px;
+}
+
+.microwave-feet .foot {
+  width: 16px;
+  height: 6px;
+  background: #B84A62;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Microwave Caption Below */
+.microwave-caption {
+  font-family: var(--font-handwriting);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-maroon);
+  margin-top: 6px;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Floating Hearts Burst */
+.floating-hearts-burst {
+  position: absolute;
+  top: -15px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.burst-heart {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: heartFloatBurst 2.5s infinite ease-in-out;
+}
+
+.burst-heart.h1 { left: 15%; animation-delay: 0s; }
+.burst-heart.h2 { left: 50%; animation-delay: 0.8s; }
+.burst-heart.h3 { right: 15%; animation-delay: 1.6s; }
+
+@keyframes heartFloatBurst {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  30% { opacity: 0.9; }
+  100% { transform: translateY(-35px) scale(1.2); opacity: 0; }
+}
+
 /* Polaroid Photo Frames */
 .polaroid-photo {
   background: #FFF;
