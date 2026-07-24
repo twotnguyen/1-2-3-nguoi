@@ -905,86 +905,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // 8. INTERACTIVE PHOTO GALLERY ENGINE (CURATED PRESETS)
   // ------------------------------------------------------------------------
   const presetFrames = [
-    {
-      id: 1,
-      title: "Hoàng hôn năm ấy... ♡",
-      desc: "Những ngày hoàng hôn nhuộm hồng góc biển, nơi chúng ta từng cùng ngắm nhìn bầu trời dịu êm.",
-      src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-      style: "polaroid",
-      caption: "Hoàng hôn năm ấy... ♡"
-    },
-    {
-      id: 2,
-      title: "Đèn phố đêm 🌙",
-      desc: "Ánh đèn lung linh của thành phố lúc về đêm, nơi lưu giữ những câu chuyện thì thầm chưa từng kể.",
-      src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
-      style: "vintage-gold",
-      caption: "Cùng em qua phố đêm 🌙"
-    },
-    {
-      id: 3,
-      title: "Mặt hồ tĩnh lặng 🏔️",
-      desc: "Bình yên là khi tâm mình dịu lại giữa thiên nhiên rộng lớn và bầu trời trong trẻo.",
-      src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
-      style: "sparkle-heart",
-      caption: "Cảm giác bình yên 💖"
-    },
-    {
-      id: 4,
-      title: "Góc phố vintage 🎬",
-      desc: "Từng bước chân trôi chậm như thước phim cũ nhuốm màu thời gian chưa bao giờ phai.",
-      src: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=600&q=80",
-      style: "film-strip",
-      caption: "Ký ức mờ ảo 🎬"
-    },
-    {
-      id: 5,
-      title: "Tách cà phê chiều ☕",
-      desc: "Hương cà phê nồng nàn giữa những buổi chiều se lạnh, nhắc nhở về một ai đó từng ở cạnh.",
-      src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
-      style: "postcard",
-      caption: "Chiều nhẹ nhàng ☕"
-    },
-    {
-      id: 6,
-      title: "Hoa anh đào bay 🌸",
-      desc: "Một mùa hoa đẹp nhất không phải vì sắc hoa, mà là vì có ai đó mỉm cười đi bên cạnh.",
-      src: "https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=600&q=80",
-      style: "polaroid",
-      caption: "Mùa hoa kỷ niệm 🌸"
-    },
-    {
-      id: 7,
-      title: "Bầu trời sao đêm ✨",
-      desc: "Mỗi ngôi sao lấp lánh trên cao là một lời chúc chân thành dành riêng cho bạn.",
-      src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
-      style: "sparkle-heart",
-      caption: "Ước nguyện sao trời ✨"
-    },
-    {
-      id: 8,
-      title: "Mưa đêm lãng mạn 🌧️",
-      desc: "Tiếng mưa rơi nhè nhẹ ngoài cửa sổ mang theo chút hoài niệm dịu ngọt của ngày đã qua.",
-      src: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80",
-      style: "film-strip",
-      caption: "Mưa đêm bên cửa 🌧️"
-    },
-    {
-      id: 9,
-      title: "Biển chiều êm đềm 🌊",
-      desc: "Sóng vỗ nhẹ vào bờ cát như lời thì thầm vỗ về những tâm hồn đang cần bình yên.",
-      src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-      style: "vintage-gold",
-      caption: "Biển chiều lặng lẽ 🌊"
-    },
-    {
-      id: 10,
-      title: "Thư gửi thanh xuân ✉️",
-      desc: "Cảm ơn vì đã là một phần đẹp đẽ nhất trong những năm tháng tuổi trẻ.",
-      src: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=600&q=80",
-      style: "postcard",
-      caption: "Gửi thanh xuân ✉️"
-    }
+    { id: 1, title: "Kỷ niệm #1 ♡", desc: "Khoảnh khắc dịu dàng lưu giữ cùng thời gian.", src: "images/gallery/0 (1).png", style: "polaroid" },
+    { id: 2, title: "Kỷ niệm #2 👑", desc: "Góc nhỏ thân thương của những ngày đã qua.", src: "images/gallery/1 (1).png", style: "vintage-gold" },
+    { id: 3, title: "Kỷ niệm #3 💖", desc: "Nụ cười trong vắt sưởi ấm tâm hồn.", src: "images/gallery/2.1.png", style: "sparkle-heart" },
+    { id: 4, title: "Kỷ niệm #4 🎬", desc: "Thước phim ký ức trôi qua nhè nhẹ.", src: "images/gallery/3 (1).png", style: "film-strip" },
+    { id: 5, title: "Kỷ niệm #5 ✉️", desc: "Gửi vào quá khứ lời cảm ơn chân thành.", src: "images/gallery/4 (1).png", style: "postcard" },
+    { id: 6, title: "Kỷ niệm #6 🌅", desc: "Vệt nắng chiều nhuộm hồng kỷ niệm.", src: "images/gallery/5 (1).png", style: "polaroid" },
+    { id: 7, title: "Kỷ niệm #7 🌙", desc: "Thành phố về đêm thì thầm ngàn lời yêu.", src: "images/gallery/6 (1).png", style: "vintage-gold" },
+    { id: 8, title: "Kỷ niệm #8 ✨", desc: "Ánh mắt biết nói trao trọn niềm tin.", src: "images/gallery/7 (1).png", style: "sparkle-heart" },
+    { id: 9, title: "Kỷ niệm #9 ☕", desc: "Góc nhỏ cà phê và buổi chiều thanh bình.", src: "images/gallery/8 (1).png", style: "film-strip" },
+    { id: 10, title: "Kỷ niệm #10 🌸", desc: "Sắc hoa rực rỡ bên ô cửa sổ.", src: "images/gallery/9 (1).png", style: "postcard" },
+    { id: 11, title: "Kỷ niệm #11 ♡", desc: "Bình yên là khi có ai đó luôn chờ đợi.", src: "images/gallery/10 (1).png", style: "polaroid" },
+    { id: 12, title: "Kỷ niệm #12 🌅", desc: "Hoàng hôn lãng mạn phủ kín chân trời.", src: "images/gallery/1759588731958.JPG", style: "vintage-gold" },
+    { id: 13, title: "Kỷ niệm #13 💖", desc: "Tình yêu bắt đầu từ những điều giản dị.", src: "images/gallery/1761373756774.png", style: "sparkle-heart" },
+    { id: 14, title: "Kỷ niệm #14 🌙", desc: "Đêm muộn đong đầy nỗi nhớ khôn nguôi.", src: "images/gallery/1761373757339.jpg", style: "film-strip" },
+    { id: 15, title: "Kỷ niệm #15 ✉️", desc: "Một bức thư chưa dám gửi cho người ấy.", src: "images/gallery/1761373757851.jpg", style: "postcard" },
+    { id: 16, title: "Kỷ niệm #16 🍃", desc: "Cơn gió nhẹ thổi qua ngày nắng hạ.", src: "images/gallery/1761373757884.jpg", style: "polaroid" },
+    { id: 17, title: "Kỷ niệm #17 ☕", desc: "Ấm áp tách trà nóng giữa ngày đông.", src: "images/gallery/1761373757918.jpg", style: "vintage-gold" },
+    { id: 18, title: "Kỷ niệm #18 🌧️", desc: "Tiếng mưa rơi nhè nhẹ ngoài hiên.", src: "images/gallery/1761374022371.jpg", style: "sparkle-heart" },
+    { id: 19, title: "Kỷ niệm #19 🎬", desc: "Từng khung hình quay chậm đáng giá.", src: "images/gallery/1761374022434.jpg", style: "film-strip" },
+    { id: 20, title: "Kỷ niệm #20 ✉️", desc: "Lời hứa thanh xuân ngàn năm giữ trọn.", src: "images/gallery/1761374022751.jpeg", style: "postcard" },
+    { id: 21, title: "Kỷ niệm #21 ♡", desc: "Nụ cười rạng rỡ thắp sáng ngàn ánh sao.", src: "images/gallery/IMG_1748518542492_1748518583671.jpg", style: "polaroid" },
+    { id: 22, title: "Kỷ niệm #22 🌆", desc: "Chiều dịu dàng nghiêng mình bóng xế.", src: "images/gallery/IMG_1910-Enhanced-NR.jpg", style: "vintage-gold" },
+    { id: 23, title: "Kỷ niệm #23 ✨", desc: "Khoảnh khắc tuyệt vời nhất từng trải qua.", src: "images/gallery/IMG_2131.JPG", style: "sparkle-heart" },
+    { id: 24, title: "Kỷ niệm #24 🎬", desc: "Trân trọng từng ngày tháng bên nhau.", src: "images/gallery/z6304858052609_e7af4a941c7265a1ccc06a9e6ad8fb6a.jpg", style: "film-strip" }
   ];
 
   const galleryGrid = document.getElementById('gallery-grid');
