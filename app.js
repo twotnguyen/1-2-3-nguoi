@@ -902,13 +902,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
 
   // ------------------------------------------------------------------------
-  // 8. INTERACTIVE PHOTO GALLERY ENGINE & FRAME CREATOR
+  // 8. INTERACTIVE PHOTO GALLERY ENGINE (CURATED PRESETS)
   // ------------------------------------------------------------------------
   const presetFrames = [
     {
       id: 1,
       title: "Hoàng hôn năm ấy... ♡",
-      desc: "Những ngày hoàng hôn nhuộm hồng góc biển, nơi chúng ta từng cùng ngắm nhìn bầu trời.",
+      desc: "Những ngày hoàng hôn nhuộm hồng góc biển, nơi chúng ta từng cùng ngắm nhìn bầu trời dịu êm.",
       src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
       style: "polaroid",
       caption: "Hoàng hôn năm ấy... ♡"
@@ -916,7 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 2,
       title: "Đèn phố đêm 🌙",
-      desc: "Ánh đèn lung linh của thành phố lúc về đêm, nơi lưu giữ những câu chuyện thì thầm.",
+      desc: "Ánh đèn lung linh của thành phố lúc về đêm, nơi lưu giữ những câu chuyện thì thầm chưa từng kể.",
       src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
       style: "vintage-gold",
       caption: "Cùng em qua phố đêm 🌙"
@@ -924,7 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 3,
       title: "Mặt hồ tĩnh lặng 🏔️",
-      desc: "Bình yên là khi tâm mình dịu lại giữa thiên nhiên rộng lớn.",
+      desc: "Bình yên là khi tâm mình dịu lại giữa thiên nhiên rộng lớn và bầu trời trong trẻo.",
       src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
       style: "sparkle-heart",
       caption: "Cảm giác bình yên 💖"
@@ -932,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 4,
       title: "Góc phố vintage 🎬",
-      desc: "Từng bước chân trôi chậm như cuốn phim cũ chưa bao giờ phai màu.",
+      desc: "Từng bước chân trôi chậm như thước phim cũ nhuốm màu thời gian chưa bao giờ phai.",
       src: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=600&q=80",
       style: "film-strip",
       caption: "Ký ức mờ ảo 🎬"
@@ -940,7 +940,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 5,
       title: "Tách cà phê chiều ☕",
-      desc: "Hương cà phê ấm nồng giữa những buổi chiều se lạnh.",
+      desc: "Hương cà phê nồng nàn giữa những buổi chiều se lạnh, nhắc nhở về một ai đó từng ở cạnh.",
       src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
       style: "postcard",
       caption: "Chiều nhẹ nhàng ☕"
@@ -948,7 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 6,
       title: "Hoa anh đào bay 🌸",
-      desc: "Một mùa hoa đẹp nhất là khi có ai đó cạnh bên.",
+      desc: "Một mùa hoa đẹp nhất không phải vì sắc hoa, mà là vì có ai đó mỉm cười đi bên cạnh.",
       src: "https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=600&q=80",
       style: "polaroid",
       caption: "Mùa hoa kỷ niệm 🌸"
@@ -956,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 7,
       title: "Bầu trời sao đêm ✨",
-      desc: "Mỗi ngôi sao là một nguyện ước dành tặng riêng bạn.",
+      desc: "Mỗi ngôi sao lấp lánh trên cao là một lời chúc chân thành dành riêng cho bạn.",
       src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
       style: "sparkle-heart",
       caption: "Ước nguyện sao trời ✨"
@@ -964,24 +964,31 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 8,
       title: "Mưa đêm lãng mạn 🌧️",
-      desc: "Tiếng mưa rơi bên ngoài cửa sổ mang theo nỗi nhớ dịu êm.",
+      desc: "Tiếng mưa rơi nhè nhẹ ngoài cửa sổ mang theo chút hoài niệm dịu ngọt của ngày đã qua.",
       src: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80",
       style: "film-strip",
       caption: "Mưa đêm bên cửa 🌧️"
+    },
+    {
+      id: 9,
+      title: "Biển chiều êm đềm 🌊",
+      desc: "Sóng vỗ nhẹ vào bờ cát như lời thì thầm vỗ về những tâm hồn đang cần bình yên.",
+      src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      style: "vintage-gold",
+      caption: "Biển chiều lặng lẽ 🌊"
+    },
+    {
+      id: 10,
+      title: "Thư gửi thanh xuân ✉️",
+      desc: "Cảm ơn vì đã là một phần đẹp đẽ nhất trong những năm tháng tuổi trẻ.",
+      src: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=600&q=80",
+      style: "postcard",
+      caption: "Gửi thanh xuân ✉️"
     }
   ];
 
   const galleryGrid = document.getElementById('gallery-grid');
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const samplePhotoBtns = document.querySelectorAll('.sample-photo-btn');
-  const styleBtns = document.querySelectorAll('.style-btn');
-  const customFramePreview = document.getElementById('custom-frame-preview');
-  const previewImg = document.getElementById('preview-img');
-  const previewCaptionText = document.getElementById('preview-caption-text');
-  const customCaptionInput = document.getElementById('custom-caption-input');
-  const uploadPhotoInput = document.getElementById('upload-photo-input');
-  const btnSaveFrame = document.getElementById('btn-save-frame');
-  const btnShareFrame = document.getElementById('btn-share-frame');
 
   const lightboxModal = document.getElementById('lightbox-modal');
   const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
@@ -990,9 +997,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxTitle = document.getElementById('lightbox-title');
   const lightboxDesc = document.getElementById('lightbox-desc');
   const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
-
-  let currentSelectedStyle = 'polaroid';
-  let currentActiveFilter = 'all';
 
   function createFrameElement(item) {
     const frameDiv = document.createElement('div');
@@ -1068,90 +1072,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentActiveFilter = btn.getAttribute('data-filter');
-      renderGallery(currentActiveFilter);
+      const filter = btn.getAttribute('data-filter');
+      renderGallery(filter);
     });
   });
-
-  // Creator Work Space - Sample Photo Selection
-  samplePhotoBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      samplePhotoBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const src = btn.getAttribute('data-src');
-      if (previewImg) previewImg.src = src;
-    });
-  });
-
-  // Creator Work Space - Upload Custom Photo
-  if (uploadPhotoInput) {
-    uploadPhotoInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          if (previewImg) previewImg.src = evt.target.result;
-          samplePhotoBtns.forEach(b => b.classList.remove('active'));
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
-  // Creator Work Space - Style Selector
-  styleBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      styleBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentSelectedStyle = btn.getAttribute('data-style');
-      if (customFramePreview) {
-        customFramePreview.className = `gallery-frame frame-style-${currentSelectedStyle}`;
-      }
-    });
-  });
-
-  // Creator Work Space - Live Caption Update
-  if (customCaptionInput && previewCaptionText) {
-    customCaptionInput.addEventListener('input', () => {
-      previewCaptionText.textContent = customCaptionInput.value.trim() || 'Hoàng hôn năm ấy... ♡';
-    });
-  }
-
-  // Save Custom Frame to Gallery
-  if (btnSaveFrame) {
-    btnSaveFrame.addEventListener('click', () => {
-      const newFrame = {
-        id: Date.now(),
-        title: customCaptionInput ? customCaptionInput.value : "Khung ảnh mới",
-        desc: "Khung ảnh cá nhân được bạn tạo với tình cảm dịu dàng. ♡",
-        src: previewImg ? previewImg.src : "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-        style: currentSelectedStyle,
-        caption: customCaptionInput ? customCaptionInput.value : "Hoàng hôn năm ấy... ♡"
-      };
-
-      presetFrames.unshift(newFrame);
-      renderGallery(currentActiveFilter);
-      showModal('Khung Ảnh Đã Lưu ♡', 'Khung ảnh của bạn đã được thêm vào Bộ Sưu Tập Kỷ Niệm bên dưới! 💖');
-    });
-  }
-
-  if (btnShareFrame) {
-    btnShareFrame.addEventListener('click', () => {
-      openSocialShareModal({
-        name: customCaptionInput ? customCaptionInput.value : "Hoàng hôn năm ấy",
-        age: 20,
-        personality: "Kỷ niệm dịu dàng",
-        quote: previewCaptionText ? previewCaptionText.textContent : "Hoàng hôn năm ấy... ♡"
-      });
-    });
-  }
 
   // Lightbox Modal Handling
-  let activeLightboxItem = null;
-
   function openLightboxModal(item) {
     if (!lightboxModal || !lightboxFrameContainer) return;
-    activeLightboxItem = item;
 
     lightboxFrameContainer.innerHTML = '';
     lightboxFrameContainer.appendChild(createFrameElement(item));
@@ -1171,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (lightboxDownloadBtn) {
     lightboxDownloadBtn.addEventListener('click', () => {
-      showModal('Tải Khung Ảnh 💾', 'Đã lưu khoảnh khắc dịu dàng này! Bạn có thể lưu ảnh hoặc chia sẻ cùng người thương. ♡');
+      showModal('Lưu Khoảnh Khắc 💾', 'Đã lưu khoảnh khắc dịu dàng này! ♡');
       closeLightboxModal();
     });
   }
