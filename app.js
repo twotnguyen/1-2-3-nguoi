@@ -155,10 +155,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function attemptAutoplay() {
+    if (!bgAudio || isPlaying) return;
+    bgAudio.play().then(() => {
+      isPlaying = true;
+      if (playerPlayBtn) playerPlayBtn.textContent = '⏸';
+      if (albumCover) albumCover.classList.add('playing');
+      if (volumeIconOn) volumeIconOn.classList.remove('hidden');
+      if (volumeIconOff) volumeIconOff.classList.add('hidden');
+    }).catch(() => {});
+  }
+
   if (bgAudio) {
     bgAudio.addEventListener('ended', playNextTrack);
-    // Initialize first track without playing
+    // Initialize first track and attempt immediate play
     loadTrack(currentTrackIndex);
+    attemptAutoplay();
   }
 
   function toggleAudio() {
@@ -189,18 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (playerNextBtn) playerNextBtn.addEventListener('click', playNextTrack);
   if (playerPrevBtn) playerPrevBtn.addEventListener('click', playPrevTrack);
 
-  // Auto-play attempt on user first interaction anywhere
-  document.body.addEventListener('click', () => {
-    if (!isPlaying && bgAudio) {
-      bgAudio.play().then(() => {
-        isPlaying = true;
-        if (playerPlayBtn) playerPlayBtn.textContent = '⏸';
-        if (albumCover) albumCover.classList.add('playing');
-        if (volumeIconOn) volumeIconOn.classList.remove('hidden');
-        if (volumeIconOff) volumeIconOff.classList.add('hidden');
-      }).catch(() => {});
+  // Auto-play trigger on ANY initial user interaction (click, touch, scroll, key, pointer)
+  const interactionEvents = ['click', 'touchstart', 'pointerdown', 'keydown', 'scroll', 'mousemove'];
+  function handleFirstUserInteraction() {
+    if (!isPlaying) {
+      attemptAutoplay();
     }
-  }, { once: true });
+    if (isPlaying) {
+      interactionEvents.forEach(evt => window.removeEventListener(evt, handleFirstUserInteraction));
+    }
+  }
+  interactionEvents.forEach(evt => window.addEventListener(evt, handleFirstUserInteraction, { passive: true }));
 
   // Audio Player Minimize Toggle
   const playerToggleMinimize = document.getElementById('player-toggle-minimize');
