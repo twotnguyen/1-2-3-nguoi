@@ -741,6 +741,30 @@ document.addEventListener('DOMContentLoaded', () => {
       avatar: "images/ngan.jpg"
     },
     {
+      name: "Như",
+      age: 21,
+      color: "Hồng đào",
+      colorHex: "#FFB7B2",
+      personality: "Sâu sắc, lắng nghe",
+      likes: "Trà hoa cúc, đọc sách, ngắm mưa",
+      dislikes: "Sự dối trá, nơi quá ồn ào",
+      quote: "Dù đi qua bao nhiêu bão giông, lòng vẫn giữ một khoảng bình yên.",
+      loveLanguage: "Words of Affirmation",
+      avatar: "images/nhu.png"
+    },
+    {
+      name: "Ty",
+      age: 20,
+      color: "Xanh da trời",
+      colorHex: "#AEC6CF",
+      personality: "Năng động, cá tính",
+      likes: "Chụp ảnh Polaroid, du lịch phượt, nhạc Indie",
+      dislikes: "Sự gò bó, tính toán chi li",
+      quote: "Cuộc đời quá ngắn để chần chừ một cái ôm.",
+      loveLanguage: "Quality Time",
+      avatar: "images/ty.png"
+    },
+    {
       name: "Hiền",
       age: 20,
       color: "Hồng pastel",
