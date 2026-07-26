@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // B. CẤU HÌNH GỬI VỀ EMAIL (Sử dụng Web3Forms hoặc Formspree miễn phí)
   const EMAIL_CONFIG = {
-    web3FormsAccessKey: "", // Nhập Access Key miễn phí lấy từ https://web3forms.com
+    web3FormsAccessKey: "0edf8d64-db00-41c3-8a8e-9d3eb6ed198a", // Access Key của bạn từ Web3Forms
     formspreeUrl: ""        // Hoặc nhập URL Formspree (Ví dụ: "https://formspree.io/f/xzzpbqrw")
   };
 
