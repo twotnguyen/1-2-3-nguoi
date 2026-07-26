@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
               currentQuestionIndex++;
               renderQuestion(currentQuestionIndex);
             } else {
-              displayGirlMatch();
+              displayGirlMatch(calculateMatchedGirl(userAnswers));
             }
           }, 350);
         });
@@ -606,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Người đến muộn",
       quote: "Một nụ cười đôi khi cứu được cả một ngày.",
       loveLanguage: "Words of Affirmation",
-      avatar: "images/han.jpg"
+      avatar: "images/han.png"
     },
     {
       name: "Ân",
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Ồn ào",
       quote: "Có những cảm xúc không thể nói bằng lời.",
       loveLanguage: "Quality Time",
-      avatar: "images/tran.jpg"
+      avatar: "images/tran.png"
     },
     {
       name: "Thảo",
@@ -738,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "So sánh",
       quote: "Có lẽ bình yên là khi không cần cố gắng trở thành ai khác.",
       loveLanguage: "Quality Time",
-      avatar: "images/ngan.jpg"
+      avatar: "images/ngan.png"
     },
     {
       name: "Như",
@@ -798,8 +798,24 @@ document.addEventListener('DOMContentLoaded', () => {
     return matchedGirls[Math.floor(Math.random() * matchedGirls.length)];
   }
 
+  function calculateMatchedGirl(answers) {
+    if (!answers || answers.length === 0) {
+      return getRandomGirl();
+    }
+    const optionMap = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+    let score = 0;
+    const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
+    answers.forEach((ans, idx) => {
+      const val = optionMap[ans] !== undefined ? optionMap[ans] : 0;
+      score += val * (primes[idx] || (idx + 1));
+    });
+    // Chia đều tỷ lệ trúng 1/15 (6.67%) cho tất cả 15 nhân vật
+    const girlIndex = Math.abs(score) % matchedGirls.length;
+    return matchedGirls[girlIndex];
+  }
+
   function displayGirlMatch(girl) {
-    if (!girl) girl = getRandomGirl();
+    if (!girl) girl = calculateMatchedGirl(userAnswers);
     currentGirl = girl;
 
     if (matchGirlAvatar) matchGirlAvatar.src = girl.avatar;
