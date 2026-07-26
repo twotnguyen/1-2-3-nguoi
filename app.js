@@ -794,24 +794,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentGirl = null;
 
+  function getRecentMatchHistory() {
+    try {
+      return JSON.parse(sessionStorage.getItem('recent_matched_girls_history') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRecentMatchHistory(history) {
+    try {
+      sessionStorage.setItem('recent_matched_girls_history', JSON.stringify(history.slice(0, 10)));
+    } catch (e) {}
+  }
+
   function getRandomGirl() {
-    return matchedGirls[Math.floor(Math.random() * matchedGirls.length)];
+    return calculateMatchedGirl([]);
   }
 
   function calculateMatchedGirl(answers) {
-    if (!answers || answers.length === 0) {
-      return getRandomGirl();
+    const history = getRecentMatchHistory();
+    
+    // Kết hợp yếu tố ngẫu nhiên động cùng câu trả lời để kết quả luôn tươi mới, bất ngờ
+    let score = Math.floor(Math.random() * 10007);
+    if (answers && answers.length > 0) {
+      const optionMap = { 'A': 1, 'B': 3, 'C': 7, 'D': 11 };
+      answers.forEach((ans, idx) => {
+        const val = optionMap[ans] || Math.floor(Math.random() * 10);
+        score += val * (idx + 1) * (Math.floor(Math.random() * 13) + 1);
+      });
     }
-    const optionMap = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
-    let score = 0;
-    const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
-    answers.forEach((ans, idx) => {
-      const val = optionMap[ans] !== undefined ? optionMap[ans] : 0;
-      score += val * (primes[idx] || (idx + 1));
-    });
-    // Chia đều tỷ lệ trúng 1/15 (6.67%) cho tất cả 15 nhân vật
-    const girlIndex = Math.abs(score) % matchedGirls.length;
-    return matchedGirls[girlIndex];
+
+    let chosenIndex = Math.abs(score) % matchedGirls.length;
+    let chosenGirl = matchedGirls[chosenIndex];
+
+    // Kiểm tra quy tắc: Không trùng 1 nhân vật 3 lần liên tiếp (tối đa 2 lần liên tiếp)
+    if (history.length >= 2 && history[0] === chosenGirl.name && history[1] === chosenGirl.name) {
+      const validGirls = matchedGirls.filter(g => g.name !== chosenGirl.name);
+      chosenGirl = validGirls[Math.floor(Math.random() * validGirls.length)];
+    }
+
+    // Lưu vào lịch sử
+    history.unshift(chosenGirl.name);
+    saveRecentMatchHistory(history);
+
+    return chosenGirl;
   }
 
   function displayGirlMatch(girl) {
