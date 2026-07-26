@@ -494,12 +494,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuestion(currentQuestionIndex);
 
   // ------------------------------------------------------------------------
-  // 6. PRIVATE WISH JAR & TELEGRAM BOT NOTIFICATION ENGINE
+  // 6. PRIVATE WISH JAR: TELEGRAM BOT & EMAIL NOTIFICATION ENGINE
   // ------------------------------------------------------------------------
-  // Nhập Bot Token và Chat ID Telegram của bạn để nhận tất cả lời ước nguyện riêng tư về điện thoại
+  // A. CẤU HÌNH GỬI VỀ TELEGRAM
   const TELEGRAM_CONFIG = {
     botToken: "", // Nhập Telegram Bot Token (Ví dụ: "7123456789:AAFx-XXXXXXXXX")
     chatId: ""    // Nhập Telegram Chat ID của bạn (Ví dụ: "123456789")
+  };
+
+  // B. CẤU HÌNH GỬI VỀ EMAIL (Sử dụng Web3Forms hoặc Formspree miễn phí)
+  const EMAIL_CONFIG = {
+    web3FormsAccessKey: "", // Nhập Access Key miễn phí lấy từ https://web3forms.com
+    formspreeUrl: ""        // Hoặc nhập URL Formspree (Ví dụ: "https://formspree.io/f/xzzpbqrw")
   };
 
   async function sendWishToTelegram(wishText) {
@@ -510,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const payload = {
         chat_id: TELEGRAM_CONFIG.chatId,
         parse_mode: 'HTML',
-        text: `💌 <b>LỜI ƯỚC NGUYỆN MỚI (123 NGƯỜI)</b>\n\n💬 <i>"${wishText}"</i>\n\n⏰ <code>${dateStr}</code>`
+        text: `💌 <b>LỜI ƯỚC NGUYỆN MỚI</b>\n\n💬 <i>"${wishText}"</i>\n\n⏰ <code>${dateStr}</code>`
       };
       await fetch(url, {
         method: 'POST',
@@ -519,6 +525,46 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     } catch (e) {
       console.log('Lỗi gửi Telegram:', e);
+    }
+  }
+
+  async function sendWishToEmail(wishText) {
+    const dateStr = new Date().toLocaleString('vi-VN');
+
+    // 1. Gửi qua Web3Forms (Nếu có Access Key)
+    if (EMAIL_CONFIG.web3FormsAccessKey) {
+      try {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: EMAIL_CONFIG.web3FormsAccessKey,
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            from_name: "123 Người Web",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Web3Forms:', e);
+      }
+    }
+
+    // 2. Gửi qua Formspree (Nếu có URL Formspree)
+    if (EMAIL_CONFIG.formspreeUrl) {
+      try {
+        await fetch(EMAIL_CONFIG.formspreeUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Formspree:', e);
+      }
     }
   }
 
@@ -605,8 +651,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Tự động gửi về Telegram cá nhân
+      // Tự động gửi về Telegram & Email cá nhân
       sendWishToTelegram(text);
+      sendWishToEmail(text);
 
       storedWishes.unshift(text);
       localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
