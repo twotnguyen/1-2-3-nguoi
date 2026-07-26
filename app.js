@@ -494,8 +494,34 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuestion(currentQuestionIndex);
 
   // ------------------------------------------------------------------------
-  // 6. WISH JAR & LOCALSTORAGE ENGINE
+  // 6. PRIVATE WISH JAR & TELEGRAM BOT NOTIFICATION ENGINE
   // ------------------------------------------------------------------------
+  // Nhập Bot Token và Chat ID Telegram của bạn để nhận tất cả lời ước nguyện riêng tư về điện thoại
+  const TELEGRAM_CONFIG = {
+    botToken: "", // Nhập Telegram Bot Token (Ví dụ: "7123456789:AAFx-XXXXXXXXX")
+    chatId: ""    // Nhập Telegram Chat ID của bạn (Ví dụ: "123456789")
+  };
+
+  async function sendWishToTelegram(wishText) {
+    if (!TELEGRAM_CONFIG.botToken || !TELEGRAM_CONFIG.chatId) return;
+    try {
+      const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+      const dateStr = new Date().toLocaleString('vi-VN');
+      const payload = {
+        chat_id: TELEGRAM_CONFIG.chatId,
+        parse_mode: 'HTML',
+        text: `💌 <b>LỜI ƯỚC NGUYỆN MỚI (123 NGƯỜI)</b>\n\n💬 <i>"${wishText}"</i>\n\n⏰ <code>${dateStr}</code>`
+      };
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.log('Lỗi gửi Telegram:', e);
+    }
+  }
+
   const wishInput = document.getElementById('wish-input');
   const charCounter = document.getElementById('char-counter');
   const btnSubmitWish = document.getElementById('btn-submit-wish');
@@ -578,6 +604,9 @@ document.addEventListener('DOMContentLoaded', () => {
         showModal('Nhắc nhở ♡', 'Vui lòng viết điều bạn muốn chia sẻ trước khi gửi nhé!');
         return;
       }
+
+      // Tự động gửi về Telegram cá nhân
+      sendWishToTelegram(text);
 
       storedWishes.unshift(text);
       localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
