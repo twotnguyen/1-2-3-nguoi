@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
               currentQuestionIndex++;
               renderQuestion(currentQuestionIndex);
             } else {
-              displayGirlMatch();
+              displayGirlMatch(calculateMatchedGirl(userAnswers));
             }
           }, 350);
         });
@@ -494,8 +494,80 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuestion(currentQuestionIndex);
 
   // ------------------------------------------------------------------------
-  // 6. WISH JAR & LOCALSTORAGE ENGINE
+  // 6. PRIVATE WISH JAR: TELEGRAM BOT & EMAIL NOTIFICATION ENGINE
   // ------------------------------------------------------------------------
+  // A. CẤU HÌNH GỬI VỀ TELEGRAM
+  const TELEGRAM_CONFIG = {
+    botToken: "", // Nhập Telegram Bot Token (Ví dụ: "7123456789:AAFx-XXXXXXXXX")
+    chatId: ""    // Nhập Telegram Chat ID của bạn (Ví dụ: "123456789")
+  };
+
+  // B. CẤU HÌNH GỬI VỀ EMAIL (Sử dụng Web3Forms hoặc Formspree miễn phí)
+  const EMAIL_CONFIG = {
+    web3FormsAccessKey: "0edf8d64-db00-41c3-8a8e-9d3eb6ed198a", // Access Key của bạn từ Web3Forms
+    formspreeUrl: ""        // Hoặc nhập URL Formspree (Ví dụ: "https://formspree.io/f/xzzpbqrw")
+  };
+
+  async function sendWishToTelegram(wishText) {
+    if (!TELEGRAM_CONFIG.botToken || !TELEGRAM_CONFIG.chatId) return;
+    try {
+      const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+      const dateStr = new Date().toLocaleString('vi-VN');
+      const payload = {
+        chat_id: TELEGRAM_CONFIG.chatId,
+        parse_mode: 'HTML',
+        text: `💌 <b>LỜI ƯỚC NGUYỆN MỚI</b>\n\n💬 <i>"${wishText}"</i>\n\n⏰ <code>${dateStr}</code>`
+      };
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.log('Lỗi gửi Telegram:', e);
+    }
+  }
+
+  async function sendWishToEmail(wishText) {
+    const dateStr = new Date().toLocaleString('vi-VN');
+
+    // 1. Gửi qua Web3Forms (Nếu có Access Key)
+    if (EMAIL_CONFIG.web3FormsAccessKey) {
+      try {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: EMAIL_CONFIG.web3FormsAccessKey,
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            from_name: "123 Người Web",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Web3Forms:', e);
+      }
+    }
+
+    // 2. Gửi qua Formspree (Nếu có URL Formspree)
+    if (EMAIL_CONFIG.formspreeUrl) {
+      try {
+        await fetch(EMAIL_CONFIG.formspreeUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Formspree:', e);
+      }
+    }
+  }
+
   const wishInput = document.getElementById('wish-input');
   const charCounter = document.getElementById('char-counter');
   const btnSubmitWish = document.getElementById('btn-submit-wish');
@@ -579,6 +651,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Tự động gửi về Telegram & Email cá nhân
+      sendWishToTelegram(text);
+      sendWishToEmail(text);
+
       storedWishes.unshift(text);
       localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
       renderRecentWishes();
@@ -606,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Người đến muộn",
       quote: "Một nụ cười đôi khi cứu được cả một ngày.",
       loveLanguage: "Words of Affirmation",
-      avatar: "images/han.jpg"
+      avatar: "images/han.png"
     },
     {
       name: "Ân",
@@ -654,7 +730,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Ồn ào",
       quote: "Có những cảm xúc không thể nói bằng lời.",
       loveLanguage: "Quality Time",
-      avatar: "images/tran.jpg"
+      avatar: "images/tran.png"
     },
     {
       name: "Thảo",
@@ -738,7 +814,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "So sánh",
       quote: "Có lẽ bình yên là khi không cần cố gắng trở thành ai khác.",
       loveLanguage: "Quality Time",
-      avatar: "images/ngan.jpg"
+      avatar: "images/ngan.png"
     },
     {
       name: "Như",
@@ -794,12 +870,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentGirl = null;
 
+  function getRecentMatchHistory() {
+    try {
+      return JSON.parse(sessionStorage.getItem('recent_matched_girls_history') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRecentMatchHistory(history) {
+    try {
+      sessionStorage.setItem('recent_matched_girls_history', JSON.stringify(history.slice(0, 10)));
+    } catch (e) {}
+  }
+
   function getRandomGirl() {
-    return matchedGirls[Math.floor(Math.random() * matchedGirls.length)];
+    return calculateMatchedGirl([]);
+  }
+
+  function calculateMatchedGirl(answers) {
+    const history = getRecentMatchHistory();
+    
+    // Kết hợp yếu tố ngẫu nhiên động cùng câu trả lời để kết quả luôn tươi mới, bất ngờ
+    let score = Math.floor(Math.random() * 10007);
+    if (answers && answers.length > 0) {
+      const optionMap = { 'A': 1, 'B': 3, 'C': 7, 'D': 11 };
+      answers.forEach((ans, idx) => {
+        const val = optionMap[ans] || Math.floor(Math.random() * 10);
+        score += val * (idx + 1) * (Math.floor(Math.random() * 13) + 1);
+      });
+    }
+
+    let chosenIndex = Math.abs(score) % matchedGirls.length;
+    let chosenGirl = matchedGirls[chosenIndex];
+
+    // Kiểm tra quy tắc: Không trùng 1 nhân vật 3 lần liên tiếp (tối đa 2 lần liên tiếp)
+    if (history.length >= 2 && history[0] === chosenGirl.name && history[1] === chosenGirl.name) {
+      const validGirls = matchedGirls.filter(g => g.name !== chosenGirl.name);
+      chosenGirl = validGirls[Math.floor(Math.random() * validGirls.length)];
+    }
+
+    // Lưu vào lịch sử
+    history.unshift(chosenGirl.name);
+    saveRecentMatchHistory(history);
+
+    return chosenGirl;
   }
 
   function displayGirlMatch(girl) {
-    if (!girl) girl = getRandomGirl();
+    if (!girl) girl = calculateMatchedGirl(userAnswers);
     currentGirl = girl;
 
     if (matchGirlAvatar) matchGirlAvatar.src = girl.avatar;
