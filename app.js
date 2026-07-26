@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const albumCoverImg = albumCover ? albumCover.querySelector('img') : null;
 
   const playlist = [
-    { title: "1 2 3 Người", artist: "Huyki", src: "music/1_2_3_nguoi.mp3", cover: "music/logo_1_2_3_nguoi.png" },
+    { title: "1 2 3 Người", artist: "Huyki", src: "music/1_2_3_nguoi_mixing (3).mp3", cover: "music/logo_1_2_3_nguoi.png" },
     { title: "Chỉ iu mình ems", artist: "Huyki", src: "music/chiiuminhems.mp3", cover: "music/logo_chiiuminhems.png" },
     { title: "Sao anh tồi thế", artist: "Huyki", src: "music/saoanhtoithe.mp3", cover: "music/logo_saoanhtoithe.png" }
   ];
@@ -248,6 +248,25 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => flash.remove(), 550);
 
       showModal('Olympus AF-1 📸', 'Đã chụp khoảnh khắc dịu dàng này! Kỷ niệm sẽ luôn ở lại cùng bạn. ♡');
+    });
+  }
+
+  // 3D Microwave Interactive Trigger
+  const microwaveTrigger = document.getElementById('microwave-trigger');
+  if (microwaveTrigger) {
+    microwaveTrigger.addEventListener('click', () => {
+      // Warm pink glow flash feedback
+      const warmFlash = document.createElement('div');
+      warmFlash.style.position = 'fixed';
+      warmFlash.style.inset = '0';
+      warmFlash.style.background = 'radial-gradient(circle at center, rgba(255, 180, 200, 0.6), transparent 70%)';
+      warmFlash.style.zIndex = '9999';
+      warmFlash.style.pointerEvents = 'none';
+      warmFlash.style.transition = 'opacity 0.4s ease-out';
+      document.body.appendChild(warmFlash);
+
+      setTimeout(() => warmFlash.style.opacity = '0', 50);
+      setTimeout(() => warmFlash.remove(), 450);
     });
   }
 
@@ -437,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
               currentQuestionIndex++;
               renderQuestion(currentQuestionIndex);
             } else {
-              displayGirlMatch();
+              displayGirlMatch(calculateMatchedGirl(userAnswers));
             }
           }, 350);
         });
@@ -475,8 +494,80 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuestion(currentQuestionIndex);
 
   // ------------------------------------------------------------------------
-  // 6. WISH JAR & LOCALSTORAGE ENGINE
+  // 6. PRIVATE WISH JAR: TELEGRAM BOT & EMAIL NOTIFICATION ENGINE
   // ------------------------------------------------------------------------
+  // A. CẤU HÌNH GỬI VỀ TELEGRAM
+  const TELEGRAM_CONFIG = {
+    botToken: "", // Nhập Telegram Bot Token (Ví dụ: "7123456789:AAFx-XXXXXXXXX")
+    chatId: ""    // Nhập Telegram Chat ID của bạn (Ví dụ: "123456789")
+  };
+
+  // B. CẤU HÌNH GỬI VỀ EMAIL (Sử dụng Web3Forms hoặc Formspree miễn phí)
+  const EMAIL_CONFIG = {
+    web3FormsAccessKey: "0edf8d64-db00-41c3-8a8e-9d3eb6ed198a", // Access Key của bạn từ Web3Forms
+    formspreeUrl: ""        // Hoặc nhập URL Formspree (Ví dụ: "https://formspree.io/f/xzzpbqrw")
+  };
+
+  async function sendWishToTelegram(wishText) {
+    if (!TELEGRAM_CONFIG.botToken || !TELEGRAM_CONFIG.chatId) return;
+    try {
+      const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+      const dateStr = new Date().toLocaleString('vi-VN');
+      const payload = {
+        chat_id: TELEGRAM_CONFIG.chatId,
+        parse_mode: 'HTML',
+        text: `💌 <b>LỜI ƯỚC NGUYỆN MỚI</b>\n\n💬 <i>"${wishText}"</i>\n\n⏰ <code>${dateStr}</code>`
+      };
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.log('Lỗi gửi Telegram:', e);
+    }
+  }
+
+  async function sendWishToEmail(wishText) {
+    const dateStr = new Date().toLocaleString('vi-VN');
+
+    // 1. Gửi qua Web3Forms (Nếu có Access Key)
+    if (EMAIL_CONFIG.web3FormsAccessKey) {
+      try {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: EMAIL_CONFIG.web3FormsAccessKey,
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            from_name: "123 Người Web",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Web3Forms:', e);
+      }
+    }
+
+    // 2. Gửi qua Formspree (Nếu có URL Formspree)
+    if (EMAIL_CONFIG.formspreeUrl) {
+      try {
+        await fetch(EMAIL_CONFIG.formspreeUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            subject: "💌 Lời ước nguyện mới từ Web 123 Người",
+            message: wishText,
+            time: dateStr
+          })
+        });
+      } catch (e) {
+        console.log('Lỗi gửi Email Formspree:', e);
+      }
+    }
+  }
+
   const wishInput = document.getElementById('wish-input');
   const charCounter = document.getElementById('char-counter');
   const btnSubmitWish = document.getElementById('btn-submit-wish');
@@ -560,6 +651,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Tự động gửi về Telegram & Email cá nhân
+      sendWishToTelegram(text);
+      sendWishToEmail(text);
+
       storedWishes.unshift(text);
       localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
       renderRecentWishes();
@@ -587,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Người đến muộn",
       quote: "Một nụ cười đôi khi cứu được cả một ngày.",
       loveLanguage: "Words of Affirmation",
-      avatar: "images/han.jpg"
+      avatar: "images/han.png"
     },
     {
       name: "Ân",
@@ -635,7 +730,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Ồn ào",
       quote: "Có những cảm xúc không thể nói bằng lời.",
       loveLanguage: "Quality Time",
-      avatar: "images/tran.jpg"
+      avatar: "images/tran.png"
     },
     {
       name: "Thảo",
@@ -719,7 +814,31 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "So sánh",
       quote: "Có lẽ bình yên là khi không cần cố gắng trở thành ai khác.",
       loveLanguage: "Quality Time",
-      avatar: "images/ngan.jpg"
+      avatar: "images/ngan.png"
+    },
+    {
+      name: "Như",
+      age: 21,
+      color: "Hồng đào",
+      colorHex: "#FFB7B2",
+      personality: "Sâu sắc, lắng nghe",
+      likes: "Trà hoa cúc, đọc sách, ngắm mưa",
+      dislikes: "Sự dối trá, nơi quá ồn ào",
+      quote: "Dù đi qua bao nhiêu bão giông, lòng vẫn giữ một khoảng bình yên.",
+      loveLanguage: "Words of Affirmation",
+      avatar: "images/nhu.png"
+    },
+    {
+      name: "Ty",
+      age: 20,
+      color: "Xanh da trời",
+      colorHex: "#AEC6CF",
+      personality: "Năng động, cá tính",
+      likes: "Chụp ảnh Polaroid, du lịch phượt, nhạc Indie",
+      dislikes: "Sự gò bó, tính toán chi li",
+      quote: "Cuộc đời quá ngắn để chần chừ một cái ôm.",
+      loveLanguage: "Quality Time",
+      avatar: "images/ty.png"
     },
     {
       name: "Hiền",
@@ -751,12 +870,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentGirl = null;
 
+  function getRecentMatchHistory() {
+    try {
+      return JSON.parse(sessionStorage.getItem('recent_matched_girls_history') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRecentMatchHistory(history) {
+    try {
+      sessionStorage.setItem('recent_matched_girls_history', JSON.stringify(history.slice(0, 10)));
+    } catch (e) {}
+  }
+
   function getRandomGirl() {
-    return matchedGirls[Math.floor(Math.random() * matchedGirls.length)];
+    return calculateMatchedGirl([]);
+  }
+
+  function calculateMatchedGirl(answers) {
+    const history = getRecentMatchHistory();
+    
+    // Kết hợp yếu tố ngẫu nhiên động cùng câu trả lời để kết quả luôn tươi mới, bất ngờ
+    let score = Math.floor(Math.random() * 10007);
+    if (answers && answers.length > 0) {
+      const optionMap = { 'A': 1, 'B': 3, 'C': 7, 'D': 11 };
+      answers.forEach((ans, idx) => {
+        const val = optionMap[ans] || Math.floor(Math.random() * 10);
+        score += val * (idx + 1) * (Math.floor(Math.random() * 13) + 1);
+      });
+    }
+
+    let chosenIndex = Math.abs(score) % matchedGirls.length;
+    let chosenGirl = matchedGirls[chosenIndex];
+
+    // Kiểm tra quy tắc: Không trùng 1 nhân vật 3 lần liên tiếp (tối đa 2 lần liên tiếp)
+    if (history.length >= 2 && history[0] === chosenGirl.name && history[1] === chosenGirl.name) {
+      const validGirls = matchedGirls.filter(g => g.name !== chosenGirl.name);
+      chosenGirl = validGirls[Math.floor(Math.random() * validGirls.length)];
+    }
+
+    // Lưu vào lịch sử
+    history.unshift(chosenGirl.name);
+    saveRecentMatchHistory(history);
+
+    return chosenGirl;
   }
 
   function displayGirlMatch(girl) {
-    if (!girl) girl = getRandomGirl();
+    if (!girl) girl = calculateMatchedGirl(userAnswers);
     currentGirl = girl;
 
     if (matchGirlAvatar) matchGirlAvatar.src = girl.avatar;
@@ -900,6 +1062,151 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
+
+  // ------------------------------------------------------------------------
+  // 8. INTERACTIVE PHOTO GALLERY ENGINE (CURATED PRESETS)
+  // ------------------------------------------------------------------------
+  const presetFrames = [
+    { id: 1, title: "Kỷ niệm #1 ♡", desc: "Khoảnh khắc dịu dàng lưu giữ cùng thời gian.", src: "images/gallery/0 (1).png", style: "polaroid" },
+    { id: 2, title: "Kỷ niệm #2 👑", desc: "Góc nhỏ thân thương của những ngày đã qua.", src: "images/gallery/1 (1).png", style: "vintage-gold" },
+    { id: 3, title: "Kỷ niệm #3 💖", desc: "Nụ cười trong vắt sưởi ấm tâm hồn.", src: "images/gallery/2.1.png", style: "sparkle-heart" },
+    { id: 4, title: "Kỷ niệm #4 🎬", desc: "Thước phim ký ức trôi qua nhè nhẹ.", src: "images/gallery/3 (1).png", style: "film-strip" },
+    { id: 5, title: "Kỷ niệm #5 ✉️", desc: "Gửi vào quá khứ lời cảm ơn chân thành.", src: "images/gallery/4 (1).png", style: "postcard" },
+    { id: 6, title: "Kỷ niệm #6 🌅", desc: "Vệt nắng chiều nhuộm hồng kỷ niệm.", src: "images/gallery/5 (1).png", style: "polaroid" },
+    { id: 7, title: "Kỷ niệm #7 🌙", desc: "Thành phố về đêm thì thầm ngàn lời yêu.", src: "images/gallery/6 (1).png", style: "vintage-gold" },
+    { id: 8, title: "Kỷ niệm #8 ✨", desc: "Ánh mắt biết nói trao trọn niềm tin.", src: "images/gallery/7 (1).png", style: "sparkle-heart" },
+    { id: 9, title: "Kỷ niệm #9 ☕", desc: "Góc nhỏ cà phê và buổi chiều thanh bình.", src: "images/gallery/8 (1).png", style: "film-strip" },
+    { id: 10, title: "Kỷ niệm #10 🌸", desc: "Sắc hoa rực rỡ bên ô cửa sổ.", src: "images/gallery/9 (1).png", style: "postcard" },
+    { id: 11, title: "Kỷ niệm #11 ♡", desc: "Bình yên là khi có ai đó luôn chờ đợi.", src: "images/gallery/10 (1).png", style: "polaroid" },
+    { id: 12, title: "Kỷ niệm #12 🌅", desc: "Hoàng hôn lãng mạn phủ kín chân trời.", src: "images/gallery/1759588731958.JPG", style: "vintage-gold" },
+    { id: 13, title: "Kỷ niệm #13 💖", desc: "Tình yêu bắt đầu từ những điều giản dị.", src: "images/gallery/1761373756774.png", style: "sparkle-heart" },
+    { id: 14, title: "Kỷ niệm #14 🌙", desc: "Đêm muộn đong đầy nỗi nhớ khôn nguôi.", src: "images/gallery/1761373757339.jpg", style: "film-strip" },
+    { id: 15, title: "Kỷ niệm #15 ✉️", desc: "Một bức thư chưa dám gửi cho người ấy.", src: "images/gallery/1761373757851.jpg", style: "postcard" },
+    { id: 16, title: "Kỷ niệm #16 🍃", desc: "Cơn gió nhẹ thổi qua ngày nắng hạ.", src: "images/gallery/1761373757884.jpg", style: "polaroid" },
+    { id: 17, title: "Kỷ niệm #17 ☕", desc: "Ấm áp tách trà nóng giữa ngày đông.", src: "images/gallery/1761373757918.jpg", style: "vintage-gold" },
+    { id: 18, title: "Kỷ niệm #18 🌧️", desc: "Tiếng mưa rơi nhè nhẹ ngoài hiên.", src: "images/gallery/1761374022371.jpg", style: "sparkle-heart" },
+    { id: 19, title: "Kỷ niệm #19 🎬", desc: "Từng khung hình quay chậm đáng giá.", src: "images/gallery/1761374022434.jpg", style: "film-strip" },
+    { id: 20, title: "Kỷ niệm #20 ✉️", desc: "Lời hứa thanh xuân ngàn năm giữ trọn.", src: "images/gallery/1761374022751.jpeg", style: "postcard" },
+    { id: 21, title: "Kỷ niệm #21 ♡", desc: "Nụ cười rạng rỡ thắp sáng ngàn ánh sao.", src: "images/gallery/IMG_1748518542492_1748518583671.jpg", style: "polaroid" },
+    { id: 22, title: "Kỷ niệm #22 🌆", desc: "Chiều dịu dàng nghiêng mình bóng xế.", src: "images/gallery/IMG_1910-Enhanced-NR.jpg", style: "vintage-gold" },
+    { id: 23, title: "Kỷ niệm #23 ✨", desc: "Khoảnh khắc tuyệt vời nhất từng trải qua.", src: "images/gallery/IMG_2131.JPG", style: "sparkle-heart" },
+    { id: 24, title: "Kỷ niệm #24 🎬", desc: "Trân trọng từng ngày tháng bên nhau.", src: "images/gallery/z6304858052609_e7af4a941c7265a1ccc06a9e6ad8fb6a.jpg", style: "film-strip" }
+  ];
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+  const lightboxOkBtn = document.getElementById('lightbox-ok-btn');
+  const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
+
+  function createFrameElement(item) {
+    const frameDiv = document.createElement('div');
+    frameDiv.className = `gallery-frame frame-style-${item.style}`;
+    frameDiv.setAttribute('data-style', item.style);
+
+    let innerHTML = '';
+    if (item.style === 'polaroid') {
+      innerHTML = `
+        <div class="frame-tape-strip"></div>
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-stamp">123 NGƯỜI</div>
+      `;
+    } else if (item.style === 'vintage-gold') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+      `;
+    } else if (item.style === 'sparkle-heart') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+          <div class="sparkle-overlay"></div>
+        </div>
+      `;
+    } else if (item.style === 'film-strip') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+      `;
+    } else if (item.style === 'postcard') {
+      innerHTML = `
+        <div class="frame-img-box">
+          <img src="${item.src}" alt="${item.title}">
+        </div>
+        <div class="frame-stamp">📮</div>
+      `;
+    }
+
+    frameDiv.innerHTML = innerHTML;
+
+    frameDiv.addEventListener('click', () => {
+      openLightboxModal(item);
+    });
+
+    return frameDiv;
+  }
+
+  function renderGallery(filter = 'all') {
+    if (!galleryGrid) return;
+    galleryGrid.innerHTML = '';
+
+    const filteredItems = filter === 'all' 
+      ? presetFrames 
+      : presetFrames.filter(item => item.style === filter);
+
+    filteredItems.forEach(item => {
+      galleryGrid.appendChild(createFrameElement(item));
+    });
+  }
+
+  // Filter Buttons
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      renderGallery(filter);
+    });
+  });
+
+  // Lightbox Modal Handling
+  function openLightboxModal(item) {
+    if (!lightboxModal || !lightboxFrameContainer) return;
+
+    lightboxFrameContainer.innerHTML = '';
+    lightboxFrameContainer.appendChild(createFrameElement(item));
+
+    if (lightboxTitle) lightboxTitle.textContent = item.title;
+    if (lightboxDesc) lightboxDesc.textContent = item.desc;
+
+    lightboxModal.classList.remove('hidden');
+  }
+
+  function closeLightboxModal() {
+    if (lightboxModal) lightboxModal.classList.add('hidden');
+  }
+
+  if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightboxModal);
+  if (lightboxOkBtn) lightboxOkBtn.addEventListener('click', closeLightboxModal);
+
+  if (lightboxDownloadBtn) {
+    lightboxDownloadBtn.addEventListener('click', () => {
+      showModal('Lưu Khoảnh Khắc 💾', 'Đã lưu khoảnh khắc dịu dàng này! ♡');
+      closeLightboxModal();
+    });
+  }
+
+  // Render initial gallery grid
+  renderGallery();
 
   // Initialize background animations and live clock
   initAmbientParticles();
