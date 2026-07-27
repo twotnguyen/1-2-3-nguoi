@@ -1381,6 +1381,25 @@ document.addEventListener('DOMContentLoaded', () => {
     destroy() {
       window.removeEventListener('keydown', this.keyHandler);
       window.removeEventListener('keyup', this.keyHandler);
+      
+      const btnLeft = document.getElementById('btn-move-left');
+      const btnRight = document.getElementById('btn-move-right');
+      const btnJump = document.getElementById('btn-jump');
+      
+      if (btnLeft) {
+        btnLeft.onmousedown = btnLeft.ontouchstart = null;
+        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = null;
+      }
+      if (btnRight) {
+        btnRight.onmousedown = btnRight.ontouchstart = null;
+        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = null;
+      }
+      if (btnJump) {
+        btnJump.onmousedown = btnJump.ontouchstart = null;
+      }
+      if (this.canvas) {
+        this.canvas.onclick = null;
+      }
     }
     
     checkCollision(rect1, rect2) {
@@ -1451,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Rơi xuống hố sâu
       if (this.player.y > this.canvas.height + 40) {
-        this.damagePlayer();
+        this.damagePlayer(true);
       }
       
       // Di chuyển các bục di động
@@ -1538,8 +1557,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    damagePlayer() {
-      if (this.player.invulnerable > 0) return;
+    damagePlayer(force = false) {
+      if (this.player.invulnerable > 0 && !force) return;
       this.player.lives--;
       if (this.player.lives <= 0) {
         this.gameState = 'GAMEOVER';
