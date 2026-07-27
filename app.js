@@ -949,16 +949,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameModal = document.getElementById('game-modal');
   const gameboyTrigger = document.getElementById('gameboy-trigger');
   const gameModalClose = document.getElementById('game-modal-close');
+  let gameInstance = null;
 
   function openGameModal() {
     if (gameModal) {
       gameModal.classList.remove('hidden');
+      if (gameInstance) {
+        gameInstance.destroy();
+      }
+      gameInstance = new MemoryGame('game-canvas');
+      gameInstance.start();
     }
   }
 
   function closeGameModal() {
     if (gameModal) {
       gameModal.classList.add('hidden');
+      if (gameInstance) {
+        gameInstance.stop();
+        gameInstance.destroy();
+        gameInstance = null;
+      }
     }
   }
 
@@ -1227,6 +1238,461 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render initial gallery grid
   renderGallery();
+
+  class MemoryGame {
+    constructor(canvasId) {
+      this.canvas = document.getElementById(canvasId);
+      if (!this.canvas) return;
+      this.ctx = this.canvas.getContext('2d');
+      
+      // Khởi tạo các hằng số vật lý
+      this.gravity = 0.45;
+      this.jumpForce = -9.0;
+      this.speed = 3.2;
+      this.friction = 0.85;
+      
+      this.reset();
+      this.setupControls();
+    }
+    
+    reset() {
+      this.player = {
+        x: 50,
+        y: 200,
+        width: 24,
+        height: 24,
+        vx: 0,
+        vy: 0,
+        jumping: true,
+        lives: 3,
+        collectedLetters: 0,
+        invulnerable: 0
+      };
+      
+      this.gameState = 'PLAY'; // PLAY, GAMEOVER, WIN
+      this.cameraX = 0;
+      this.worldWidth = 1500;
+      
+      // Bố trí bản đồ các bục
+      this.platforms = [
+        { x: 0, y: 320, width: 300, height: 30, type: 'ground' },
+        { x: 380, y: 320, width: 250, height: 30, type: 'ground' },
+        { x: 700, y: 320, width: 400, height: 30, type: 'ground' },
+        { x: 1180, y: 320, width: 320, height: 30, type: 'ground' },
+        
+        // Bục mây lơ lửng
+        { x: 200, y: 240, width: 100, height: 12, type: 'cloud' },
+        { x: 330, y: 170, width: 80, height: 12, type: 'cloud' },
+        { x: 480, y: 220, width: 100, height: 12, type: 'cloud' },
+        
+        // Bục di động tuần tra
+        { x: 620, y: 160, width: 90, height: 12, type: 'moving', minX: 580, maxX: 800, dir: 1, speed: 1.0 },
+        
+        { x: 860, y: 230, width: 120, height: 12, type: 'cloud' },
+        { x: 920, y: 140, width: 80, height: 12, type: 'cloud' },
+        { x: 1060, y: 200, width: 100, height: 12, type: 'cloud' }
+      ];
+      
+      // Thư tình cần nhặt (5 lá)
+      this.letters = [
+        { x: 240, y: 200, width: 16, height: 16, collected: false },
+        { x: 360, y: 130, width: 16, height: 16, collected: false },
+        { x: 660, y: 100, width: 16, height: 16, collected: false },
+        { x: 950, y: 100, width: 16, height: 16, collected: false },
+        { x: 1100, y: 160, width: 16, height: 16, collected: false }
+      ];
+      
+      // Quái nỗi buồn
+      this.enemies = [
+        { x: 420, y: 295, width: 24, height: 20, speed: 0.8, dir: 1, minX: 390, maxX: 610 },
+        { x: 800, y: 295, width: 24, height: 20, speed: 1.0, dir: -1, minX: 710, maxX: 1080 },
+        { x: 880, y: 205, width: 24, height: 20, speed: 0.6, dir: 1, minX: 865, maxX: 960 }
+      ];
+      
+      this.mailbox = { x: 1400, y: 270, width: 30, height: 50 };
+      this.keys = { left: false, right: false, up: false };
+    }
+    
+    setupControls() {
+      this.keyHandler = (e) => {
+        const isDown = e.type === 'keydown';
+        if (['ArrowLeft', 'KeyA'].includes(e.code)) this.keys.left = isDown;
+        if (['ArrowRight', 'KeyD'].includes(e.code)) this.keys.right = isDown;
+        if (['Space', 'ArrowUp', 'KeyW'].includes(e.code)) this.keys.up = isDown;
+        
+        // Ngăn chặn cuộn trang
+        if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) && this.gameState === 'PLAY') {
+          e.preventDefault();
+        }
+      };
+      
+      window.addEventListener('keydown', this.keyHandler);
+      window.addEventListener('keyup', this.keyHandler);
+      
+      // Bắt sự kiện phím cảm ứng trên Mobile
+      const btnLeft = document.getElementById('btn-move-left');
+      const btnRight = document.getElementById('btn-move-right');
+      const btnJump = document.getElementById('btn-jump');
+      
+      if (btnLeft) {
+        btnLeft.onmousedown = btnLeft.ontouchstart = (e) => { e.preventDefault(); this.keys.left = true; };
+        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = () => { this.keys.left = false; };
+      }
+      if (btnRight) {
+        btnRight.onmousedown = btnRight.ontouchstart = (e) => { e.preventDefault(); this.keys.right = true; };
+        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = () => { this.keys.right = false; };
+      }
+      if (btnJump) {
+        btnJump.onmousedown = btnJump.ontouchstart = (e) => {
+          e.preventDefault();
+          this.keys.up = true;
+          setTimeout(() => { this.keys.up = false; }, 80);
+        };
+      }
+      
+      // Nút click chuột khởi động lại hoặc đóng
+      this.canvas.onclick = (e) => {
+        const rect = this.canvas.getBoundingClientRect();
+        const clickX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+        const clickY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
+        
+        if (this.gameState === 'GAMEOVER') {
+          // Restart button: center-60 -> center+60 (240-360), height/2+35 -> height/2+67 (210-242)
+          if (clickX >= this.canvas.width/2 - 60 && clickX <= this.canvas.width/2 + 60 &&
+              clickY >= this.canvas.height/2 + 35 && clickY <= this.canvas.height/2 + 67) {
+            this.reset();
+          }
+        } else if (this.gameState === 'WIN') {
+          // Finish button: center-70 -> center+70 (230-370), height/2+55 -> height/2+87 (230-262)
+          if (clickX >= this.canvas.width/2 - 70 && clickX <= this.canvas.width/2 + 70 &&
+              clickY >= this.canvas.height/2 + 55 && clickY <= this.canvas.height/2 + 87) {
+            if (typeof closeGameModal === 'function') {
+              closeGameModal();
+            } else {
+              document.getElementById('game-modal').classList.add('hidden');
+            }
+            const wishJarTab = document.querySelector('[data-tab="wish-jar"]');
+            if (wishJarTab) wishJarTab.click();
+          }
+        }
+      };
+    }
+    
+    destroy() {
+      window.removeEventListener('keydown', this.keyHandler);
+      window.removeEventListener('keyup', this.keyHandler);
+    }
+    
+    checkCollision(rect1, rect2) {
+      return rect1.x < rect2.x + rect2.width &&
+             rect1.x + rect1.width > rect2.x &&
+             rect1.y < rect2.y + rect2.height &&
+             rect1.y + rect1.height > rect2.y;
+    }
+
+    start() {
+      this.active = true;
+      this.gameLoop();
+    }
+
+    stop() {
+      this.active = false;
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+      }
+    }
+
+    gameLoop() {
+      if (!this.active) return;
+      this.update();
+      this.draw();
+      this.animationId = requestAnimationFrame(() => this.gameLoop());
+    }
+
+    update() {
+      if (this.gameState !== 'PLAY') return;
+      
+      // 1. Xử lý di chuyển ngang
+      if (this.keys.left) {
+        this.player.vx = -this.speed;
+      } else if (this.keys.right) {
+        this.player.vx = this.speed;
+      } else {
+        this.player.vx *= this.friction;
+      }
+      
+      // 2. Trọng lực
+      this.player.vy += this.gravity;
+      
+      // 3. Nhảy
+      if (this.keys.up && !this.player.jumping) {
+        this.player.vy = this.jumpForce;
+        this.player.jumping = true;
+      }
+      
+      // Cập nhật vị trí
+      this.player.x += this.player.vx;
+      this.player.y += this.player.vy;
+      
+      // Thời gian nhấp nháy bất tử
+      if (this.player.invulnerable > 0) {
+        this.player.invulnerable--;
+      }
+      
+      // Giới hạn biên thế giới
+      if (this.player.x < 0) this.player.x = 0;
+      if (this.player.x > this.worldWidth - this.player.width) this.player.x = this.worldWidth - this.player.width;
+      
+      // Camera bám theo nhân vật
+      this.cameraX = this.player.x - this.canvas.width / 3;
+      if (this.cameraX < 0) this.cameraX = 0;
+      if (this.cameraX > this.worldWidth - this.canvas.width) this.cameraX = this.worldWidth - this.canvas.width;
+      
+      // Rơi xuống hố sâu
+      if (this.player.y > this.canvas.height + 40) {
+        this.damagePlayer();
+      }
+      
+      // Di chuyển các bục di động
+      this.platforms.forEach(p => {
+        if (p.type === 'moving') {
+          p.x += p.speed * p.dir;
+          if (p.x > p.maxX || p.x < p.minX) {
+            p.dir *= -1;
+          }
+        }
+      });
+      
+      // 4. Kiểm tra va chạm với các bục
+      let wasOnGround = false;
+      this.platforms.forEach(p => {
+        if (this.checkCollision(this.player, p)) {
+          const overlapX = Math.min(this.player.x + this.player.width, p.x + p.width) - Math.max(this.player.x, p.x);
+          const overlapY = Math.min(this.player.y + this.player.height, p.y + p.height) - Math.max(this.player.y, p.y);
+          
+          if (overlapX > overlapY) {
+            // Đáp đất từ phía trên
+            if (this.player.vy > 0 && this.player.y + this.player.height - this.player.vy <= p.y + 4) {
+              this.player.y = p.y - this.player.height;
+              this.player.vy = 0;
+              this.player.jumping = false;
+              wasOnGround = true;
+              
+              if (p.type === 'moving') {
+                this.player.x += p.speed * p.dir;
+              }
+            } 
+            // Đụng từ dưới lên
+            else if (this.player.vy < 0 && this.player.y >= p.y + p.height - 4) {
+              this.player.y = p.y + p.height;
+              this.player.vy = 0.5;
+            }
+          } else {
+            // Đụng cạnh bên
+            if (this.player.x < p.x) {
+              this.player.x = p.x - this.player.width;
+            } else {
+              this.player.x = p.x + p.width;
+            }
+            this.player.vx = 0;
+          }
+        }
+      });
+      
+      if (!wasOnGround && this.player.vy !== 0) {
+        this.player.jumping = true;
+      }
+      
+      // 5. Ăn thư tình
+      this.letters.forEach(item => {
+        if (!item.collected && this.checkCollision(this.player, item)) {
+          item.collected = true;
+          this.player.collectedLetters++;
+        }
+      });
+      
+      // 6. Va chạm quái Nỗi buồn
+      this.enemies.forEach(enemy => {
+        enemy.x += enemy.speed * enemy.dir;
+        if (enemy.x > enemy.maxX || enemy.x < enemy.minX) {
+          enemy.dir *= -1;
+        }
+        
+        if (this.checkCollision(this.player, enemy)) {
+          const isStomping = this.player.vy > 0 && (this.player.y + this.player.height - this.player.vy <= enemy.y + 8);
+          if (isStomping) {
+            this.enemies = this.enemies.filter(e => e !== enemy);
+            this.player.vy = -6.0; // Mèo nhảy nẩy lên
+          } else {
+            this.damagePlayer();
+          }
+        }
+      });
+      
+      // 7. Đích đến
+      if (this.checkCollision(this.player, this.mailbox)) {
+        if (this.player.collectedLetters >= 5) {
+          this.gameState = 'WIN';
+        }
+      }
+    }
+    
+    damagePlayer() {
+      if (this.player.invulnerable > 0) return;
+      this.player.lives--;
+      if (this.player.lives <= 0) {
+        this.gameState = 'GAMEOVER';
+      } else {
+        this.player.invulnerable = 90;
+        this.player.x = 50;
+        this.player.y = 200;
+        this.player.vx = 0;
+        this.player.vy = 0;
+      }
+    }
+
+    draw() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      
+      // Nền hoàng hôn hồng
+      let skyGradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+      skyGradient.addColorStop(0, '#FFEAEF');
+      skyGradient.addColorStop(0.5, '#FFDFE6');
+      skyGradient.addColorStop(1, '#FFC2D1');
+      this.ctx.fillStyle = skyGradient;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      
+      this.ctx.save();
+      this.ctx.translate(-this.cameraX, 0);
+      
+      // Vẽ Mặt trăng/mặt trời mờ
+      this.ctx.fillStyle = 'rgba(255, 235, 238, 0.5)';
+      this.ctx.beginPath();
+      this.ctx.arc(this.cameraX * 0.2 + 150, 75, 45, 0, Math.PI * 2);
+      this.ctx.fill();
+      
+      // Vẽ các bục nhảy
+      this.platforms.forEach(p => {
+        if (p.type === 'ground') {
+          this.ctx.fillStyle = 'rgba(197, 123, 136, 0.85)';
+        } else {
+          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        }
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+        this.ctx.lineWidth = 1.5;
+        this.ctx.beginPath();
+        if (this.ctx.roundRect) {
+          this.ctx.roundRect(p.x, p.y, p.width, p.height, p.type === 'cloud' || p.type === 'moving' ? 6 : 0);
+        } else {
+          this.ctx.rect(p.x, p.y, p.width, p.height);
+        }
+        this.ctx.fill();
+        this.ctx.stroke();
+      });
+      
+      // Vẽ Hộp thư đích 📬
+      this.ctx.font = '36px serif';
+      this.ctx.textBaseline = 'top';
+      this.ctx.fillText('📬', this.mailbox.x, this.mailbox.y);
+      
+      // Vẽ các lá thư tình ✉️
+      this.letters.forEach(item => {
+        if (!item.collected) {
+          this.ctx.font = '16px serif';
+          this.ctx.fillText('✉️', item.x, item.y - 2);
+        }
+      });
+      
+      // Vẽ quái Nỗi buồn ☁️
+      this.enemies.forEach(e => {
+        this.ctx.font = '22px serif';
+        this.ctx.fillText('☁️', e.x, e.y - 4);
+      });
+      
+      // Vẽ Mèo con 🐱 (nhấp nháy bất tử nếu cần)
+      if (this.player.invulnerable === 0 || Math.floor(this.player.invulnerable / 6) % 2 === 0) {
+        this.ctx.font = '24px serif';
+        this.ctx.fillText('🐱', this.player.x - 2, this.player.y - 2);
+      }
+      
+      this.ctx.restore();
+      
+      // Vẽ giao diện HUD (Thông số chơi game)
+      let heartsStr = '';
+      for (let i = 0; i < 3; i++) {
+        heartsStr += i < this.player.lives ? '❤️' : '🖤';
+      }
+      this.ctx.font = '14px sans-serif';
+      this.ctx.fillStyle = '#3E2723';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText('Mạng: ' + heartsStr, 15, 25);
+      this.ctx.fillText('Thư tình: ✉️ ' + this.player.collectedLetters + ' / 5', 15, 45);
+      
+      // Overlay Thua cuộc
+      if (this.gameState === 'GAMEOVER') {
+        this.ctx.fillStyle = 'rgba(62, 39, 35, 0.8)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.font = 'bold 24px sans-serif';
+        this.ctx.fillStyle = '#FFEBEE';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('TRÒ CHƠI KẾT THÚC 💔', this.canvas.width/2, this.canvas.height/2 - 20);
+        
+        this.ctx.font = '15px sans-serif';
+        this.ctx.fillStyle = '#FFC2D1';
+        this.ctx.fillText('Đừng nản lòng nhé! Hãy thử lại.', this.canvas.width/2, this.canvas.height/2 + 10);
+        
+        this.ctx.fillStyle = '#F3B3C3';
+        this.ctx.beginPath();
+        if (this.ctx.roundRect) {
+          this.ctx.roundRect(this.canvas.width/2 - 60, this.canvas.height/2 + 35, 120, 32, 6);
+        } else {
+          this.ctx.rect(this.canvas.width/2 - 60, this.canvas.height/2 + 35, 120, 32);
+        }
+        this.ctx.fill();
+        
+        this.ctx.fillStyle = '#3E2723';
+        this.ctx.font = 'bold 13px sans-serif';
+        this.ctx.fillText('CHƠI LẠI 🎲', this.canvas.width/2, this.canvas.height/2 + 55);
+      } 
+      // Overlay Chiến thắng
+      else if (this.gameState === 'WIN') {
+        this.ctx.fillStyle = 'rgba(90, 45, 54, 0.85)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.font = 'bold 26px sans-serif';
+        this.ctx.fillStyle = '#FFEBEF';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('CHIẾN THẮNG 🎉💖', this.canvas.width/2, this.canvas.height/2 - 40);
+        
+        this.ctx.font = '14px sans-serif';
+        this.ctx.fillStyle = '#FFD1DC';
+        this.ctx.fillText('Bạn đã thu thập đủ 5 lá thư tình đã mất.', this.canvas.width/2, this.canvas.height/2 - 10);
+        
+        this.ctx.font = 'italic 13px sans-serif';
+        this.ctx.fillStyle = '#FFEAEF';
+        this.ctx.fillText('"Hành trình tìm lại ký ức đã hoàn thành..."', this.canvas.width/2, this.canvas.height/2 + 15);
+        
+        this.ctx.font = '13px sans-serif';
+        this.ctx.fillStyle = '#FFEBEE';
+        this.ctx.fillText('Hãy viết lời chúc gửi vào Bình Ước Nguyện nhé! ♡', this.canvas.width/2, this.canvas.height/2 + 35);
+        
+        this.ctx.fillStyle = '#FFE5EC';
+        this.ctx.beginPath();
+        if (this.ctx.roundRect) {
+          this.ctx.roundRect(this.canvas.width/2 - 70, this.canvas.height/2 + 55, 140, 32, 6);
+        } else {
+          this.ctx.rect(this.canvas.width/2 - 70, this.canvas.height/2 + 55, 140, 32);
+        }
+        this.ctx.fill();
+        
+        this.ctx.fillStyle = '#5A2D36';
+        this.ctx.font = 'bold 12px sans-serif';
+        this.ctx.fillText('ĐÓNG & VIẾT ƯỚC NGUYỆN', this.canvas.width/2, this.canvas.height/2 + 75);
+      }
+    }
+  }
 
   // Initialize background animations and live clock
   initAmbientParticles();
