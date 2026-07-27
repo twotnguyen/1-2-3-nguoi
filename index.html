@@ -67,383 +67,11 @@
     </div>
   </header>
 
-  <!-- Main View Container -->
+  <!-- Main View Container (Templates loaded dynamically) -->
   <main id="app-root" class="main-content">
-    
-    <!-- VIEW 1: TRANG CHỦ -->
-    <section id="home-view" class="view-section active">
-      <div class="desk-workspace-stage">
-        
-        <!-- Ambient Warm Lighting Halo -->
-        <div class="studio-lighting-halo"></div>
-
-        <!-- Left Side Decor Cluster: Bottle, Cocktail & Polaroid -->
-        <div class="decor-left">
-          <div class="decor-stack-left">
-            <div class="bottle-wrapper floating-element" title="Lyre's Pink London Spirit">
-              <div class="bottle-cap"></div>
-              <div class="bottle-neck"></div>
-              <div class="bottle-label">
-                <span class="bottle-brand">LYRE'S</span>
-                <span class="bottle-title">PINK LONDON SPIRIT</span>
-              </div>
-            </div>
-            
-            <div class="cocktail-glass floating-element-delay" title="Pink Cocktail with Strawberry 🍓">
-              <div class="glass-rim"></div>
-              <div class="glass-liquid"></div>
-              <span class="strawberry-straw">🍓</span>
-            </div>
-          </div>
-
-          <!-- 3D Aesthetic Pink Microwave Oven (Replaces Polaroid Left) -->
-          <div id="microwave-trigger" class="microwave-3d-wrapper floating-element" data-tab="gallery" title="Lò vi sóng hâm nóng kỷ niệm - Bấm để xem góc khung ảnh ♡" style="cursor: pointer;">
-            <div class="microwave-top-banner">CHỈ YÊU MÌNH EMS ♡</div>
-            <div class="microwave-body">
-              <div class="microwave-door">
-                <div class="door-window">
-                  <div class="heating-glow"></div>
-                  <div class="heart-clay-character">
-                    <span class="clay-heart">💖</span>
-                    <div class="clay-plate"></div>
-                  </div>
-                </div>
-                <div class="door-handle"></div>
-              </div>
-              <div class="microwave-panel">
-                <div class="panel-screen">
-                  <span class="screen-timer">12:30</span>
-                </div>
-                <div class="panel-buttons">
-                  <span class="m-btn"></span><span class="m-btn"></span>
-                  <span class="m-btn"></span><span class="m-btn"></span>
-                </div>
-                <div class="panel-knob"></div>
-              </div>
-            </div>
-            <div class="microwave-feet">
-              <span class="foot left"></span>
-              <span class="foot right"></span>
-            </div>
-            <span class="microwave-caption">Hâm nóng kỷ niệm ♡</span>
-            <div class="floating-hearts-burst">
-              <span class="burst-heart h1">💕</span>
-              <span class="burst-heart h2">💖</span>
-              <span class="burst-heart h3">✨</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Center Desk Calendar Notebook (Hero Element) -->
-        <div class="calendar-desk-wrapper">
-          <div class="spiral-top">
-            <!-- Spiral Rings -->
-            <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-            <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-            <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-            <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-          </div>
-          
-          <div class="calendar-card">
-            <div class="calendar-stamp">
-              <span class="stamp-inner">LOVE DIARY</span>
-            </div>
-            
-            <h1 class="main-title">1 2 3 NGƯỜI <span class="title-heart">♡</span></h1>
-            
-            <p class="main-subtitle">
-              Bạn đang nhớ ai...<br>
-              Hay chỉ đang nhớ cảm giác được yêu?
-            </p>
-            
-            <div class="btn-start-wrapper">
-              <button id="btn-start-quiz" class="btn-start pulse-btn">
-                <span>BẮT ĐẦU</span>
-                <span class="btn-sparkle">✨</span>
-              </button>
-            </div>
-
-            <div class="calendar-footer">
-              <span class="heart-icon-sm">♡</span>
-              <span class="date-badge">Huyki</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Side Decor Cluster: Camera, Cassette & Sticky Notes -->
-        <div class="decor-right">
-          <div class="decor-stack-right">
-            <!-- Retro Camera -->
-            <div id="camera-trigger" class="camera-wrapper floating-element-delay" title="Bấm vào để chụp khoảnh khắc ♡" style="cursor: pointer;">
-              <div class="camera-body">
-                <div class="camera-lens">
-                  <div class="lens-reflection"></div>
-                </div>
-                <span class="camera-brand">OLYMPUS AF-1</span>
-              </div>
-            </div>
-
-            <!-- Mini Pink Cassette Deck -->
-            <div class="mini-cassette-deck floating-element">
-              <div class="cassette-tape">
-                <div class="wheel left slow-spin"></div>
-                <div class="wheel right slow-spin"></div>
-                <span class="tape-label">LOVE SONGS</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Sticky Note -->
-          <div class="sticky-note main-sticky">
-            <div class="tape-strip top-center"></div>
-            <p class="sticky-text">
-              Có lẽ...<br>
-              Người anh luôn tìm kiếm...<br>
-              Chỉ là người đã từng ở cạnh anh. ♡
-            </p>
-          </div>
-
-          <!-- Polaroid Photo Right -->
-          <div class="polaroid-photo polaroid-right floating-element-delay" data-tab="gallery" title="Bấm để xem bộ sưu tập khung ảnh ♡">
-            <div class="tape-strip top-right"></div>
-            <div class="polaroid-img-box">
-              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=250&q=80" alt="Miss you">
-            </div>
-            <span class="polaroid-caption">miss you ♡</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Bottom Interactive Story Strip & Mouse Scroll Indicator -->
-      <div class="story-strip-container">
-        <div class="mouse-scroll-indicator">
-          <div class="mouse-shell">
-            <div class="mouse-wheel"></div>
-          </div>
-          <span class="scroll-prompt">✧ ♡ SCROLL ĐỂ MỞ LỜI... ♡ ✧</span>
-        </div>
-
-        <div class="story-cards-wrapper">
-          <div class="story-card text-card">Xin lỗi vì anh còn nhớ...</div>
-          <div class="story-card num-card">... 1 ...</div>
-          <div class="story-card num-card highlight-card">... 2 ...</div>
-          <div class="story-card num-card">... 3 ...</div>
-          <div class="story-card text-card">... người</div>
-        </div>
-
-        <div class="home-bottom-quote">
-          <p>Cảm ơn vì đã từng ở đây. ♡</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 2: 12 CÂU HỎI (QUIZ) -->
-    <section id="quiz-view" class="view-section">
-      <div class="quiz-container">
-        <!-- Top Sticky Counter -->
-        <div class="sticky-note quiz-counter-sticky">
-          <span class="sticky-label">Câu hỏi</span>
-          <span id="quiz-progress-text" class="sticky-number">01 <small>/12</small></span>
-        </div>
-
-        <!-- Main Question Booklet Card -->
-        <div class="quiz-card-wrapper">
-          <div class="spiral-top-sm">
-            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
-            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
-            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
-          </div>
-
-          <!-- Quiz Progress Track Bar -->
-          <div class="quiz-progress-track">
-            <div id="quiz-progress-fill" class="quiz-progress-fill" style="width: 8.33%;"></div>
-          </div>
-
-          <div class="quiz-inner-card">
-            <div class="question-header">
-              <span id="question-tag" class="question-tag">Question 01</span>
-            </div>
-            
-            <h2 id="question-text" class="question-title">
-              Bạn thường nhớ về một người khi nào nhất?
-            </h2>
-
-            <!-- 4 Multiple Choice Glassmorphism Cards -->
-            <div id="quiz-options-container" class="options-grid">
-              <button class="option-card" data-option="A">
-                <span class="option-badge">A</span>
-                <span class="option-text">Khi nghe một bài hát cũ.</span>
-                <span class="option-icon">🎵</span>
-              </button>
-              <button class="option-card" data-option="B">
-                <span class="option-badge">B</span>
-                <span class="option-text">Khi nhìn thấy hoàng hôn.</span>
-                <span class="option-icon">🌅</span>
-              </button>
-              <button class="option-card" data-option="C">
-                <span class="option-badge">C</span>
-                <span class="option-text">Khi thấy ai đó rất giống họ.</span>
-                <span class="option-icon">👥</span>
-              </button>
-              <button class="option-card" data-option="D">
-                <span class="option-badge">D</span>
-                <span class="option-text">Khi một mình vào buổi đêm.</span>
-                <span class="option-icon">🌙</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sticky note note right -->
-        <div class="sticky-note sub-sticky">
-          <p>Đừng nghĩ quá nhiều, cứ chọn điều đầu tiên bạn cảm thấy. ♡</p>
-        </div>
-
-        <!-- Navigation Buttons Bottom -->
-        <div class="quiz-controls">
-          <button id="btn-quiz-heart" class="quiz-heart-btn" title="Cảm xúc">
-            <span class="glowing-heart">♥</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 3: BÌNH ƯỚC NGUYỆN (WISH JAR) -->
-    <section id="wish-jar-view" class="view-section">
-      <div class="wish-jar-container">
-        
-        <!-- Left Side: Form & Inputs -->
-        <div class="wish-form-wrapper">
-          <div class="wish-header">
-            <h2 class="wish-title">Gửi vào đây nhé... ♡</h2>
-            <p class="wish-subtitle">
-              Một câu hỏi, một lời tâm tư...<br>
-              Chúng mình sẽ đọc tất cả một cách ẩn danh.
-            </p>
-          </div>
-
-          <!-- Feature badges -->
-          <div class="wish-badges">
-            <div class="badge-item">
-              <span class="badge-icon">✉️</span>
-              <strong>Ẩn danh tuyệt đối</strong>
-              <small>Không ai biết bạn là ai.</small>
-            </div>
-            <div class="badge-item">
-              <span class="badge-icon">🫙</span>
-              <strong>Đọc & hồi đáp</strong>
-              <small>Chúng mình luôn lắng nghe.</small>
-            </div>
-            <div class="badge-item">
-              <span class="badge-icon">💖</span>
-              <strong>Lan tỏa yêu thương</strong>
-              <small>Câu chuyện của bạn có thể giúp ai đó.</small>
-            </div>
-          </div>
-
-          <!-- Message Form Card -->
-          <div class="wish-card-form">
-            <label class="form-label" for="wish-input">Viết điều bạn muốn gửi...</label>
-            <div class="textarea-wrapper">
-              <textarea id="wish-input" maxlength="500" placeholder="Bạn muốn hỏi điều gì? Hay muốn chia sẻ tâm tư của mình..."></textarea>
-              <div class="char-count"><span id="char-counter">0</span>/500</div>
-            </div>
-
-            <div class="form-options">
-              <label class="checkbox-label">
-                <input type="checkbox" id="anon-checkbox" checked>
-                <span class="checkbox-custom"></span>
-                <span>♡ Gửi ẩn danh (không hiển thị tên của bạn)</span>
-              </label>
-            </div>
-
-            <button id="btn-submit-wish" class="btn-submit-wish">
-              <span>🚀 GỬI VÀO BÌNH ƯỚC NGUYỆN</span>
-            </button>
-            <p class="form-footer-note">Cảm ơn bạn đã tin tưởng và chia sẻ. ♡</p>
-          </div>
-        </div>
-
-        <!-- Right Side: Mason Jar Graphics & Recent Messages -->
-        <div class="wish-visual-wrapper">
-          <!-- Glass Jar Graphics -->
-          <div class="mason-jar-container">
-            <div class="jar-lid"></div>
-            <div class="jar-body">
-              <div class="jar-label">
-                <span>Bình Ước Nguyện</span>
-                <span class="jar-label-heart">♡</span>
-              </div>
-              <div id="jar-notes-container" class="jar-notes" title="Bấm vào để đọc một lời nhắn ngẫu nhiên ♡">
-                <!-- Interactive folded paper notes -->
-                <span class="folded-note n1" data-note="Làm sao để quên một người mình từng rất yêu?">💌</span>
-                <span class="folded-note n2" data-note="Có ai từng cảm thấy cô đơn giữa một đám đông?">💖</span>
-                <span class="folded-note n3" data-note="Giá như ngày đó mình dũng cảm hơn...">💌</span>
-                <span class="folded-note n4" data-note="Cảm ơn vì đã cho mình biết thế nào là được thương chiều.">💕</span>
-                <span class="folded-note n5" data-note="Hy vọng ở một nơi nào đó, bạn luôn bình an và mỉm cười.">💌</span>
-              </div>
-            </div>
-            <div class="jar-candle-light"></div>
-          </div>
-
-          <div class="sticky-note jar-sticky">
-            <p>Bạn có biết? Mỗi lời nhắn đều được đọc bằng tất cả sự trân trọng. ♡</p>
-          </div>
-
-          <!-- Recent Messages Card -->
-          <div class="recent-messages-card">
-            <div class="recent-header">
-              <h3>Những lời nhắn gần đây</h3>
-              <a href="#" id="btn-view-all-wishes" class="view-all-link">Xem tất cả</a>
-            </div>
-            <ul id="recent-wishes-list" class="wishes-list">
-              <li>♡ "Làm sao để quên một người mình từng rất yêu?"</li>
-              <li>♡ "Có ai từng cảm thấy cô đơn giữa một đám đông?"</li>
-              <li>♡ "Giá như ngày đó mình dũng cảm hơn..."</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- VIEW 4: KHUNG ẢNH KỶ NIỆM (GALLERY) -->
-    <section id="gallery-view" class="view-section">
-      <div class="gallery-container">
-        
-        <!-- Gallery Header -->
-        <div class="gallery-header">
-          <div class="sparkle-badge">✨ BỘ SƯU TẬP KHUNG ẢNH KỶ NIỆM ✨</div>
-          <h2 class="gallery-title">Góc Khung Ảnh ♡</h2>
-          <p class="gallery-subtitle">
-            Những khung hình lưu giữ ký êm đềm, hoàng hôn năm ấy và những lời chưa nói.<br>
-            Bấm vào bất kỳ khung ảnh nào để thưởng thức trọn vẹn thông điệp dịu dàng...
-          </p>
-        </div>
-
-        <!-- Curated Preset Photo Gallery Grid -->
-        <div class="gallery-presets-section">
-          <div class="section-title-wrapper">
-            <h3 class="section-title">Bộ Sưu Tập Khung Ảnh Kỷ Niệm ♡</h3>
-            <div class="filter-tabs">
-              <button class="filter-btn active" data-filter="all">Tất cả</button>
-              <button class="filter-btn" data-filter="polaroid">Polaroid</button>
-              <button class="filter-btn" data-filter="vintage-gold">Gỗ Cổ Điển</button>
-              <button class="filter-btn" data-filter="sparkle-heart">Trái Tim</button>
-              <button class="filter-btn" data-filter="film-strip">Film Strip</button>
-              <button class="filter-btn" data-filter="postcard">Bưu Thiếp</button>
-            </div>
-          </div>
-
-          <div id="gallery-grid" class="gallery-grid">
-            <!-- Dynamic / Preset items will be rendered here -->
-          </div>
-        </div>
-
-      </div>
-    </section>
-
+    <div id="template-loading" class="view-section active" style="display:flex;align-items:center;justify-content:center;min-height:60vh;">
+      <p style="font-family:'Caveat',cursive;color:var(--primary-rose,#ECA3B0);font-size:1.5rem;">♡ Đang tải...</p>
+    </div>
   </main>
 
   <!-- Global Audio Player Widget (Fixed Bottom Left) -->
@@ -526,13 +154,15 @@
         <button id="match-modal-ok" class="btn-start">CHIA SẺ ♡</button>
       </div>
     </div>
+  </div>
+
   <!-- Social Share Modal -->
   <div id="social-share-modal" class="modal-overlay hidden">
     <div class="modal-card share-modal-card">
       <button id="share-modal-close" class="modal-close">&times;</button>
       <div class="sparkle-badge">✨ CHIA SẺ KẾT QUẢ ✨</div>
-      <h3 id="share-title-text" class="modal-title" style="font-size: 1.8rem; margin-bottom: 4px;">Chia sẻ người phù hợp</h3>
-      <p id="share-desc-text" class="modal-subtitle-sm" style="margin-bottom: 18px;">Chọn nền tảng mạng xã hội để chia sẻ kết quả của bạn! ♡</p>
+      <h3 id="share-title-text" class="modal-title share-title">Chia sẻ người phù hợp</h3>
+      <p id="share-desc-text" class="modal-subtitle-sm share-desc">Chọn nền tảng mạng xã hội để chia sẻ kết quả của bạn! ♡</p>
       
       <div class="social-share-grid">
         <a href="#" id="share-fb" class="social-btn fb-btn" target="_blank" rel="noopener noreferrer">
@@ -558,7 +188,36 @@
         <button id="btn-copy-share-url" class="btn-copy">Sao chép 📋</button>
       </div>
 
-      <button id="share-modal-ok" class="btn-start" style="margin-top: 15px; width: 100%;">ĐÓNG ♡</button>
+      <button id="share-modal-ok" class="btn-start share-ok-btn">ĐÓNG ♡</button>
+    </div>
+  </div>
+
+  <!-- Mini Game Modal -->
+  <div id="game-modal" class="modal-overlay hidden">
+    <div class="modal-card game-modal-card">
+      <button id="game-modal-close" class="modal-close">&times;</button>
+      <div class="sparkle-badge">🎮 MINI GAME 🎮</div>
+      <h3 class="modal-title game-title">Mèo Con Tìm Ký Ức</h3>
+      <p class="modal-subtitle-sm game-subtitle">Giúp chú mèo vượt qua các nỗi buồn để nhặt thư tình gửi người ấy nhé! ♡</p>
+      
+      <div class="game-container">
+        <canvas id="game-canvas" width="600" height="350"></canvas>
+        
+        <!-- Mobile Controls Panel -->
+        <div id="game-mobile-controls" class="game-mobile-controls">
+          <div class="dpad-controls">
+            <button id="btn-move-left" class="control-btn" aria-label="Move Left">◀</button>
+            <button id="btn-move-right" class="control-btn" aria-label="Move Right">▶</button>
+          </div>
+          <div class="action-controls">
+            <button id="btn-jump" class="control-btn-jump" aria-label="Jump">JUMP</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="game-instructions">
+        <span>⌨️ Máy tính: Phím mũi tên ◀ ▶ (hoặc A/D) để di chuyển, phím Space (hoặc W) để nhảy!</span>
+      </div>
     </div>
   </div>
 

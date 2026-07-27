@@ -1028,13 +1028,8 @@ button, a, .option-card, .folded-note, .mobile-nav-item {
   font-family: var(--font-handwriting);
   font-size: 1.4rem;
   color: var(--text-muted);
-}
   line-height: 1.4;
   transform: rotate(2deg);
-}
-
-.main-sticky {
-  max-width: 220px;
 }
 
 /* Story Cards Strip - Single Horizontal Line (Never Wrap) */
@@ -2938,201 +2933,6 @@ button:active, .option-card:active, .mobile-nav-item:active {
   height: 100%;
   object-fit: cover;
 }
-.frame-style-polaroid .frame-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.frame-style-polaroid:hover .frame-img-box img {
-  transform: scale(1.06);
-}
-
-.frame-style-polaroid .frame-caption {
-  font-family: var(--font-handwriting);
-  font-size: 1.45rem;
-  color: var(--text-dark);
-  text-align: center;
-  margin-top: 14px;
-  line-height: 1.2;
-}
-
-.frame-style-polaroid .frame-stamp {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--primary-coral);
-  position: absolute;
-  bottom: 8px;
-  right: 14px;
-  opacity: 0.6;
-}
-
-/* 2. VINTAGE GOLD FRAME */
-.frame-style-vintage-gold {
-  background: linear-gradient(135deg, #FBF6E7 0%, #FFFDF8 100%);
-  padding: 20px;
-  border-radius: 12px;
-  border: 7px solid #D4AF37;
-  outline: 3px solid #8B6508;
-  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.15), 0 14px 35px rgba(80, 40, 30, 0.22);
-}
-
-.frame-style-vintage-gold .frame-img-box {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  border-radius: 6px;
-  border: 3px solid #F3E5AB;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-}
-
-.frame-style-vintage-gold .frame-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: sepia(0.15) contrast(1.05);
-}
-
-.frame-style-vintage-gold .frame-caption {
-  font-family: var(--font-sans);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #5D4037;
-  text-align: center;
-  margin-top: 12px;
-}
-
-/* 3. SPARKLE HEART FRAME */
-.frame-style-sparkle-heart {
-  background: linear-gradient(135deg, rgba(255, 238, 243, 0.95), rgba(255, 218, 230, 0.9));
-  padding: 18px;
-  border-radius: 24px;
-  border: 2px solid var(--primary-rose);
-  box-shadow: 0 12px 35px rgba(232, 156, 174, 0.35);
-  position: relative;
-}
-
-.frame-style-sparkle-heart .frame-img-box {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  border-radius: 20px;
-  position: relative;
-  box-shadow: 0 6px 18px rgba(216, 122, 122, 0.2);
-}
-
-.frame-style-sparkle-heart .frame-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.frame-style-sparkle-heart .sparkle-overlay {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 1.2rem;
-  pointer-events: none;
-}
-
-.frame-style-sparkle-heart .sparkle-overlay::after {
-  content: '✨ ♡';
-}
-
-.frame-style-sparkle-heart .frame-caption {
-  font-family: var(--font-handwriting);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-maroon);
-  text-align: center;
-  margin-top: 12px;
-}
-
-/* 4. FILM STRIP FRAME */
-.frame-style-film-strip {
-  background: #1C1C22;
-  padding: 24px 14px 18px 14px;
-  border-radius: 10px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-
-.frame-style-film-strip::before, .frame-style-film-strip::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 12px;
-  background-image: radial-gradient(#FFF 40%, transparent 45%);
-  background-size: 16px 12px;
-  background-repeat: repeat-x;
-  opacity: 0.8;
-}
-
-.frame-style-film-strip::before { top: 6px; }
-.frame-style-film-strip::after { bottom: 6px; }
-
-.frame-style-film-strip .frame-img-box {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  border-radius: 4px;
-  margin: 6px 0;
-}
-
-.frame-style-film-strip .frame-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: contrast(1.1) saturate(0.9);
-}
-
-.frame-style-film-strip .frame-caption {
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  color: #F0E6D2;
-  text-align: center;
-  margin-top: 10px;
-  letter-spacing: 0.5px;
-}
-
-/* 5. POSTCARD FRAME */
-.frame-style-postcard {
-  background: #FFFDF7;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #E0D6C3;
-  box-shadow: 0 10px 28px rgba(90, 50, 40, 0.14);
-  position: relative;
-}
-
-.frame-style-postcard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: repeating-linear-gradient(45deg, #D87A7A 0, #D87A7A 15px, #FFF 15px, #FFF 25px, #7AA0D8 25px, #7AA0D8 40px, #FFF 40px, #FFF 50px);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
-
-.frame-style-postcard .frame-img-box {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  border-radius: 6px;
-  border: 1px dashed rgba(0,0,0,0.15);
-}
-
-.frame-style-postcard .frame-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 .frame-style-postcard .frame-caption {
   font-family: var(--font-handwriting);
@@ -3215,4 +3015,275 @@ button:active, .option-card:active, .mobile-nav-item:active {
   display: flex;
   justify-content: center;
   gap: 15px;
+}
+
+/* ==========================================================================
+   MINI GAME & GAME BOY DECOR STYLING
+   ========================================================================== */
+.gameboy-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.gameboy-wrapper:hover {
+  transform: scale(1.05) rotate(-2deg);
+}
+
+.gameboy-body {
+  width: 80px;
+  height: 120px;
+  background: linear-gradient(145deg, #F3B3C3, #D98EA3);
+  border-radius: 8px 8px 24px 8px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 20px rgba(217, 142, 163, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.gameboy-screen {
+  width: 100%;
+  height: 48px;
+  background: #EAE3D2;
+  border-radius: 4px;
+  border: 1.5px solid #8B7E74;
+  padding: 4px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameboy-screen-glass {
+  width: 100%;
+  height: 100%;
+  background: #A0C334;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.gameboy-screen-text {
+  font-family: monospace;
+  font-size: 0.6rem;
+  font-weight: bold;
+  color: #3f4f14;
+  letter-spacing: 1px;
+  animation: gbPulse 2s infinite alternate;
+}
+
+@keyframes gbPulse {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.gameboy-dpad {
+  position: absolute;
+  top: 68px;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+}
+
+.dpad-vertical, .dpad-horizontal {
+  position: absolute;
+  background: #5A4E53;
+  border-radius: 2px;
+}
+
+.dpad-vertical {
+  top: 0;
+  left: 8px;
+  width: 8px;
+  height: 24px;
+}
+
+.dpad-horizontal {
+  top: 8px;
+  left: 0;
+  width: 24px;
+  height: 8px;
+}
+
+.gameboy-buttons {
+  position: absolute;
+  top: 72px;
+  right: 8px;
+  width: 32px;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  transform: rotate(-15deg);
+}
+
+.gb-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #880E4F;
+  border: 1px solid rgba(255,255,255,0.4);
+  font-size: 0.45rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.gameboy-pills {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-bottom: 2px;
+}
+
+.gb-pill {
+  width: 12px;
+  height: 4px;
+  background: #7E6F74;
+  transform: rotate(-28deg);
+  border-radius: 2px;
+  border: 0.5px solid rgba(255,255,255,0.3);
+}
+
+.gameboy-caption {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Game Modal Card */
+.game-modal-card {
+  max-width: 650px;
+  width: 95%;
+  padding: 24px;
+}
+
+/* Mobile Game Controls Styling */
+.game-mobile-controls {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dpad-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.control-btn, .control-btn-jump {
+  background: linear-gradient(135deg, #F9D8E1, #E8A8BA);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  color: #3E2723;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform 0.1s;
+}
+
+.control-btn:active, .control-btn-jump:active {
+  transform: scale(0.92);
+  background: linear-gradient(135deg, #E8A8BA, #C47B8E);
+}
+
+.control-btn {
+  width: 52px;
+  height: 52px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn-jump {
+  width: 76px;
+  height: 52px;
+  border-radius: 26px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive display for mobile buttons */
+@media (max-width: 768px) {
+  .game-mobile-controls {
+    display: flex;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. GAME & SHARE MODAL COMPONENT CLASSES (replacing inline styles)
+   -------------------------------------------------------------------------- */
+.game-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.game-subtitle {
+  margin-bottom: 12px;
+}
+
+.game-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  padding: 5px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: linear-gradient(to bottom, #FFEAEF, #FFDFE6);
+  border-radius: 8px;
+}
+
+.game-instructions {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  text-align: center;
+}
+
+.share-title {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.share-desc {
+  margin-bottom: 18px;
+}
+
+.share-ok-btn {
+  margin-top: 15px;
+  width: 100%;
 }

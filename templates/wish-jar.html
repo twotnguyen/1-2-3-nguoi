@@ -1,0 +1,98 @@
+    <!-- VIEW 3: BÌNH ƯỚC NGUYỆN (WISH JAR) -->
+    <section id="wish-jar-view" class="view-section">
+      <div class="wish-jar-container">
+        
+        <!-- Left Side: Form & Inputs -->
+        <div class="wish-form-wrapper">
+          <div class="wish-header">
+            <h2 class="wish-title">Gửi vào đây nhé... ♡</h2>
+            <p class="wish-subtitle">
+              Một câu hỏi, một lời tâm tư...<br>
+              Chúng mình sẽ đọc tất cả một cách ẩn danh.
+            </p>
+          </div>
+
+          <!-- Feature badges -->
+          <div class="wish-badges">
+            <div class="badge-item">
+              <span class="badge-icon">✉️</span>
+              <strong>Ẩn danh tuyệt đối</strong>
+              <small>Không ai biết bạn là ai.</small>
+            </div>
+            <div class="badge-item">
+              <span class="badge-icon">🫙</span>
+              <strong>Đọc & hồi đáp</strong>
+              <small>Chúng mình luôn lắng nghe.</small>
+            </div>
+            <div class="badge-item">
+              <span class="badge-icon">💖</span>
+              <strong>Lan tỏa yêu thương</strong>
+              <small>Câu chuyện của bạn có thể giúp ai đó.</small>
+            </div>
+          </div>
+
+          <!-- Message Form Card -->
+          <div class="wish-card-form">
+            <label class="form-label" for="wish-input">Viết điều bạn muốn gửi...</label>
+            <div class="textarea-wrapper">
+              <textarea id="wish-input" maxlength="500" placeholder="Bạn muốn hỏi điều gì? Hay muốn chia sẻ tâm tư của mình..."></textarea>
+              <div class="char-count"><span id="char-counter">0</span>/500</div>
+            </div>
+
+            <div class="form-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="anon-checkbox" checked>
+                <span class="checkbox-custom"></span>
+                <span>♡ Gửi ẩn danh (không hiển thị tên của bạn)</span>
+              </label>
+            </div>
+
+            <button id="btn-submit-wish" class="btn-submit-wish">
+              <span>🚀 GỬI VÀO BÌNH ƯỚC NGUYỆN</span>
+            </button>
+            <p class="form-footer-note">Cảm ơn bạn đã tin tưởng và chia sẻ. ♡</p>
+          </div>
+        </div>
+
+        <!-- Right Side: Mason Jar Graphics & Recent Messages -->
+        <div class="wish-visual-wrapper">
+          <!-- Glass Jar Graphics -->
+          <div class="mason-jar-container">
+            <div class="jar-lid"></div>
+            <div class="jar-body">
+              <div class="jar-label">
+                <span>Bình Ước Nguyện</span>
+                <span class="jar-label-heart">♡</span>
+              </div>
+              <div id="jar-notes-container" class="jar-notes" title="Bấm vào để đọc một lời nhắn ngẫu nhiên ♡">
+                <!-- Interactive folded paper notes -->
+                <span class="folded-note n1" data-note="Làm sao để quên một người mình từng rất yêu?">💌</span>
+                <span class="folded-note n2" data-note="Có ai từng cảm thấy cô đơn giữa một đám đông?">💖</span>
+                <span class="folded-note n3" data-note="Giá như ngày đó mình dũng cảm hơn...">💌</span>
+                <span class="folded-note n4" data-note="Cảm ơn vì đã cho mình biết thế nào là được thương chiều.">💕</span>
+                <span class="folded-note n5" data-note="Hy vọng ở một nơi nào đó, bạn luôn bình an và mỉm cười.">💌</span>
+              </div>
+            </div>
+            <div class="jar-candle-light"></div>
+          </div>
+
+          <div class="sticky-note jar-sticky">
+            <p>Bạn có biết? Mỗi lời nhắn đều được đọc bằng tất cả sự trân trọng. ♡</p>
+          </div>
+
+          <!-- Recent Messages Card -->
+          <div class="recent-messages-card">
+            <div class="recent-header">
+              <h3>Những lời nhắn gần đây</h3>
+              <a href="#" id="btn-view-all-wishes" class="view-all-link">Xem tất cả</a>
+            </div>
+            <ul id="recent-wishes-list" class="wishes-list">
+              <li>♡ "Làm sao để quên một người mình từng rất yêu?"</li>
+              <li>♡ "Có ai từng cảm thấy cô đơn giữa một đám đông?"</li>
+              <li>♡ "Giá như ngày đó mình dũng cảm hơn..."</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
