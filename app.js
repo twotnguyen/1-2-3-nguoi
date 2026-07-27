@@ -891,17 +891,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function calculateMatchedGirl(answers) {
     const history = getRecentMatchHistory();
     
-    // Kết hợp yếu tố ngẫu nhiên động cùng câu trả lời để kết quả luôn tươi mới, bất ngờ
-    let score = Math.floor(Math.random() * 10007);
+    // Tính điểm dựa trên câu trả lời thực tế (A=0, B=1, C=2, D=3)
+    let score = 0;
     if (answers && answers.length > 0) {
-      const optionMap = { 'A': 1, 'B': 3, 'C': 7, 'D': 11 };
+      const optionValues = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
       answers.forEach((ans, idx) => {
-        const val = optionMap[ans] || Math.floor(Math.random() * 10);
-        score += val * (idx + 1) * (Math.floor(Math.random() * 13) + 1);
+        const val = optionValues[ans] !== undefined ? optionValues[ans] : 0;
+        // Mỗi câu có trọng số khác nhau, câu cuối có trọng số cao nhất
+        score += val * (idx + 1);
       });
     }
+    
+    // Thêm yếu tố ngẫu nhiên nhẹ (0-2) để kết quả không quá predictable
+    score += Math.floor(Math.random() * 3);
 
-    let chosenIndex = Math.abs(score) % matchedGirls.length;
+    let chosenIndex = score % matchedGirls.length;
     let chosenGirl = matchedGirls[chosenIndex];
 
     // Kiểm tra quy tắc: Không trùng 1 nhân vật 3 lần liên tiếp (tối đa 2 lần liên tiếp)
@@ -1146,33 +1150,33 @@ document.addEventListener('DOMContentLoaded', () => {
       innerHTML = `
         <div class="frame-tape-strip"></div>
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
         </div>
         <div class="frame-stamp">123 NGƯỜI</div>
       `;
     } else if (item.style === 'vintage-gold') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
         </div>
       `;
     } else if (item.style === 'sparkle-heart') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
           <div class="sparkle-overlay"></div>
         </div>
       `;
     } else if (item.style === 'film-strip') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
         </div>
       `;
     } else if (item.style === 'postcard') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
         </div>
         <div class="frame-stamp">📮</div>
       `;
@@ -1330,29 +1334,45 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('keydown', this.keyHandler);
       window.addEventListener('keyup', this.keyHandler);
       
-      // Bắt sự kiện phím cảm ứng trên Mobile
-      const btnLeft = document.getElementById('btn-move-left');
-      const btnRight = document.getElementById('btn-move-right');
-      const btnJump = document.getElementById('btn-jump');
+      // Store button references for cleanup
+      this.btnLeft = document.getElementById('btn-move-left');
+      this.btnRight = document.getElementById('btn-move-right');
+      this.btnJump = document.getElementById('btn-jump');
       
-      if (btnLeft) {
-        btnLeft.onmousedown = btnLeft.ontouchstart = (e) => { e.preventDefault(); this.keys.left = true; };
-        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = btnLeft.ontouchcancel = () => { this.keys.left = false; };
+      // Touch/mouse handlers
+      this.btnLeftDown = (e) => { e.preventDefault(); this.keys.left = true; };
+      this.btnLeftUp = () => { this.keys.left = false; };
+      this.btnRightDown = (e) => { e.preventDefault(); this.keys.right = true; };
+      this.btnRightUp = () => { this.keys.right = false; };
+      this.btnJumpDown = (e) => {
+        e.preventDefault();
+        this.keys.up = true;
+        this.jumpTimeout = setTimeout(() => { this.keys.up = false; }, 80);
+      };
+      
+      if (this.btnLeft) {
+        this.btnLeft.addEventListener('mousedown', this.btnLeftDown);
+        this.btnLeft.addEventListener('touchstart', this.btnLeftDown);
+        this.btnLeft.addEventListener('mouseup', this.btnLeftUp);
+        this.btnLeft.addEventListener('mouseleave', this.btnLeftUp);
+        this.btnLeft.addEventListener('touchend', this.btnLeftUp);
+        this.btnLeft.addEventListener('touchcancel', this.btnLeftUp);
       }
-      if (btnRight) {
-        btnRight.onmousedown = btnRight.ontouchstart = (e) => { e.preventDefault(); this.keys.right = true; };
-        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = btnRight.ontouchcancel = () => { this.keys.right = false; };
+      if (this.btnRight) {
+        this.btnRight.addEventListener('mousedown', this.btnRightDown);
+        this.btnRight.addEventListener('touchstart', this.btnRightDown);
+        this.btnRight.addEventListener('mouseup', this.btnRightUp);
+        this.btnRight.addEventListener('mouseleave', this.btnRightUp);
+        this.btnRight.addEventListener('touchend', this.btnRightUp);
+        this.btnRight.addEventListener('touchcancel', this.btnRightUp);
       }
-      if (btnJump) {
-        btnJump.onmousedown = btnJump.ontouchstart = (e) => {
-          e.preventDefault();
-          this.keys.up = true;
-          setTimeout(() => { this.keys.up = false; }, 80);
-        };
+      if (this.btnJump) {
+        this.btnJump.addEventListener('mousedown', this.btnJumpDown);
+        this.btnJump.addEventListener('touchstart', this.btnJumpDown);
       }
       
-      // Nút click chuột khởi động lại hoặc đóng
-      this.canvas.onclick = (e) => {
+      // Canvas click handler
+      this.canvasClickHandler = (e) => {
         const rect = this.canvas.getBoundingClientRect();
         const clickX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
         const clickY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
@@ -1377,30 +1397,42 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       };
+      this.canvas.addEventListener('click', this.canvasClickHandler);
     }
     
     destroy() {
       this.stop();
-      window.removeEventListener('keydown', this.keyHandler);
-      window.removeEventListener('keyup', this.keyHandler);
+      if (this.keyHandler) {
+        window.removeEventListener('keydown', this.keyHandler);
+        window.removeEventListener('keyup', this.keyHandler);
+      }
       
-      const btnLeft = document.getElementById('btn-move-left');
-      const btnRight = document.getElementById('btn-move-right');
-      const btnJump = document.getElementById('btn-jump');
-      
-      if (btnLeft) {
-        btnLeft.onmousedown = btnLeft.ontouchstart = null;
-        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = btnLeft.ontouchcancel = null;
+      // Remove button listeners
+      if (this.btnLeft) {
+        this.btnLeft.removeEventListener('mousedown', this.btnLeftDown);
+        this.btnLeft.removeEventListener('touchstart', this.btnLeftDown);
+        this.btnLeft.removeEventListener('mouseup', this.btnLeftUp);
+        this.btnLeft.removeEventListener('mouseleave', this.btnLeftUp);
+        this.btnLeft.removeEventListener('touchend', this.btnLeftUp);
+        this.btnLeft.removeEventListener('touchcancel', this.btnLeftUp);
       }
-      if (btnRight) {
-        btnRight.onmousedown = btnRight.ontouchstart = null;
-        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = btnRight.ontouchcancel = null;
+      if (this.btnRight) {
+        this.btnRight.removeEventListener('mousedown', this.btnRightDown);
+        this.btnRight.removeEventListener('touchstart', this.btnRightDown);
+        this.btnRight.removeEventListener('mouseup', this.btnRightUp);
+        this.btnRight.removeEventListener('mouseleave', this.btnRightUp);
+        this.btnRight.removeEventListener('touchend', this.btnRightUp);
+        this.btnRight.removeEventListener('touchcancel', this.btnRightUp);
       }
-      if (btnJump) {
-        btnJump.onmousedown = btnJump.ontouchstart = null;
+      if (this.btnJump) {
+        this.btnJump.removeEventListener('mousedown', this.btnJumpDown);
+        this.btnJump.removeEventListener('touchstart', this.btnJumpDown);
       }
-      if (this.canvas) {
-        this.canvas.onclick = null;
+      if (this.jumpTimeout) {
+        clearTimeout(this.jumpTimeout);
+      }
+      if (this.canvas && this.canvasClickHandler) {
+        this.canvas.removeEventListener('click', this.canvasClickHandler);
       }
     }
     
@@ -1720,6 +1752,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize background animations and live clock
   initAmbientParticles();
   initLiveClock();
+
+  // ------------------------------------------------------------------------
+  // 9. ACCESSIBILITY: ESCAPE KEY & FOCUS TRAP FOR MODALS
+  // ------------------------------------------------------------------------
+  const allModals = document.querySelectorAll('.modal-overlay');
+
+  function closeAllModals() {
+    allModals.forEach(modal => {
+      if (!modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeAllModals();
+      if (activeGame) {
+        closeGameModal();
+      }
+    }
+  });
+
+  // Close modal when clicking overlay background
+  allModals.forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  });
 
 });
 

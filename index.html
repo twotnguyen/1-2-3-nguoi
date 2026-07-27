@@ -550,13 +550,15 @@
         <button id="match-modal-ok" class="btn-start">CHIA SẺ ♡</button>
       </div>
     </div>
+  </div>
+
   <!-- Social Share Modal -->
   <div id="social-share-modal" class="modal-overlay hidden">
     <div class="modal-card share-modal-card">
       <button id="share-modal-close" class="modal-close">&times;</button>
       <div class="sparkle-badge">✨ CHIA SẺ KẾT QUẢ ✨</div>
-      <h3 id="share-title-text" class="modal-title" style="font-size: 1.8rem; margin-bottom: 4px;">Chia sẻ người phù hợp</h3>
-      <p id="share-desc-text" class="modal-subtitle-sm" style="margin-bottom: 18px;">Chọn nền tảng mạng xã hội để chia sẻ kết quả của bạn! ♡</p>
+      <h3 id="share-title-text" class="modal-title share-title">Chia sẻ người phù hợp</h3>
+      <p id="share-desc-text" class="modal-subtitle-sm share-desc">Chọn nền tảng mạng xã hội để chia sẻ kết quả của bạn! ♡</p>
       
       <div class="social-share-grid">
         <a href="#" id="share-fb" class="social-btn fb-btn" target="_blank" rel="noopener noreferrer">
@@ -582,7 +584,7 @@
         <button id="btn-copy-share-url" class="btn-copy">Sao chép 📋</button>
       </div>
 
-      <button id="share-modal-ok" class="btn-start" style="margin-top: 15px; width: 100%;">ĐÓNG ♡</button>
+      <button id="share-modal-ok" class="btn-start share-ok-btn">ĐÓNG ♡</button>
     </div>
   </div>
 
@@ -591,11 +593,11 @@
     <div class="modal-card game-modal-card">
       <button id="game-modal-close" class="modal-close">&times;</button>
       <div class="sparkle-badge">🎮 MINI GAME 🎮</div>
-      <h3 class="modal-title" style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; margin-bottom: 4px;">Mèo Con Tìm Ký Ức</h3>
-      <p class="modal-subtitle-sm" style="margin-bottom: 12px;">Giúp chú mèo vượt qua các nỗi buồn để nhặt thư tình gửi người ấy nhé! ♡</p>
+      <h3 class="modal-title game-title">Mèo Con Tìm Ký Ức</h3>
+      <p class="modal-subtitle-sm game-subtitle">Giúp chú mèo vượt qua các nỗi buồn để nhặt thư tình gửi người ấy nhé! ♡</p>
       
-      <div class="game-container" style="position: relative; background: rgba(255, 255, 255, 0.2); border-radius: 12px; border: 1.5px solid rgba(255, 255, 255, 0.4); padding: 5px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); overflow: hidden;">
-        <canvas id="game-canvas" width="600" height="350" style="display: block; width: 100%; height: auto; background: linear-gradient(to bottom, #FFEAEF, #FFDFE6); border-radius: 8px;"></canvas>
+      <div class="game-container">
+        <canvas id="game-canvas" width="600" height="350"></canvas>
         
         <!-- Mobile Controls Panel -->
         <div id="game-mobile-controls" class="game-mobile-controls">
@@ -609,7 +611,7 @@
         </div>
       </div>
       
-      <div class="game-instructions" style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); font-family: 'Be Vietnam Pro', sans-serif; text-align: center;">
+      <div class="game-instructions">
         <span>⌨️ Máy tính: Phím mũi tên ◀ ▶ (hoặc A/D) để di chuyển, phím Space (hoặc W) để nhảy!</span>
       </div>
     </div>
