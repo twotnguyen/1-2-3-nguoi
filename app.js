@@ -1379,6 +1379,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     destroy() {
+      this.stop();
       window.removeEventListener('keydown', this.keyHandler);
       window.removeEventListener('keyup', this.keyHandler);
       
@@ -1572,6 +1573,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draw() {
+      this.ctx.textAlign = 'left';
+      this.ctx.textBaseline = 'top';
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       
       // Nền hoàng hôn hồng
