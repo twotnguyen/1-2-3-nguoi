@@ -949,26 +949,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameModal = document.getElementById('game-modal');
   const gameboyTrigger = document.getElementById('gameboy-trigger');
   const gameModalClose = document.getElementById('game-modal-close');
-  let gameInstance = null;
+  let activeGame = null;
+  let gameLoopId = null;
+
+  function runGameLoop() {
+    if (activeGame) {
+      activeGame.update();
+      activeGame.draw();
+      gameLoopId = requestAnimationFrame(runGameLoop);
+    }
+  }
 
   function openGameModal() {
     if (gameModal) {
       gameModal.classList.remove('hidden');
-      if (gameInstance) {
-        gameInstance.destroy();
+      // Tạo đối tượng game mới và kích hoạt loop
+      if (!activeGame) {
+        activeGame = new MemoryGame('game-canvas');
+      } else {
+        activeGame.reset();
       }
-      gameInstance = new MemoryGame('game-canvas');
-      gameInstance.start();
+      if (!gameLoopId) {
+        runGameLoop();
+      }
     }
   }
 
   function closeGameModal() {
     if (gameModal) {
       gameModal.classList.add('hidden');
-      if (gameInstance) {
-        gameInstance.stop();
-        gameInstance.destroy();
-        gameInstance = null;
+      // Hủy game loop để tối ưu tài nguyên
+      if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+      }
+      if (activeGame) {
+        activeGame.destroy();
+        activeGame = null;
       }
     }
   }
