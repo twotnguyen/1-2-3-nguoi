@@ -1,0 +1,70 @@
+    <!-- VIEW 2: 12 CÂU HỎI (QUIZ) -->
+    <section id="quiz-view" class="view-section">
+      <div class="quiz-container">
+        <!-- Top Sticky Counter -->
+        <div class="sticky-note quiz-counter-sticky">
+          <span class="sticky-label">Câu hỏi</span>
+          <span id="quiz-progress-text" class="sticky-number">01 <small>/12</small></span>
+        </div>
+
+        <!-- Main Question Booklet Card -->
+        <div class="quiz-card-wrapper">
+          <div class="spiral-top-sm">
+            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
+            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
+            <span class="ring-sm"></span><span class="ring-sm"></span><span class="ring-sm"></span>
+          </div>
+
+          <!-- Quiz Progress Track Bar -->
+          <div class="quiz-progress-track">
+            <div id="quiz-progress-fill" class="quiz-progress-fill" style="width: 8.33%;"></div>
+          </div>
+
+          <div class="quiz-inner-card">
+            <div class="question-header">
+              <span id="question-tag" class="question-tag">Question 01</span>
+            </div>
+            
+            <h2 id="question-text" class="question-title">
+              Bạn thường nhớ về một người khi nào nhất?
+            </h2>
+
+            <!-- 4 Multiple Choice Glassmorphism Cards -->
+            <div id="quiz-options-container" class="options-grid">
+              <button class="option-card" data-option="A">
+                <span class="option-badge">A</span>
+                <span class="option-text">Khi nghe một bài hát cũ.</span>
+                <span class="option-icon">🎵</span>
+              </button>
+              <button class="option-card" data-option="B">
+                <span class="option-badge">B</span>
+                <span class="option-text">Khi nhìn thấy hoàng hôn.</span>
+                <span class="option-icon">🌅</span>
+              </button>
+              <button class="option-card" data-option="C">
+                <span class="option-badge">C</span>
+                <span class="option-text">Khi thấy ai đó rất giống họ.</span>
+                <span class="option-icon">👥</span>
+              </button>
+              <button class="option-card" data-option="D">
+                <span class="option-badge">D</span>
+                <span class="option-text">Khi một mình vào buổi đêm.</span>
+                <span class="option-icon">🌙</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky note note right -->
+        <div class="sticky-note sub-sticky">
+          <p>Đừng nghĩ quá nhiều, cứ chọn điều đầu tiên bạn cảm thấy. ♡</p>
+        </div>
+
+        <!-- Navigation Buttons Bottom -->
+        <div class="quiz-controls">
+          <button id="btn-quiz-heart" class="quiz-heart-btn" title="Cảm xúc">
+            <span class="glowing-heart">♥</span>
+          </button>
+        </div>
+      </div>
+    </section>

@@ -55,28 +55,58 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------------
-  // 3. SPA ROUTER ENGINE
+  // 3. TEMPLATE LOADER & SPA ROUTER ENGINE
   // ------------------------------------------------------------------------
-  const views = document.querySelectorAll('.view-section');
-  const navLinks = document.querySelectorAll('.nav-link, .nav-item-link, .mobile-nav-item');
+  const templateCache = {};
+  const loadedViews = new Set();
+  const appRoot = document.getElementById('app-root');
+  const templateLoading = document.getElementById('template-loading');
 
-  function switchTab(tabId) {
-    // Hide all views
-    views.forEach(view => {
+  async function loadTemplate(tabId) {
+    if (templateCache[tabId]) return templateCache[tabId];
+    try {
+      const res = await fetch(`templates/${tabId}.html`);
+      if (!res.ok) throw new Error(`Failed to load ${tabId}`);
+      const html = await res.text();
+      templateCache[tabId] = html;
+      return html;
+    } catch (e) {
+      console.error('Template load error:', e);
+      return null;
+    }
+  }
+
+  function refreshNavLinks() {
+    return document.querySelectorAll('.nav-link, .nav-item-link, .mobile-nav-item');
+  }
+
+  async function switchTab(tabId) {
+    // Hide all loaded views
+    document.querySelectorAll('.view-section').forEach(view => {
       view.classList.remove('active');
     });
 
-    // Show target view
-    const targetView = document.getElementById(`${tabId}-view`);
+    // Load template if not in DOM yet
+    let targetView = document.getElementById(`${tabId}-view`);
+    if (!targetView) {
+      const html = await loadTemplate(tabId);
+      if (html) {
+        if (templateLoading) templateLoading.remove();
+        appRoot.insertAdjacentHTML('beforeend', html);
+        targetView = document.getElementById(`${tabId}-view`);
+        loadedViews.add(tabId);
+        initViewListeners(tabId);
+      }
+    }
+
     if (targetView) {
       targetView.classList.add('active');
     } else {
-      // Fallback to home view if tabId not found
       document.getElementById('home-view')?.classList.add('active');
     }
 
     // Update active state on navigation links
-    navLinks.forEach(link => {
+    refreshNavLinks().forEach(link => {
       if (link.getAttribute('data-tab') === tabId) {
         link.classList.add('active');
       } else {
@@ -84,8 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Update location hash
     window.location.hash = tabId;
+  }
+
+  function initViewListeners(tabId) {
+    if (tabId === 'home') initHomeListeners();
+    if (tabId === 'quiz') initQuizListeners();
+    if (tabId === 'wish-jar') initWishJarListeners();
+    if (tabId === 'gallery') initGalleryListeners();
   }
 
   // Attach click listeners to all navigation links
@@ -97,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Check initial hash
+  // Check initial hash and load first view
   const initialTab = window.location.hash.replace('#', '') || 'home';
   switchTab(initialTab);
 
@@ -225,49 +261,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Camera Interactive Trigger
-  const cameraTrigger = document.getElementById('camera-trigger');
-  if (cameraTrigger) {
-    cameraTrigger.addEventListener('click', () => {
-      // Flash effect
-      const flash = document.createElement('div');
-      flash.style.position = 'fixed';
-      flash.style.top = '0';
-      flash.style.left = '0';
-      flash.style.width = '100vw';
-      flash.style.height = '100vh';
-      flash.style.background = '#FFF';
-      flash.style.opacity = '0.9';
-      flash.style.zIndex = '9999';
-      flash.style.transition = 'opacity 0.5s ease-out';
-      document.body.appendChild(flash);
+  // Camera Interactive Trigger (Home View)
+  function initHomeListeners() {
+    const cameraTrigger = document.getElementById('camera-trigger');
+    if (cameraTrigger) {
+      cameraTrigger.addEventListener('click', () => {
+        const flash = document.createElement('div');
+        flash.style.position = 'fixed';
+        flash.style.top = '0';
+        flash.style.left = '0';
+        flash.style.width = '100vw';
+        flash.style.height = '100vh';
+        flash.style.background = '#FFF';
+        flash.style.opacity = '0.9';
+        flash.style.zIndex = '9999';
+        flash.style.transition = 'opacity 0.5s ease-out';
+        document.body.appendChild(flash);
+        setTimeout(() => { flash.style.opacity = '0'; }, 50);
+        setTimeout(() => flash.remove(), 550);
+        showModal('Olympus AF-1 📸', 'Đã chụp khoảnh khắc dịu dàng này! Kỷ niệm sẽ luôn ở lại cùng bạn. ♡');
+      });
+    }
 
-      setTimeout(() => {
-        flash.style.opacity = '0';
-      }, 50);
-      setTimeout(() => flash.remove(), 550);
+    const microwaveTrigger = document.getElementById('microwave-trigger');
+    if (microwaveTrigger) {
+      microwaveTrigger.addEventListener('click', () => {
+        const warmFlash = document.createElement('div');
+        warmFlash.style.position = 'fixed';
+        warmFlash.style.inset = '0';
+        warmFlash.style.background = 'radial-gradient(circle at center, rgba(255, 180, 200, 0.6), transparent 70%)';
+        warmFlash.style.zIndex = '9999';
+        warmFlash.style.pointerEvents = 'none';
+        warmFlash.style.transition = 'opacity 0.4s ease-out';
+        document.body.appendChild(warmFlash);
+        setTimeout(() => warmFlash.style.opacity = '0', 50);
+        setTimeout(() => warmFlash.remove(), 450);
+      });
+    }
 
-      showModal('Olympus AF-1 📸', 'Đã chụp khoảnh khắc dịu dàng này! Kỷ niệm sẽ luôn ở lại cùng bạn. ♡');
-    });
-  }
+    const btnStartQuiz = document.getElementById('btn-start-quiz');
+    if (btnStartQuiz) {
+      btnStartQuiz.addEventListener('click', () => {
+        switchTab('quiz');
+      });
+    }
 
-  // 3D Microwave Interactive Trigger
-  const microwaveTrigger = document.getElementById('microwave-trigger');
-  if (microwaveTrigger) {
-    microwaveTrigger.addEventListener('click', () => {
-      // Warm pink glow flash feedback
-      const warmFlash = document.createElement('div');
-      warmFlash.style.position = 'fixed';
-      warmFlash.style.inset = '0';
-      warmFlash.style.background = 'radial-gradient(circle at center, rgba(255, 180, 200, 0.6), transparent 70%)';
-      warmFlash.style.zIndex = '9999';
-      warmFlash.style.pointerEvents = 'none';
-      warmFlash.style.transition = 'opacity 0.4s ease-out';
-      document.body.appendChild(warmFlash);
-
-      setTimeout(() => warmFlash.style.opacity = '0', 50);
-      setTimeout(() => warmFlash.remove(), 450);
-    });
+    const gameboyTrigger = document.getElementById('gameboy-trigger');
+    if (gameboyTrigger) {
+      gameboyTrigger.addEventListener('click', openGameModal);
+    }
   }
 
   // ------------------------------------------------------------------------
@@ -399,22 +441,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentQuestionIndex = 0;
   const userAnswers = [];
 
-  const quizProgressText = document.getElementById('quiz-progress-text');
-  const quizProgressFill = document.getElementById('quiz-progress-fill');
-  const questionTag = document.getElementById('question-tag');
-  const questionText = document.getElementById('question-text');
-  const optionsContainer = document.getElementById('quiz-options-container');
-
-  const btnQuizHeart = document.getElementById('btn-quiz-heart');
-  const btnStartQuiz = document.getElementById('btn-start-quiz');
-
-  if (btnStartQuiz) {
-    btnStartQuiz.addEventListener('click', () => {
-      switchTab('quiz');
-    });
-  }
-
   function renderQuestion(index) {
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizProgressFill = document.getElementById('quiz-progress-fill');
+    const questionTag = document.getElementById('question-tag');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('quiz-options-container');
+
     const q = quizQuestions[index];
     if (!q) return;
 
@@ -450,7 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
           btn.classList.add('selected');
           userAnswers[index] = opt.key;
           
-          // Tự động chuyển câu sau 350ms
           setTimeout(() => {
             if (currentQuestionIndex < quizQuestions.length - 1) {
               currentQuestionIndex++;
@@ -466,32 +498,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (btnQuizHeart) {
-    btnQuizHeart.addEventListener('click', () => {
-      const heart = document.createElement('div');
-      heart.textContent = '💖';
-      heart.style.position = 'fixed';
-      heart.style.left = `${btnQuizHeart.getBoundingClientRect().left + 20}px`;
-      heart.style.top = `${btnQuizHeart.getBoundingClientRect().top}px`;
-      heart.style.fontSize = '2rem';
-      heart.style.pointerEvents = 'none';
-      heart.style.transition = 'all 1s ease-out';
-      heart.style.zIndex = '9999';
-
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.style.transform = 'translateY(-80px) scale(1.4)';
-        heart.style.opacity = '0';
-      }, 50);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 1000);
-    });
+  function initQuizListeners() {
+    const btnQuizHeart = document.getElementById('btn-quiz-heart');
+    if (btnQuizHeart) {
+      btnQuizHeart.addEventListener('click', () => {
+        const heart = document.createElement('div');
+        heart.textContent = '💖';
+        heart.style.position = 'fixed';
+        heart.style.left = `${btnQuizHeart.getBoundingClientRect().left + 20}px`;
+        heart.style.top = `${btnQuizHeart.getBoundingClientRect().top}px`;
+        heart.style.fontSize = '2rem';
+        heart.style.pointerEvents = 'none';
+        heart.style.transition = 'all 1s ease-out';
+        heart.style.zIndex = '9999';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+          heart.style.transform = 'translateY(-80px) scale(1.4)';
+          heart.style.opacity = '0';
+        }, 50);
+        setTimeout(() => heart.remove(), 1000);
+      });
+    }
+    renderQuestion(currentQuestionIndex);
   }
-
-  renderQuestion(currentQuestionIndex);
 
   // ------------------------------------------------------------------------
   // 6. PRIVATE WISH JAR: TELEGRAM BOT & EMAIL NOTIFICATION ENGINE
@@ -568,17 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const wishInput = document.getElementById('wish-input');
-  const charCounter = document.getElementById('char-counter');
-  const btnSubmitWish = document.getElementById('btn-submit-wish');
-  const recentWishesList = document.getElementById('recent-wishes-list');
-  const btnViewAllWishes = document.getElementById('btn-view-all-wishes');
-
-  const allWishesModal = document.getElementById('all-wishes-modal');
-  const allWishesContainer = document.getElementById('all-wishes-container');
-  const wishesModalClose = document.getElementById('wishes-modal-close');
-  const wishesModalOk = document.getElementById('wishes-modal-ok');
-
   let storedWishes = JSON.parse(localStorage.getItem('wish_jar_messages') || '[]');
 
   if (storedWishes.length === 0) {
@@ -593,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderRecentWishes() {
+    const recentWishesList = document.getElementById('recent-wishes-list');
     if (!recentWishesList) return;
     recentWishesList.innerHTML = '';
     storedWishes.slice(0, 5).forEach(msg => {
@@ -602,71 +621,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Interactive Folded Notes inside Mason Jar
-  document.querySelectorAll('.folded-note').forEach(note => {
-    note.addEventListener('click', () => {
-      const randomMsg = storedWishes[Math.floor(Math.random() * storedWishes.length)];
-      showModal('Một lá thư trong hũ... 💌', `"${randomMsg}"`);
+  function initWishJarListeners() {
+    const wishInput = document.getElementById('wish-input');
+    const charCounter = document.getElementById('char-counter');
+    const btnSubmitWish = document.getElementById('btn-submit-wish');
+    const btnViewAllWishes = document.getElementById('btn-view-all-wishes');
+    const allWishesModal = document.getElementById('all-wishes-modal');
+    const allWishesContainer = document.getElementById('all-wishes-container');
+    const wishesModalClose = document.getElementById('wishes-modal-close');
+    const wishesModalOk = document.getElementById('wishes-modal-ok');
+
+    document.querySelectorAll('.folded-note').forEach(note => {
+      note.addEventListener('click', () => {
+        const randomMsg = storedWishes[Math.floor(Math.random() * storedWishes.length)];
+        showModal('Một lá thư trong hũ... 💌', `"${randomMsg}"`);
+      });
     });
-  });
 
-  // View All Wishes Modal
-  function openAllWishesModal() {
-    if (!allWishesModal || !allWishesContainer) return;
-    allWishesContainer.innerHTML = '';
-    storedWishes.forEach((w, idx) => {
-      const div = document.createElement('div');
-      div.className = 'wish-item-card';
-      div.innerHTML = `<strong>#${idx + 1}</strong> ♡ "${w}"`;
-      allWishesContainer.appendChild(div);
-    });
-    allWishesModal.classList.remove('hidden');
+    function openAllWishesModal() {
+      if (!allWishesModal || !allWishesContainer) return;
+      allWishesContainer.innerHTML = '';
+      storedWishes.forEach((w, idx) => {
+        const div = document.createElement('div');
+        div.className = 'wish-item-card';
+        div.innerHTML = `<strong>#${idx + 1}</strong> ♡ "${w}"`;
+        allWishesContainer.appendChild(div);
+      });
+      allWishesModal.classList.remove('hidden');
+    }
+
+    function closeAllWishesModal() {
+      if (allWishesModal) allWishesModal.classList.add('hidden');
+    }
+
+    if (btnViewAllWishes) {
+      btnViewAllWishes.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAllWishesModal();
+      });
+    }
+
+    if (wishesModalClose) wishesModalClose.addEventListener('click', closeAllWishesModal);
+    if (wishesModalOk) wishesModalOk.addEventListener('click', closeAllWishesModal);
+
+    if (wishInput && charCounter) {
+      wishInput.addEventListener('input', () => {
+        charCounter.textContent = wishInput.value.length;
+      });
+    }
+
+    if (btnSubmitWish) {
+      btnSubmitWish.addEventListener('click', () => {
+        const text = wishInput.value.trim();
+        if (!text) {
+          showModal('Nhắc nhở ♡', 'Vui lòng viết điều bạn muốn chia sẻ trước khi gửi nhé!');
+          return;
+        }
+        sendWishToTelegram(text);
+        sendWishToEmail(text);
+        storedWishes.unshift(text);
+        localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
+        renderRecentWishes();
+        wishInput.value = '';
+        if (charCounter) charCounter.textContent = '0';
+        showModal('Bình Ước Nguyện ♡', 'Lời nhắn của bạn đã được gấp gọn và thả vào Bình Ước Nguyện. Cảm ơn bạn đã tin tưởng và chia sẻ! 💖');
+      });
+    }
+
+    renderRecentWishes();
   }
-
-  function closeAllWishesModal() {
-    if (allWishesModal) allWishesModal.classList.add('hidden');
-  }
-
-  if (btnViewAllWishes) {
-    btnViewAllWishes.addEventListener('click', (e) => {
-      e.preventDefault();
-      openAllWishesModal();
-    });
-  }
-
-  if (wishesModalClose) wishesModalClose.addEventListener('click', closeAllWishesModal);
-  if (wishesModalOk) wishesModalOk.addEventListener('click', closeAllWishesModal);
-
-  if (wishInput && charCounter) {
-    wishInput.addEventListener('input', () => {
-      charCounter.textContent = wishInput.value.length;
-    });
-  }
-
-  if (btnSubmitWish) {
-    btnSubmitWish.addEventListener('click', () => {
-      const text = wishInput.value.trim();
-      if (!text) {
-        showModal('Nhắc nhở ♡', 'Vui lòng viết điều bạn muốn chia sẻ trước khi gửi nhé!');
-        return;
-      }
-
-      // Tự động gửi về Telegram & Email cá nhân
-      sendWishToTelegram(text);
-      sendWishToEmail(text);
-
-      storedWishes.unshift(text);
-      localStorage.setItem('wish_jar_messages', JSON.stringify(storedWishes));
-      renderRecentWishes();
-
-      wishInput.value = '';
-      if (charCounter) charCounter.textContent = '0';
-
-      showModal('Bình Ước Nguyện ♡', 'Lời nhắn của bạn đã được gấp gọn và thả vào Bình Ước Nguyện. Cảm ơn bạn đã tin tưởng và chia sẻ! 💖');
-    });
-  }
-
-  renderRecentWishes();
 
   // ------------------------------------------------------------------------
   // 7. MODAL DIALOG ENGINE & 12 MATCHED GIRLS LOGIC
@@ -951,14 +974,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mini Game Modal Event Listeners
   const gameModal = document.getElementById('game-modal');
-  const gameboyTrigger = document.getElementById('gameboy-trigger');
   const gameModalClose = document.getElementById('game-modal-close');
   let activeGame = null;
 
   function openGameModal() {
     if (gameModal) {
       gameModal.classList.remove('hidden');
-      // Tạo đối tượng game mới và kích hoạt loop
       if (!activeGame) {
         activeGame = new MemoryGame('game-canvas');
       } else {
@@ -978,7 +999,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (gameboyTrigger) gameboyTrigger.addEventListener('click', openGameModal);
   if (gameModalClose) gameModalClose.addEventListener('click', closeGameModal);
   
   const socialShareModal = document.getElementById('social-share-modal');
@@ -1129,17 +1149,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 24, title: "Kỷ niệm #24 🎬", desc: "Trân trọng từng ngày tháng bên nhau.", src: "images/gallery/z6304858052609_e7af4a941c7265a1ccc06a9e6ad8fb6a.jpg", style: "film-strip" }
   ];
 
-  const galleryGrid = document.getElementById('gallery-grid');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-
-  const lightboxModal = document.getElementById('lightbox-modal');
-  const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
-  const lightboxOkBtn = document.getElementById('lightbox-ok-btn');
-  const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
-  const lightboxTitle = document.getElementById('lightbox-title');
-  const lightboxDesc = document.getElementById('lightbox-desc');
-  const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
-
   function createFrameElement(item) {
     const frameDiv = document.createElement('div');
     frameDiv.className = `gallery-frame frame-style-${item.style}`;
@@ -1183,66 +1192,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     frameDiv.innerHTML = innerHTML;
-
     frameDiv.addEventListener('click', () => {
       openLightboxModal(item);
     });
-
     return frameDiv;
   }
 
   function renderGallery(filter = 'all') {
+    const galleryGrid = document.getElementById('gallery-grid');
     if (!galleryGrid) return;
     galleryGrid.innerHTML = '';
-
     const filteredItems = filter === 'all' 
       ? presetFrames 
       : presetFrames.filter(item => item.style === filter);
-
     filteredItems.forEach(item => {
       galleryGrid.appendChild(createFrameElement(item));
     });
   }
 
-  // Filter Buttons
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.getAttribute('data-filter');
-      renderGallery(filter);
-    });
-  });
-
-  // Lightbox Modal Handling
   function openLightboxModal(item) {
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const lightboxFrameContainer = document.getElementById('lightbox-frame-container');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDesc = document.getElementById('lightbox-desc');
     if (!lightboxModal || !lightboxFrameContainer) return;
-
     lightboxFrameContainer.innerHTML = '';
     lightboxFrameContainer.appendChild(createFrameElement(item));
-
     if (lightboxTitle) lightboxTitle.textContent = item.title;
     if (lightboxDesc) lightboxDesc.textContent = item.desc;
-
     lightboxModal.classList.remove('hidden');
   }
 
-  function closeLightboxModal() {
-    if (lightboxModal) lightboxModal.classList.add('hidden');
-  }
+  function initGalleryListeners() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxOkBtn = document.getElementById('lightbox-ok-btn');
+    const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
 
-  if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightboxModal);
-  if (lightboxOkBtn) lightboxOkBtn.addEventListener('click', closeLightboxModal);
-
-  if (lightboxDownloadBtn) {
-    lightboxDownloadBtn.addEventListener('click', () => {
-      showModal('Lưu Khoảnh Khắc 💾', 'Đã lưu khoảnh khắc dịu dàng này! ♡');
-      closeLightboxModal();
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGallery(btn.getAttribute('data-filter'));
+      });
     });
-  }
 
-  // Render initial gallery grid
-  renderGallery();
+    function closeLightboxModal() {
+      const lightboxModal = document.getElementById('lightbox-modal');
+      if (lightboxModal) lightboxModal.classList.add('hidden');
+    }
+
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightboxModal);
+    if (lightboxOkBtn) lightboxOkBtn.addEventListener('click', closeLightboxModal);
+    if (lightboxDownloadBtn) {
+      lightboxDownloadBtn.addEventListener('click', () => {
+        showModal('Lưu Khoảnh Khắc 💾', 'Đã lưu khoảnh khắc dịu dàng này! ♡');
+        closeLightboxModal();
+      });
+    }
+
+    renderGallery();
+  }
 
   class MemoryGame {
     constructor(canvasId) {
