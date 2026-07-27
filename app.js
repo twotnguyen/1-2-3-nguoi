@@ -944,6 +944,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (matchModalClose) matchModalClose.addEventListener('click', closeGirlMatchModal);
+
+  // Mini Game Modal Event Listeners
+  const gameModal = document.getElementById('game-modal');
+  const gameboyTrigger = document.getElementById('gameboy-trigger');
+  const gameModalClose = document.getElementById('game-modal-close');
+
+  function openGameModal() {
+    if (gameModal) {
+      gameModal.classList.remove('hidden');
+    }
+  }
+
+  function closeGameModal() {
+    if (gameModal) {
+      gameModal.classList.add('hidden');
+    }
+  }
+
+  if (gameboyTrigger) gameboyTrigger.addEventListener('click', openGameModal);
+  if (gameModalClose) gameModalClose.addEventListener('click', closeGameModal);
   
   const socialShareModal = document.getElementById('social-share-modal');
   const shareModalClose = document.getElementById('share-modal-close');
