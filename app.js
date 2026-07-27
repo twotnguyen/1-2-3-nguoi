@@ -950,15 +950,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameboyTrigger = document.getElementById('gameboy-trigger');
   const gameModalClose = document.getElementById('game-modal-close');
   let activeGame = null;
-  let gameLoopId = null;
-
-  function runGameLoop() {
-    if (activeGame) {
-      activeGame.update();
-      activeGame.draw();
-      gameLoopId = requestAnimationFrame(runGameLoop);
-    }
-  }
 
   function openGameModal() {
     if (gameModal) {
@@ -969,20 +960,13 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         activeGame.reset();
       }
-      if (!gameLoopId) {
-        runGameLoop();
-      }
+      activeGame.start();
     }
   }
 
   function closeGameModal() {
     if (gameModal) {
       gameModal.classList.add('hidden');
-      // Hủy game loop để tối ưu tài nguyên
-      if (gameLoopId) {
-        cancelAnimationFrame(gameLoopId);
-        gameLoopId = null;
-      }
       if (activeGame) {
         activeGame.destroy();
         activeGame = null;
@@ -1353,11 +1337,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (btnLeft) {
         btnLeft.onmousedown = btnLeft.ontouchstart = (e) => { e.preventDefault(); this.keys.left = true; };
-        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = () => { this.keys.left = false; };
+        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = btnLeft.ontouchcancel = () => { this.keys.left = false; };
       }
       if (btnRight) {
         btnRight.onmousedown = btnRight.ontouchstart = (e) => { e.preventDefault(); this.keys.right = true; };
-        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = () => { this.keys.right = false; };
+        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = btnRight.ontouchcancel = () => { this.keys.right = false; };
       }
       if (btnJump) {
         btnJump.onmousedown = btnJump.ontouchstart = (e) => {
@@ -1406,11 +1390,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (btnLeft) {
         btnLeft.onmousedown = btnLeft.ontouchstart = null;
-        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = null;
+        btnLeft.onmouseup = btnLeft.onmouseleave = btnLeft.ontouchend = btnLeft.ontouchcancel = null;
       }
       if (btnRight) {
         btnRight.onmousedown = btnRight.ontouchstart = null;
-        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = null;
+        btnRight.onmouseup = btnRight.onmouseleave = btnRight.ontouchend = btnRight.ontouchcancel = null;
       }
       if (btnJump) {
         btnJump.onmousedown = btnJump.ontouchstart = null;
