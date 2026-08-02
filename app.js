@@ -790,7 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dislikes: "Quên ngày kỷ niệm",
       quote: "Yêu là nhớ cả những điều rất nhỏ.",
       loveLanguage: "Gift Giving",
-      avatar: "images/huong.png"
+      avatar: "images/huong.png?v=2"
     },
     {
       name: "Thương",
