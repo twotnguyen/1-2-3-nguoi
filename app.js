@@ -1114,33 +1114,33 @@ document.addEventListener('DOMContentLoaded', () => {
       innerHTML = `
         <div class="frame-tape-strip"></div>
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async">
         </div>
         <div class="frame-stamp">123 NGƯỜI</div>
       `;
     } else if (item.style === 'vintage-gold') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async">
         </div>
       `;
     } else if (item.style === 'sparkle-heart') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async">
           <div class="sparkle-overlay"></div>
         </div>
       `;
     } else if (item.style === 'film-strip') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async">
         </div>
       `;
     } else if (item.style === 'postcard') {
       innerHTML = `
         <div class="frame-img-box">
-          <img src="${item.src}" alt="${item.title}">
+          <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async">
         </div>
         <div class="frame-stamp">📮</div>
       `;
